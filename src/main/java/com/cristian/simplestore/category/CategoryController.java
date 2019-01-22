@@ -4,15 +4,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.response.CustomResponse;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CategoryController {
 	
 	private CustomResponse response = new CustomResponse();
@@ -37,15 +43,16 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.POST)
-	public Map<String, Object> create(@RequestBody Category category) {
-		Category createdCategory = categoryService.create(category);
+	public Map<String, Object> create(Category category, @RequestParam("image") MultipartFile image) {
+		Category createdCategory = categoryService.create(category, image);
 		
 		response.attachContent(createdCategory);
 		return response.build();
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.PUT)
-	public Map<String, Object> update(@PathVariable long id, @RequestBody Category category) {
+	public Map<String, Object> update(@PathVariable long id, Category category) {
 		Category updatedCategory = categoryService.update(id, category);
 		
 		response.attachContent(updatedCategory);
