@@ -6,12 +6,25 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cristian.simplestore.image.Image;
+import com.cristian.simplestore.image.ImageRepository;
+import com.cristian.simplestore.image.ImageService;
+import com.cristian.simplestore.storage.ImageStorageService;
+import com.cristian.simplestore.storage.StorageService;
 
 @Service
 public class CategoryService {
 	
 	 @Autowired
 	 private CategoryRepository categoryRepository;
+	 	 
+	 @Autowired 
+	 private ImageService imageService;
+	 
+	 @Autowired
+	 private ImageStorageService imageStorageService;
 	 
 	 public List<Category> findAllCategories() {
 		 List<Category> foundCategories = new ArrayList<Category>();
@@ -26,6 +39,22 @@ public class CategoryService {
 	 
 	 public Category create(Category category) {
 		 return this.categoryRepository.save(category);
+	 }
+	 
+	 public Category create(Category category, MultipartFile image) {
+		 Category createdCategory = this.create(category);
+		 
+		 if (image != null) {
+			 createdCategory = addImageFileToCategory(createdCategory, image);
+		 }
+		 
+		 return createdCategory;
+	 }
+	 
+	 public Category addImageFileToCategory(Category category, MultipartFile file) {
+		 Image image = this.imageService.createImageRepoFromFile(file);
+		 category.addImage(image);
+		 return categoryRepository.save(category);
 	 }
 	 
 	 public Category update(long id, Category category) {
