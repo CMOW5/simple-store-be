@@ -52,8 +52,10 @@ public class CategoryController {
 	
 	@CrossOrigin
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.PUT)
-	public Map<String, Object> update(@PathVariable long id, Category category) {
-		Category updatedCategory = categoryService.update(id, category);
+	public Map<String, Object> update(@PathVariable long id, 
+			Category category, @RequestParam(required = false) Long imageIdToDelete, 
+			@RequestParam(required = false) MultipartFile image) {
+		Category updatedCategory = categoryService.update(id, category, image, imageIdToDelete);
 		
 		response.attachContent(updatedCategory);
 		return response.build();
