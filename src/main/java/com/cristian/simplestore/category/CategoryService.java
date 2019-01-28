@@ -62,6 +62,28 @@ public class CategoryService {
 		 return this.categoryRepository.save(category);
 	 }
 	 
+	 // TODO: delete the images not used from storage after update
+	 public Category update(long id, Category category, MultipartFile file, Long imageIdToDelete) {
+		 Category storedCategory = this.categoryRepository.findById(id).get();
+		 /* TODO
+		  * if we call update(category) the image is delete because the fe sends it
+		  * as null
+		  */
+		 storedCategory.setName(category.getName());
+		 storedCategory.setParentCategory(category.getParentCategory());
+		 
+		 if (imageIdToDelete != null) {
+			 storedCategory.deleteImage();
+		 }
+		 
+		 if (file != null) {
+			Image image = this.imageService.createImageRepoFromFile(file);
+			storedCategory.addImage(image);
+		 }
+		 
+		 return this.update(id, storedCategory);
+	 }
+	 
 	 public void delete(long id) {
 		 this.categoryRepository.deleteById(id);
 	 }
