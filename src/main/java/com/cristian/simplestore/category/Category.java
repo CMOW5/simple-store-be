@@ -105,6 +105,10 @@ public class Category {
 		this.image = image;
 	}
 	
+	public void deleteImage() {
+		this.image = null;
+	}
+	
 	public Image getImage() {
 		return this.image;
 	}
