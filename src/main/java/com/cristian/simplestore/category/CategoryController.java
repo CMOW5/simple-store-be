@@ -3,18 +3,24 @@ package com.cristian.simplestore.category;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cristian.simplestore.form.CategoryCreateForm;
+import com.cristian.simplestore.form.CategoryUpdateForm;
 import com.cristian.simplestore.response.CustomResponse;
 
 @RestController
@@ -43,27 +49,42 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.POST)
-	public Map<String, Object> create(Category category, @RequestParam("image") MultipartFile image) {
-		Category createdCategory = categoryService.create(category, image);
+	public Map<String, Object> create(
+			@Valid CategoryCreateForm categoryForm, 
+			@RequestParam(required = false) MultipartFile image,
+			BindingResult validationResult) {
+		
+		if (validationResult.hasErrors()) {
+            return response.attachContent(validationResult.getFieldErrors()).build();
+        }
+		
+		Category createdCategory = categoryService.create(categoryForm.getModel(), image);
 		
 		response.attachContent(createdCategory);
 		return response.build();
 	}
 	
-	@CrossOrigin
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.PUT)
-	public Map<String, Object> update(@PathVariable long id, 
-			Category category, @RequestParam(required = false) Long imageIdToDelete, 
-			@RequestParam(required = false) MultipartFile image) {
-		Category updatedCategory = categoryService.update(id, category, image, imageIdToDelete);
+	public Map<String, Object> update(
+			@PathVariable Long id, 
+			@RequestParam(required = false) MultipartFile image,
+			@RequestParam(required = false) Long imageIdToDelete,
+			@Valid CategoryUpdateForm form, 
+			BindingResult validationResult) {
+
+		if (validationResult.hasErrors()) {
+            return response.attachContent(validationResult.getFieldErrors()).build();
+        }
+		
+		Category updatedCategory = categoryService.update(id, form.getModel(), image, imageIdToDelete);
 		
 		response.attachContent(updatedCategory);
 		return response.build();
 	}
 	
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable long id) {
-		categoryService.delete(id);
+	public void delete(@PathVariable Long id) {
+		categoryService.deleteById(id);
 	}
 	
 	@RequestMapping(value = "/api/admin/categories/count", method = RequestMethod.GET)
@@ -73,5 +94,15 @@ public class CategoryController {
 		response.attachContent(categoriesCount);
 		return response.build();	
 	}
+	
+  @ResponseStatus(
+		  value=HttpStatus.INTERNAL_SERVER_ERROR,
+          reason="Data integrity violation") 
+  @ExceptionHandler(Exception.class)
+  public Map<String, Object> handleError(HttpServletRequest req, Exception ex) {
+    // logger.error("Request: " + req.getRequestURL() + " raised " + ex);
+	response.attachContent(ex.getMessage());
+    return response.build();
+  }
 	
 }
