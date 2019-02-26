@@ -14,10 +14,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.ForeignKey;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.cristian.simplestore.image.Image;
 import com.cristian.simplestore.product.Product;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "categories")
@@ -27,22 +29,22 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true) 
 	private String name;
 	
 	@ManyToOne
 	private Category parentCategory;
 	
-	
 	@OneToMany(mappedBy = "parentCategory" ,cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnoreProperties("subcategories")
+	@JsonIgnore
 	private List<Category> subcategories = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Product> products = new ArrayList<>();
 	
 	@ManyToOne
-	@JoinColumn(name = "image_id",
+	@JoinColumn(
+			name = "image_id",
 			foreignKey = @ForeignKey(name = "IMAGE_ID_FK")
 	)
 	private Image image;
@@ -80,12 +82,6 @@ public class Category {
 	public void setParentCategory(Category parentCategory) {
 		this.parentCategory = parentCategory;
 	}
-	
-	/*
-	public List<Category> getSubCategories() {
-		return subcategories;
-	}
-	*/
 	
 	public void addSubCategory(Category subcategory) {
 		this.subcategories.add(subcategory);
