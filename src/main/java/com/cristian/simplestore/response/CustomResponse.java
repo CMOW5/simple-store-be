@@ -3,8 +3,6 @@ package com.cristian.simplestore.response;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class CustomResponse {
 	
 	private static final String CONTENT_KEY = "content";
@@ -26,9 +24,7 @@ public class CustomResponse {
 		return this;
 	}
 	
-	public Map<String, Object> build() {
-		// ObjectMapper mapper = new ObjectMapper();
-		
+	public Map<String, Object> build() {		
 		return this.attachments;
 	}
 }
