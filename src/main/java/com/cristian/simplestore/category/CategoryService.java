@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.image.Image;
-import com.cristian.simplestore.image.ImageRepository;
 import com.cristian.simplestore.image.ImageService;
-import com.cristian.simplestore.storage.ImageStorageService;
-import com.cristian.simplestore.storage.StorageService;
 
 @Service
 public class CategoryService {
@@ -23,18 +20,15 @@ public class CategoryService {
 	 @Autowired 
 	 private ImageService imageService;
 	 
-	 @Autowired
-	 private ImageStorageService imageStorageService;
-	 
 	 public List<Category> findAllCategories() {
 		 List<Category> foundCategories = new ArrayList<Category>();
 		 this.categoryRepository.findAll().forEach(foundCategories::add);
 		 return foundCategories;
 	 }
 	 
-	 public Category findCategoryById(long id) {
+	 public Category findCategoryById(Long id) {
 		 Optional<Category> foundCategory = this.categoryRepository.findById(id);
-		 return foundCategory.isPresent() ? foundCategory.get() : null;
+		 return foundCategory.orElse(null);
 	 }
 	 
 	 public Category create(Category category) {
@@ -57,14 +51,16 @@ public class CategoryService {
 		 return categoryRepository.save(category);
 	 }
 	 
-	 public Category update(long id, Category category) {
+	 public Category update(Long id, Category category) {
 		 category.setId(id);
 		 return this.categoryRepository.save(category);
 	 }
 	 
-	 // TODO: delete the images not used from storage after update
-	 public Category update(long id, Category category, MultipartFile file, Long imageIdToDelete) {
-		 Category storedCategory = this.categoryRepository.findById(id).get();
+	 // TODO: delete the images that are not used from storage after update
+	 public Category update(Long id, Category category, MultipartFile file, Long imageIdToDelete) {
+		 Category storedCategory = this.categoryRepository.findById(id).orElse(null);
+		 
+		 if (storedCategory == null) return null;
 		 /* TODO
 		  * if we call update(category) the image is delete because the fe sends it
 		  * as null
@@ -84,7 +80,7 @@ public class CategoryService {
 		 return this.update(id, storedCategory);
 	 }
 	 
-	 public void delete(long id) {
+	 public void deleteById(Long id) {
 		 this.categoryRepository.deleteById(id);
 	 }
 	 
