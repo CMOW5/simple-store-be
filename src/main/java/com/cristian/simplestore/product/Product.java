@@ -10,27 +10,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import com.cristian.simplestore.category.Category;
 
 
 @Entity
-/*
-@Table(
-		name = "products",
-		uniqueConstraints = @UniqueConstraint(
-				name = "uk_product_name",
-				columnNames = {
-						"name"
-				}
-			)
-		)
-*/
 @Table(name = "products")
 public class Product {
 	
@@ -39,14 +30,16 @@ public class Product {
 	private long id;
 	
 	@Column(unique = true, nullable = false)
+	@Size(min = 1, max = 100) @NotNull
 	private String name;
 	
+	@Size(min = 2, max = 200)
 	private String description;
-	
+
+	@Column(nullable = false)
 	private double price;
 	
-	// the price of the product when is on sale
-	@Column(nullable = true)
+	@PositiveOrZero
 	private double priceSale;
 	
 	@ColumnDefault("false")
