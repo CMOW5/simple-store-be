@@ -14,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.ForeignKey;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import com.cristian.simplestore.image.Image;
 import com.cristian.simplestore.product.Product;
