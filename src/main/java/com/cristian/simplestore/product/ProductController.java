@@ -3,8 +3,11 @@ package com.cristian.simplestore.product;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +41,13 @@ public class ProductController<K, V> {
 	}
 	
 	@RequestMapping(value = "/api/admin/products", method = RequestMethod.POST)
-	public Map<String, Object> create(@RequestBody Product product) {
+	public Map<String, Object> create(@RequestBody @Valid Product product, BindingResult bindingResult) {
 		CustomResponse response = new CustomResponse();
+		
+		if (bindingResult.hasErrors()) {
+            return response.attachContent(bindingResult.getFieldErrors()).build();
+        }
+		
 		Product createdProduct = productService.create(product);
 		
 		response.attachContent(createdProduct);
