@@ -3,7 +3,6 @@ package com.cristian.simplestore.image;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.naming.directory.InvalidAttributesException;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
