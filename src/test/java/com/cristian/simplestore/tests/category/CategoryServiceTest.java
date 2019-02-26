@@ -94,7 +94,7 @@ public class CategoryServiceTest extends BaseTest {
 	public void delete() {
 		Category categoryToDelete = saveRandomCategoryOnDB();
 		
-		this.categoryService.delete(categoryToDelete.getId());
+		this.categoryService.deleteById(categoryToDelete.getId());
 		Category deletedCategory = 
 				this.categoryService.findCategoryById(categoryToDelete.getId());
 		assertThat(deletedCategory).isNull();
