@@ -1,12 +1,12 @@
-package com.cristian.simplestore.form;
+package com.cristian.simplestore.forms;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.category.Category;
-import com.cristian.simplestore.validators.ExistsDb;
+import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.validators.annotations.ExistsDb;
 
 @ExistsDb(
   table = "categories",
@@ -21,10 +21,11 @@ public class CategoryUpdateForm {
 	@NotNull @Size(min = 2, max = 200) 
 	private String name;
 	
-	// Nullable and exists
 	private Category parentCategory;
 	
-	private MultipartFile image;
+	private MultipartFile newImage;
+	
+	private Long imageIdToDelete;
 	
 	public Long getId() {
 		return id;
@@ -50,14 +51,22 @@ public class CategoryUpdateForm {
 		this.parentCategory = parentCategory;
 	}
 
-	public MultipartFile getImage() {
-		return image;
+	public MultipartFile getNewImage() {
+		return newImage;
 	}
 
-	public void setImage(MultipartFile image) {
-		this.image = image;
+	public void setNewImage(MultipartFile newImage) {
+		this.newImage = newImage;
 	}
-	
+
+	public Long getImageIdToDelete() {
+		return imageIdToDelete;
+	}
+
+	public void setImageIdToDelete(Long imageIdToDelete) {
+		this.imageIdToDelete = imageIdToDelete;
+	}
+
 	public Category getModel() {
 		Category category = new Category();
 		category.setName(name);

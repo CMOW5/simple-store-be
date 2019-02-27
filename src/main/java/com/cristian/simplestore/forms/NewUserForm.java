@@ -1,6 +1,6 @@
-package com.cristian.simplestore.form;
+package com.cristian.simplestore.forms;
 
-import com.cristian.simplestore.validators.FieldsValueMatch;
+import com.cristian.simplestore.validators.annotations.FieldsValueMatch;
 
 @FieldsValueMatch.List({ 
     @FieldsValueMatch(

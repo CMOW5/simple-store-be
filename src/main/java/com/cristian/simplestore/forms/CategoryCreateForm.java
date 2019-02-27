@@ -1,13 +1,12 @@
-package com.cristian.simplestore.form;
+package com.cristian.simplestore.forms;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.category.Category;
-import com.cristian.simplestore.validators.Exists;
-import com.cristian.simplestore.validators.ExistsDb;
+import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.validators.annotations.ExistsDb;
 
 @ExistsDb(
   table = "categories",
