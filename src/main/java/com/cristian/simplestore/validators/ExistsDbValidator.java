@@ -9,6 +9,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.BeanWrapperImpl;
 
+import com.cristian.simplestore.validators.annotations.ExistsDb;
+
 public class ExistsDbValidator implements ConstraintValidator<ExistsDb, Object> {
 
 	private String table;

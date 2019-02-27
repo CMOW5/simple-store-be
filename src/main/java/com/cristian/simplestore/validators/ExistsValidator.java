@@ -7,6 +7,8 @@ import javax.persistence.Query;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import com.cristian.simplestore.validators.annotations.Exists;
+
 public class ExistsValidator implements ConstraintValidator<Exists, String> {
 
   private String table;

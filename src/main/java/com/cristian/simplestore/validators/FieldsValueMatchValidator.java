@@ -5,6 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.BeanWrapperImpl;
 
+import com.cristian.simplestore.validators.annotations.FieldsValueMatch;
+
 public class FieldsValueMatchValidator 
 implements ConstraintValidator<FieldsValueMatch, Object> {
 
