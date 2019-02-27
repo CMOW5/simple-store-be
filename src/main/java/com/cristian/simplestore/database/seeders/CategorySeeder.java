@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.cristian.simplestore.category.Category;
-import com.cristian.simplestore.category.CategoryRepository;
-import com.cristian.simplestore.image.Image;
-import com.cristian.simplestore.image.ImageRepository;
+import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.entities.Image;
+import com.cristian.simplestore.respositories.CategoryRepository;
+import com.cristian.simplestore.respositories.ImageRepository;
 import com.github.javafaker.Faker;
 
 @Service
