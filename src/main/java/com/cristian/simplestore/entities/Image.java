@@ -1,4 +1,4 @@
-package com.cristian.simplestore.image;
+package com.cristian.simplestore.entities;
 
 import java.net.MalformedURLException;
 import java.net.URL;

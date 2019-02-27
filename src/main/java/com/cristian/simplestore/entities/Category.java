@@ -1,4 +1,4 @@
-package com.cristian.simplestore.category;
+package com.cristian.simplestore.entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.ForeignKey;
 
-import com.cristian.simplestore.image.Image;
-import com.cristian.simplestore.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity

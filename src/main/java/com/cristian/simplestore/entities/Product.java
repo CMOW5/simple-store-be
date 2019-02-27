@@ -1,4 +1,4 @@
-package com.cristian.simplestore.product;
+package com.cristian.simplestore.entities;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -17,8 +17,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.cristian.simplestore.category.Category;
 
 
 @Entity
