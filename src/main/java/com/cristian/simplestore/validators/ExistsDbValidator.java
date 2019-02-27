@@ -32,6 +32,11 @@ public class ExistsDbValidator implements ConstraintValidator<ExistsDb, Object> 
 	public boolean isValid(Object value, ConstraintValidatorContext context) {
 		String uniqueFieldValue = (String) new BeanWrapperImpl(value).getPropertyValue(columnValueField);
 
+		context.disableDefaultConstraintViolation();
+		context.buildConstraintViolationWithTemplate("the field already exists")
+			.addPropertyNode(columnName)
+			.addConstraintViolation();
+		
 		if (exceptIdColumn.isEmpty()) {
 			return !entryExists(table, columnName, uniqueFieldValue);
 		} else {
