@@ -1,4 +1,4 @@
-package com.cristian.simplestore.response;
+package com.cristian.simplestore.utils.response;
 
 import java.util.HashMap;
 import java.util.Map;
