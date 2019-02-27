@@ -52,7 +52,7 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.POST)
 	public Map<String, Object> create(
-			CategoryCreateForm form, 
+			@Valid CategoryCreateForm form, 
 			@RequestParam(required = false) MultipartFile image,
 			BindingResult validationResult) {
 		
