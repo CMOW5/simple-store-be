@@ -15,8 +15,6 @@ public class ExistsValidator implements ConstraintValidator<Exists, String> {
   
   private String column;
   
-  // private Long exceptId;
-  
   @PersistenceContext
   EntityManager entityManager;
 	
@@ -24,7 +22,6 @@ public class ExistsValidator implements ConstraintValidator<Exists, String> {
   public void initialize(Exists name) {
 	  this.table = name.table();
 	  this.column = name.column();
-	  // this.exceptId = name.exceptId().;
   }
 
   @Override
