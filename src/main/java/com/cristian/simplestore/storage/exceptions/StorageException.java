@@ -1,8 +1,13 @@
-package com.cristian.simplestore.storage;
+package com.cristian.simplestore.storage.exceptions;
 
 public class StorageException extends RuntimeException {
 
-    public StorageException(String message) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1433346998415613370L;
+
+	public StorageException(String message) {
         super(message);
     }
 

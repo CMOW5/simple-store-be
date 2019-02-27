@@ -17,13 +17,16 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cristian.simplestore.storage.exceptions.StorageException;
+import com.cristian.simplestore.storage.exceptions.StorageFileNotFoundException;
+
 @Service
 public class FileSystemStorageService implements StorageService {
 
     private final Path rootLocation;
 
     @Autowired
-    public FileSystemStorageService(StorageProperties properties) {
+    public FileSystemStorageService(StorageConfig properties) {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 

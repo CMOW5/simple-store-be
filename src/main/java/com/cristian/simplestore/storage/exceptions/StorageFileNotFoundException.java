@@ -1,8 +1,13 @@
-package com.cristian.simplestore.storage;
+package com.cristian.simplestore.storage.exceptions;
 
 public class StorageFileNotFoundException extends StorageException {
 
-    public StorageFileNotFoundException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2726625437971726902L;
+
+	public StorageFileNotFoundException(String message) {
         super(message);
     }
 
