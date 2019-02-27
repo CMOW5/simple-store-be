@@ -2,28 +2,19 @@ package com.cristian.simplestore.controllers;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.response.CustomResponse;
-import com.cristian.simplestore.validators.CategoryCreateValidator;
-import com.cristian.simplestore.category.Category;
-import com.cristian.simplestore.form.CategoryCreateForm;
-import com.cristian.simplestore.form.CategoryUpdateForm;
-import com.cristian.simplestore.form.NewUserForm;
+import com.cristian.simplestore.forms.CategoryUpdateForm;
+import com.cristian.simplestore.utils.response.CustomResponse;
+;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -43,7 +34,7 @@ public class TestController {
 		String some = "some";
 
 		if (validationResult.hasErrors()) {
-			String a = "dsds";
+			some = "dsds";
 		}
 		// Category category = categoryForm.getModel();
 

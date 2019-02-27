@@ -1,4 +1,4 @@
-package com.cristian.simplestore.category;
+package com.cristian.simplestore.controllers;
 
 import java.util.List;
 import java.util.Map;
@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.form.CategoryCreateForm;
-import com.cristian.simplestore.form.CategoryUpdateForm;
-import com.cristian.simplestore.response.CustomResponse;
+import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.forms.CategoryCreateForm;
+import com.cristian.simplestore.forms.CategoryUpdateForm;
+import com.cristian.simplestore.services.CategoryService;
+import com.cristian.simplestore.utils.response.CustomResponse;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -50,7 +52,7 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.POST)
 	public Map<String, Object> create(
-			@Valid CategoryCreateForm categoryForm, 
+			CategoryCreateForm form, 
 			@RequestParam(required = false) MultipartFile image,
 			BindingResult validationResult) {
 		
@@ -58,7 +60,7 @@ public class CategoryController {
             return response.attachContent(validationResult.getFieldErrors()).build();
         }
 		
-		Category createdCategory = categoryService.create(categoryForm.getModel(), image);
+		Category createdCategory = categoryService.create(form.getModel(), image);
 		
 		response.attachContent(createdCategory);
 		return response.build();
@@ -67,7 +69,7 @@ public class CategoryController {
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.PUT)
 	public Map<String, Object> update(
 			@PathVariable Long id, 
-			@RequestParam(required = false) MultipartFile image,
+			@RequestParam(required = false) MultipartFile newImage,
 			@RequestParam(required = false) Long imageIdToDelete,
 			@Valid CategoryUpdateForm form, 
 			BindingResult validationResult) {
@@ -76,7 +78,7 @@ public class CategoryController {
             return response.attachContent(validationResult.getFieldErrors()).build();
         }
 		
-		Category updatedCategory = categoryService.update(id, form.getModel(), image, imageIdToDelete);
+		Category updatedCategory = categoryService.update(id, form.getModel(), newImage, imageIdToDelete);
 		
 		response.attachContent(updatedCategory);
 		return response.build();

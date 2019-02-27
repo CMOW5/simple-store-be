@@ -1,4 +1,4 @@
-package com.cristian.simplestore.product;
+package com.cristian.simplestore.controllers;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cristian.simplestore.response.CustomResponse;
+import com.cristian.simplestore.entities.Product;
+import com.cristian.simplestore.services.ProductService;
+import com.cristian.simplestore.utils.response.CustomResponse;
 
 @RestController
 public class ProductController<K, V> {

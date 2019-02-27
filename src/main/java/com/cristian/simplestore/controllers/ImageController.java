@@ -1,4 +1,4 @@
-package com.cristian.simplestore.image;
+package com.cristian.simplestore.controllers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cristian.simplestore.storage.ImageStorageService;
-import com.cristian.simplestore.storage.StorageFileNotFoundException;
+import com.cristian.simplestore.services.ImageStorageService;
+import com.cristian.simplestore.storage.exceptions.StorageFileNotFoundException;
 
 @RestController
 public class ImageController {
