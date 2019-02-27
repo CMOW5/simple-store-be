@@ -53,13 +53,29 @@ public class CategoryService {
 	// TODO: delete the images that are not used from storage after update
 	public Category update(Long id, Category category, MultipartFile newImageFile, Long imageIdToDelete) {
 		Category storedCategory = this.categoryRepository.findById(id).orElse(null);
+		String newName = category.getName();
+		Category newParentCategory = category.getParentCategory();
 
 		if (storedCategory == null) {
 			return null;
 		}
-
-		storedCategory.setName(category.getName());
-		storedCategory.setParentCategory(category.getParentCategory());
+		
+		// TODO: generate some validation error here
+		if (newParentCategory != null && newParentCategory.getId() == storedCategory.getId()) {
+			newParentCategory = null;
+		}
+		
+        // here we avoid circular references between the category
+        // to update and its subcategories. for instance
+        // null -> A -> B -> C to C -> A -> B -> C is not allowed,
+        // the result will be: null -> C -> A -> B
+		if (storedCategory.hasSubcategory(newParentCategory)) {
+			newParentCategory.setParentCategory(storedCategory.getParentCategory());
+			this.categoryRepository.save(newParentCategory);
+		}
+		
+		storedCategory.setName(newName);
+		storedCategory.setParentCategory(newParentCategory);
 
 		if (newImageFile != null) {
 			Image image = this.imageService.createImageRepoFromFile(newImageFile);
