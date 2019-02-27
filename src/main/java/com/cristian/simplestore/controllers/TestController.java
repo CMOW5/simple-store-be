@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cristian.simplestore.forms.CategoryCreateForm;
 import com.cristian.simplestore.forms.CategoryUpdateForm;
 import com.cristian.simplestore.utils.response.CustomResponse;
 ;
@@ -24,10 +25,11 @@ public class TestController {
 
 	// BindException
 
-	@RequestMapping(value = "/test/{id}", method = RequestMethod.PUT)
-	public Map<String, Object> create(@PathVariable Long id, @Valid CategoryUpdateForm form, MultipartFile image,
-			// @Valid NewUserForm newUserForm,
-
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	public Map<String, Object> create(
+			// @PathVariable Long id, 
+			@Valid CategoryUpdateForm form, 
+			MultipartFile image,
 			// HttpServletRequest request,
 			BindingResult validationResult) {
 
