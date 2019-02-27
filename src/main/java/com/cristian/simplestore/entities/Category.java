@@ -105,4 +105,23 @@ public class Category {
 		return this.image;
 	}
 	
+	/**
+	 * verify if the given category is a subcategory
+	 * @param category
+	 * @return true if the category is a subcategory of the current object
+	 */
+    public boolean hasSubcategory(Category category) {
+        if (category == null) return false;
+        
+        Category currentCategory = category;
+        
+        while(currentCategory.getParentCategory() != null) {
+            if (currentCategory.getParentCategory().getId() == this.id) {
+                return true;
+            }
+            currentCategory = currentCategory.getParentCategory();
+        }
+        return false;
+    }
+	
 }
