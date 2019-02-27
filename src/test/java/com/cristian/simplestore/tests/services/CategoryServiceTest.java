@@ -1,19 +1,23 @@
-package com.cristian.simplestore.tests.category;
+package com.cristian.simplestore.tests.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cristian.simplestore.category.Category;
-import com.cristian.simplestore.category.CategoryRepository;
-import com.cristian.simplestore.category.CategoryService;
+import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.respositories.CategoryRepository;
+import com.cristian.simplestore.services.CategoryService;
 import com.cristian.simplestore.tests.BaseTest;
 import com.github.javafaker.Faker;
 
@@ -33,7 +37,7 @@ public class CategoryServiceTest extends BaseTest {
 	 */
 	public Category generateRandomCategory() {
 		Faker faker = new Faker();
-		String name = faker.commerce().department(); 
+		String name = faker.name().firstName();
 		return new Category(name);
 	}
 	
@@ -43,10 +47,20 @@ public class CategoryServiceTest extends BaseTest {
 	 */
 	public Category saveRandomCategoryOnDB() {
 		Faker faker = new Faker();
-		String name = faker.commerce().department();  
+		String name = faker.name().firstName();
 		return categoryRepository.save(new Category(name));
 	}
-		
+	
+	@Before
+	public void setUp() {
+		categoryRepository.deleteAll();
+	}
+	
+	@After
+    public void tearDown() {
+		categoryRepository.deleteAll();
+    }
+	
 	@Test
 	public void findAllCategories() {
 		// create a couple of categories on db
@@ -57,7 +71,7 @@ public class CategoryServiceTest extends BaseTest {
 		}
 		
 		List<Category> foundCategories = this.categoryService.findAllCategories();
-		assertThat(foundCategories.size()).isGreaterThanOrEqualTo(MAX_CATEGORIES_SIZE);
+		assertThat(foundCategories.size()).isEqualTo(MAX_CATEGORIES_SIZE);
 	}
 	 
 	@Test

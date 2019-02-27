@@ -1,4 +1,4 @@
-package com.cristian.simplestore.tests.category;
+package com.cristian.simplestore.tests.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,16 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
-import com.cristian.simplestore.category.Category;
-import com.cristian.simplestore.category.CategoryRepository;
+import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.respositories.CategoryRepository;
 import com.cristian.simplestore.tests.BaseTest;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -44,7 +53,7 @@ public class CategoryControllerTest extends BaseTest {
 	 */
 	public Category generateRandomCategory() {
 		Faker faker = new Faker();
-		String name = faker.commerce().department(); 
+		String name = faker.name().firstName(); 
 		return new Category(name);
 	}
 	
@@ -54,18 +63,20 @@ public class CategoryControllerTest extends BaseTest {
 	 */
 	public Category saveRandomCategoryOnDB() {
 		Faker faker = new Faker();
-		String name = faker.commerce().department();  
+		String name = faker.name().firstName(); 
 		return categoryRepository.save(new Category(name));
 	}
 	
-	public <T> Object getContentFromJsonRespose(String jsonResponse, Class<T> classType) throws JsonParseException, JsonMappingException, IOException {	
-	    ObjectMapper mapper = new ObjectMapper();
-	    Map mapResponse = mapper.readValue(jsonResponse, Map.class);
-	    
-	    T content = mapper.convertValue(mapResponse.get("content"), classType);
-	    return content;
+	@Before
+	public void setUp() {
+		categoryRepository.deleteAll();
 	}
-
+	
+	@After
+	public void tearDown() {
+		categoryRepository.deleteAll();
+	}
+	
 	@Test
 	public void testItFindsAllCategories() throws JsonParseException, JsonMappingException, IOException {
 		
@@ -80,7 +91,7 @@ public class CategoryControllerTest extends BaseTest {
 		String jsonResponse = this.restTemplate.getForObject("/api/admin/categories", String.class);		
 		
 		List<Category> responseCategories = (List<Category>) getContentFromJsonRespose(jsonResponse, List.class);
-		assertThat(responseCategories.size()).isGreaterThanOrEqualTo(MAX_CATEGORIES_SIZE);
+		assertThat(responseCategories.size()).isEqualTo(MAX_CATEGORIES_SIZE);
 		
 	}
 	
@@ -99,11 +110,50 @@ public class CategoryControllerTest extends BaseTest {
 	public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
 		Category category = generateRandomCategory();
 		
-		String jsonResponse = this.restTemplate.postForObject("/api/admin/categories", category, String.class);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		body.add("name", category.getName());
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+		
+		// String jsonResponse = this.restTemplate.postForObject("/api/admin/categories", category, String.class);
+		// Category createdCategory = (Category) getContentFromJsonRespose(jsonResponse, Category.class);
+		String serverUrl = "/api/admin/categories";
+		
+		// ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
+		String jsonResponse = this.restTemplate.postForObject(serverUrl, requestEntity, String.class);
 		Category createdCategory = (Category) getContentFromJsonRespose(jsonResponse, Category.class);
-		
-		
+
 		assertThat(createdCategory.getName()).isEqualTo(category.getName());
+	}
+	
+	@Test
+	public void testItUpdatesACategory() throws JsonParseException, JsonMappingException, IOException {
+		Category category = saveRandomCategoryOnDB();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		
+		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+		
+		String newName = new Faker().name().firstName();
+		
+		body.add("name", newName);
+		
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+		
+		// String jsonResponse = this.restTemplate.postForObject("/api/admin/categories", category, String.class);
+		// Category createdCategory = (Category) getContentFromJsonRespose(jsonResponse, Category.class);
+		String serverUrl = "/api/admin/categories/" + category.getId();
+		
+		// ResponseEntity<String> response = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
+		ResponseEntity<String> jsonResponse = this.restTemplate.exchange(serverUrl, HttpMethod.PUT, requestEntity, String.class);
+
+		Category updatedCategory = (Category) getContentFromJsonRespose(jsonResponse.getBody(), Category.class);
+
+		assertThat(updatedCategory.getName()).isEqualTo(newName);
 	}
 	
 	@Test
@@ -116,5 +166,13 @@ public class CategoryControllerTest extends BaseTest {
 
 		
 		assertThat(deletedCategory).isNull();
+	}
+	
+	public <T> Object getContentFromJsonRespose(String jsonResponse, Class<T> classType) throws JsonParseException, JsonMappingException, IOException {	
+	    ObjectMapper mapper = new ObjectMapper();
+	    Map mapResponse = mapper.readValue(jsonResponse, Map.class);
+	    
+	    T content = mapper.convertValue(mapResponse.get("content"), classType);
+	    return content;
 	}
 }
