@@ -1,4 +1,4 @@
-package com.cristian.simplestore.storage;
+package com.cristian.simplestore.services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,13 +17,18 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cristian.simplestore.storage.StorageConfig;
+import com.cristian.simplestore.storage.StorageService;
+import com.cristian.simplestore.storage.exceptions.StorageException;
+import com.cristian.simplestore.storage.exceptions.StorageFileNotFoundException;
+
 @Service
 public class ImageStorageService implements StorageService {
 
     private final Path rootLocation;
 
     @Autowired
-    public ImageStorageService(StorageProperties properties) {
+    public ImageStorageService(StorageConfig properties) {
         this.rootLocation = Paths.get(properties.getLocation());
     }
     
