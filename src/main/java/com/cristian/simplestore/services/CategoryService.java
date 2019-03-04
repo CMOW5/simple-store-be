@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.entities.Category;
 import com.cristian.simplestore.entities.Image;
+import com.cristian.simplestore.forms.CategoryCreateForm;
+import com.cristian.simplestore.forms.CategoryUpdateForm;
 import com.cristian.simplestore.respositories.CategoryRepository;
 
 @Service
@@ -35,13 +37,19 @@ public class CategoryService {
 	public Category create(Category category) {
 		return this.categoryRepository.save(category);
 	}
-
-	public Category create(Category category, MultipartFile file) {
-		if (file != null) {
-			Image image = this.imageService.createImageRepoFromFile(file);
+	
+	public Category create(CategoryCreateForm form) {
+		Category category = new Category();
+		category.setName(form.getName());
+		category.setParentCategory(form.getParentCategory());
+		
+		MultipartFile imageFile = form.getImage();
+		
+		if (imageFile != null) {
+			Image image = this.imageService.save(imageFile);
 			category.addImage(image);
 		}
-
+		
 		return categoryRepository.save(category);
 	}
 
@@ -49,12 +57,15 @@ public class CategoryService {
 		category.setId(id);
 		return this.categoryRepository.save(category);
 	}
-
+	
 	// TODO: delete the images that are not used from storage after update
-	public Category update(Long id, Category category, MultipartFile newImageFile, Long imageIdToDelete) {
-		Category storedCategory = this.categoryRepository.findById(id).orElse(null);
-		String newName = category.getName();
-		Category newParentCategory = category.getParentCategory();
+	public Category update(CategoryUpdateForm form) {
+		Category storedCategory = this.categoryRepository.findById(form.getId()).orElse(null);
+		
+		String newName = form.getName();
+		Category newParentCategory = form.getParentCategory();
+		MultipartFile newImageFile = form.getNewImage();
+		Long imageIdToDelete = form.getImageIdToDelete();
 
 		if (storedCategory == null) {
 			return null;
@@ -78,14 +89,14 @@ public class CategoryService {
 		storedCategory.setParentCategory(newParentCategory);
 
 		if (newImageFile != null) {
-			Image image = this.imageService.createImageRepoFromFile(newImageFile);
+			Image image = this.imageService.save(newImageFile);
 			storedCategory.deleteImage();
 			storedCategory.addImage(image);
 		} else if (imageIdToDelete != null) { // TODO: verify the imageId
 			storedCategory.deleteImage();
 		}
 
-		return this.update(id, storedCategory);
+		return this.categoryRepository.save(storedCategory);
 	}
 
 	public void deleteById(Long id) {
