@@ -83,7 +83,8 @@ public class Category {
 		this.subcategories.add(subcategory);
 		subcategory.setParentCategory(this);
 	}
-
+	
+	@JsonIgnore
 	public List<Product> getProducts() {
 		return products;
 	}
