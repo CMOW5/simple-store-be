@@ -36,9 +36,6 @@ import com.github.javafaker.Faker;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest extends BaseTest {
 		
-
-	private final double MAX_PRICE = 10000000000.0;
-	
 	// private static final Logger log = LoggerFactory.getLogger(SimpleStoreApplication.class);
 	
 	@Autowired
