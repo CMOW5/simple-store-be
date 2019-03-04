@@ -2,16 +2,24 @@ package com.cristian.simplestore.entities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
+@Scope("prototype")
 @Table(name = "images")
 public class Image {
 	
@@ -20,6 +28,13 @@ public class Image {
 	private Long id;
 	
 	private String name;
+	
+	@OneToMany(
+			mappedBy = "image",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+		)
+	private List<ProductImage> owners = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -28,7 +43,7 @@ public class Image {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		if (isValidUrl(this.name)) {
 			return this.name;
@@ -61,5 +76,10 @@ public class Image {
 		} catch (MalformedURLException e) {
 			return false;
 		}
+	}
+
+	@JsonIgnore
+	public List<ProductImage> getOwners() {
+		return owners;
 	}
 }
