@@ -48,15 +48,9 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.POST)
 	public Map<String, Object> create(
-			@Valid CategoryCreateForm form, 
-			@RequestParam(required = false) MultipartFile image,
-			BindingResult validationResult) {
+			@Valid CategoryCreateForm form) {
 		
-		if (validationResult.hasErrors()) {
-            return response.attachContent(validationResult.getFieldErrors()).build();
-        }
-		
-		Category createdCategory = categoryService.create(form.getModel(), image);
+		Category createdCategory = categoryService.create(form);
 		
 		response.attachContent(createdCategory);
 		return response.build();
@@ -65,16 +59,9 @@ public class CategoryController {
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.PUT)
 	public Map<String, Object> update(
 			@Valid CategoryUpdateForm form,
-			@PathVariable Long id, 
-			@RequestParam(required = false) MultipartFile newImage,
-			@RequestParam(required = false) Long imageIdToDelete, 
-			BindingResult validationResult) {
+			@PathVariable Long id) {
 
-		if (validationResult.hasErrors()) {
-            return response.attachContent(validationResult.getFieldErrors()).build();
-        }
-		
-		Category updatedCategory = categoryService.update(id, form.getModel(), newImage, imageIdToDelete);
+		Category updatedCategory = categoryService.update(form);
 		
 		response.attachContent(updatedCategory);
 		return response.build();
