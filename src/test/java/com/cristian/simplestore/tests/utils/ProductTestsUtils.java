@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.cristian.simplestore.entities.Category;
 import com.cristian.simplestore.entities.Product;
+import com.cristian.simplestore.forms.ProductCreateForm;
+import com.cristian.simplestore.forms.ProductUpdateForm;
 import com.cristian.simplestore.respositories.ProductRepository;
 import com.github.javafaker.Faker;
 
@@ -72,5 +74,55 @@ public class ProductTestsUtils {
 		}
 		
 		return products;
+	}
+	
+	public ProductCreateForm generateRandomProductCreateForm() {
+		ProductCreateForm form = new ProductCreateForm();
+		
+		String name = faker.commerce().productName();
+		String description = faker.lorem().sentence();
+		Double price = Double.valueOf(faker.commerce().price(0, Double.MAX_VALUE)); 
+		Double priceSale = Double.valueOf(faker.commerce().price(0, Double.MAX_VALUE)); 
+		boolean inSale = false;
+		boolean active = true;
+		Category category = null;
+		Long units = (long) faker.number().numberBetween(0, 200);
+		
+
+		form.setName(name);
+		form.setDescription(description);
+		form.setPrice(price);
+		form.setPriceSale(priceSale);
+		form.setInSale(inSale);
+		form.setActive(active);
+		form.setCategory(category);
+		form.setUnits(units);
+		
+		return form;
+	}
+	
+	public ProductUpdateForm generateRandomProductUpdateForm() {
+		ProductUpdateForm form = new ProductUpdateForm();
+		
+		String name = faker.commerce().productName();
+		String description = faker.lorem().sentence();
+		Double price = Double.valueOf(faker.commerce().price(0, Double.MAX_VALUE)); 
+		Double priceSale = Double.valueOf(faker.commerce().price(0, Double.MAX_VALUE)); 
+		boolean inSale = false;
+		boolean active = true;
+		Category category = null;
+		Long units = (long) faker.number().numberBetween(0, 200);
+		
+
+		form.setName(name);
+		form.setDescription(description);
+		form.setPrice(price);
+		form.setPriceSale(priceSale);
+		form.setInSale(inSale);
+		form.setActive(active);
+		form.setCategory(category);
+		form.setUnits(units);
+		
+		return form;
 	}
 }
