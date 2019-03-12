@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.entities.Category;
 import com.cristian.simplestore.entities.Product;
+import com.cristian.simplestore.validators.annotations.Exists;
 import com.cristian.simplestore.validators.annotations.ExistsDb;
 
 @ExistsDb(
@@ -22,6 +23,7 @@ import com.cristian.simplestore.validators.annotations.ExistsDb;
 public class ProductUpdateForm implements Form<Product> {
 		
 	@NotNull
+	@Exists(table = "products", column = "id", message = "the product doesn't exists")
 	Long id;
 	
 	@NotNull @Size(min = 2, max = 100) 
