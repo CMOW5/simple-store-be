@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.forms.CategoryCreateForm;
+import com.cristian.simplestore.forms.CategoryUpdateForm;
 import com.cristian.simplestore.respositories.CategoryRepository;
 import com.github.javafaker.Faker;
 
@@ -27,6 +30,28 @@ public class CategoryTestsUtils {
 		Category category = new Category();
 		category.setName(name);
 		return category;
+	}
+	
+	public CategoryCreateForm generateRandomCategoryCreateForm() {
+		CategoryCreateForm form = new CategoryCreateForm();
+		
+		String name = faker.name().firstName();
+		Category parentCategory = null;
+		form.setName(name);
+		form.setParentCategory(parentCategory);
+		// form.setImage(image);
+		return form;
+	}
+	
+	public CategoryUpdateForm generateRandomCategoryUpdateForm() {
+		CategoryUpdateForm form = new CategoryUpdateForm();
+		
+		String name = faker.name().firstName();
+		Category parentCategory = null;
+		form.setName(name);
+		form.setParentCategory(parentCategory);
+		// form.setImage(image);
+		return form;
 	}
 	
 	/**
