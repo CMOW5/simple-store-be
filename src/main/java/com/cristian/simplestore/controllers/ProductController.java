@@ -7,9 +7,12 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.entities.Product;
@@ -20,6 +23,7 @@ import com.cristian.simplestore.utils.response.CustomResponse;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/api/admin/products")
 public class ProductController {
 
 	@Autowired
@@ -27,7 +31,7 @@ public class ProductController {
 
 	private CustomResponse response = new CustomResponse();
 
-	@RequestMapping(value = "/api/admin/products", method = RequestMethod.GET)
+	@GetMapping
 	public Map<String, Object> findAllProducts() {
 		List<Product> products = productService.findAllProducts();
 
@@ -35,7 +39,7 @@ public class ProductController {
 		return response.build();
 	}
 
-	@RequestMapping(value = "/api/admin/products/{id}", method = RequestMethod.GET)
+	@GetMapping("/{id}")
 	public Map<String, Object> findProductById(@PathVariable long id) {
 		Product product = productService.findById(id);
 
@@ -43,7 +47,7 @@ public class ProductController {
 		return response.build();
 	}
 	
-	@RequestMapping(value = "/api/admin/products", method = RequestMethod.POST)
+	@PostMapping
 	public Map<String, Object> create(@Valid ProductCreateForm form) {
 		
 		Product createdProduct = productService.create(form);
@@ -52,7 +56,7 @@ public class ProductController {
 		return response.build();
 	}
 
-	@RequestMapping(value = "/api/admin/products/{id}", method = RequestMethod.PUT)
+	@PutMapping("/{id}")
 	public Map<String, Object> update(@PathVariable long id, 
 			@Valid ProductUpdateForm form) {
 
@@ -62,12 +66,12 @@ public class ProductController {
 		return response.build();
 	}
 
-	@RequestMapping(value = "/api/admin/products/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
 		productService.deleteById(id);
 	}
 
-	@RequestMapping(value = "/api/admin/products/count", method = RequestMethod.GET)
+	@GetMapping("/count")
 	public Map<String, Object> count() {
 		long productsCount = productService.count();
 
