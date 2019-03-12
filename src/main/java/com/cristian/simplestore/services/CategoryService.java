@@ -40,13 +40,7 @@ public class CategoryService {
 		Category category = new Category();
 		category.setName(form.getName());
 		category.setParentCategory(form.getParentCategory());
-		
-		MultipartFile imageFile = form.getImage();
-		
-		if (imageFile != null) {
-			Image image = this.imageService.save(imageFile);
-			category.addImage(image);
-		}
+		category = addImageToCategory(category, form.getImage());
 		
 		return categoryRepository.save(category);
 	}
@@ -58,41 +52,17 @@ public class CategoryService {
 	
 	// TODO: delete the images that are not used from storage after update
 	public Category update(CategoryUpdateForm form) {
-		Category storedCategory = this.categoryRepository.findById(form.getId()).orElse(null);
+		Category storedCategory = this.categoryRepository.findById(form.getId()).get();
 		
 		String newName = form.getName();
 		Category newParentCategory = form.getParentCategory();
 		MultipartFile newImageFile = form.getNewImage();
 		Long imageIdToDelete = form.getImageIdToDelete();
-
-		if (storedCategory == null) {
-			return null;
-		}
-		
-		// TODO: generate some validation error here
-		if (newParentCategory != null && newParentCategory.getId() == storedCategory.getId()) {
-			newParentCategory = null;
-		}
-		
-        // here we avoid circular references between the category
-        // to update and its subcategories. for instance
-        // null -> A -> B -> C to C -> A -> B -> C is not allowed,
-        // the result will be: null -> C -> A -> B
-		if (storedCategory.hasSubcategory(newParentCategory)) {
-			newParentCategory.setParentCategory(storedCategory.getParentCategory());
-			this.categoryRepository.save(newParentCategory);
-		}
 		
 		storedCategory.setName(newName);
-		storedCategory.setParentCategory(newParentCategory);
-
-		if (newImageFile != null) {
-			Image image = this.imageService.save(newImageFile);
-			storedCategory.deleteImage();
-			storedCategory.addImage(image);
-		} else if (imageIdToDelete != null) { // TODO: verify the imageId
-			storedCategory.deleteImage();
-		}
+		storedCategory = updateParentCategory(storedCategory, newParentCategory);
+		storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
+		
 
 		return this.categoryRepository.save(storedCategory);
 	}
@@ -103,5 +73,45 @@ public class CategoryService {
 
 	public long count() {
 		return this.categoryRepository.count();
+	}
+	
+	private Category addImageToCategory(Category category, MultipartFile imageFile) {
+		if (imageFile != null) {
+			Image image = this.imageService.save(imageFile);
+			category.addImage(image);
+		}
+		return category;
+	}
+	
+	private Category updateParentCategory(Category categoryToUpdate, Category newParentCategory) {
+		// TODO: generate some validation error here
+		if (newParentCategory != null && newParentCategory.getId() == categoryToUpdate.getId()) {
+			newParentCategory = null;
+		}
+						
+		// here we avoid circular references between the category
+        // to update and its subcategories. for instance
+        // null -> A -> B -> C to C -> A -> B -> C is not allowed,
+        // the result will be: null -> C -> A -> B
+		if (categoryToUpdate.hasSubcategory(newParentCategory)) {
+			newParentCategory.setParentCategory(categoryToUpdate.getParentCategory());
+			this.categoryRepository.save(newParentCategory);
+		}
+		
+		categoryToUpdate.setParentCategory(newParentCategory);
+		
+		return categoryToUpdate;
+	}
+	
+	private Category updateCategoryImage(Category categoryToUpdate, MultipartFile newImageFile, Long imageIdToDelete) {
+		if (newImageFile != null) {
+			Image image = this.imageService.save(newImageFile);
+			categoryToUpdate.deleteImage();
+			categoryToUpdate.addImage(image);
+		} else if (imageIdToDelete != null) { // TODO: verify the imageId
+			categoryToUpdate.deleteImage();
+		}
+		
+		return categoryToUpdate;
 	}
 }
