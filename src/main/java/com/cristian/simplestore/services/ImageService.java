@@ -20,9 +20,8 @@ public class ImageService {
 	@Autowired
 	private ImageStorageService imageStorageService;
 	
-	public Image save(MultipartFile file) {
-		Image i = new Image();
-		Image image = this.imageRepository.save(i); // exception
+	public Image save(MultipartFile file) {		
+		Image image = this.imageRepository.save(new Image());
 		String imageName = imageStorageService.store(file, generateImageName(image, file));
 		image.setName(imageName);
 		return this.imageRepository.save(image);
