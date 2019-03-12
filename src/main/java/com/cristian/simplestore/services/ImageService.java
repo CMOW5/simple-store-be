@@ -56,20 +56,7 @@ public class ImageService {
 	public void deleteById(Long id) {
 		this.imageRepository.deleteById(id);
 	}
-	
-	/**
-	 * generate the image name, the name will be the stored image id + the file extension
-	 * example: image stored id = 50; file extension = .png; the name will be
-	 * 			50.png 
-	 * @param image the image repository
-	 * @param the image file
-	 * @return
-	 * @deprecated use {@link #generateImageName(MultipartFile)} instead.
-	 */
-	private String generateImageName(Image image, MultipartFile file) {
-		return String.valueOf(image.getId()) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-	}
-	
+		
 	private String generateImageName(MultipartFile file) {
 		String fileName = 
 				UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
