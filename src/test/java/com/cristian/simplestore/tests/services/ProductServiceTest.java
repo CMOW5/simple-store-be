@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cristian.simplestore.entities.Product;
+import com.cristian.simplestore.forms.ProductCreateForm;
+import com.cristian.simplestore.forms.ProductUpdateForm;
 import com.cristian.simplestore.respositories.ProductRepository;
 import com.cristian.simplestore.services.ProductService;
 import com.cristian.simplestore.tests.BaseTest;
@@ -73,8 +75,18 @@ public class ProductServiceTest extends BaseTest {
 	}
 	
 	@Test
+	public void testItCreatesAProductWithForm() {
+		ProductCreateForm productForm = 
+				utils.generateRandomProductCreateForm();
+		
+		Product storedProduct = productService.create(productForm);
+		assertThat(productForm.getName()).isEqualTo(storedProduct.getName());
+		assertThat(productForm.getDescription()).isEqualTo(storedProduct.getDescription());
+		assertThat(productForm.getPrice()).isEqualTo(storedProduct.getPrice());
+	}
+	
+	@Test
 	public void testItUpdatesAProduct() {
-		// TODO: check whether the new product name is already on db
 		Faker faker = new Faker();
 		Product product = utils.saveRandomProductOnDB();
 		
@@ -85,6 +97,20 @@ public class ProductServiceTest extends BaseTest {
 		
 		assertThat(product.getName()).isEqualTo(updatedProduct.getName());
 		assertThat(product.getPrice()).isEqualTo(updatedProduct.getPrice());
+	}
+	
+	@Test
+	public void testItUpdatesAProductWithForm() {
+		Product productToUpdate = utils.saveRandomProductOnDB();
+		ProductUpdateForm newProductData = 
+				utils.generateRandomProductUpdateForm();
+		newProductData.setId(productToUpdate.getId());
+		
+		Product updatedProduct = productService.update(newProductData);
+		
+		assertThat(newProductData.getName()).isEqualTo(updatedProduct.getName());
+		assertThat(newProductData.getDescription()).isEqualTo(updatedProduct.getDescription());
+		assertThat(newProductData.getPrice()).isEqualTo(updatedProduct.getPrice());
 	}
 	
 	@Test
