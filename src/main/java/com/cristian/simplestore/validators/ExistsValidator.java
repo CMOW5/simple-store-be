@@ -9,42 +9,33 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.cristian.simplestore.validators.annotations.Exists;
 
-public class ExistsValidator implements ConstraintValidator<Exists, String> {
+public class ExistsValidator implements ConstraintValidator<Exists, Object> {
 
-  private String table;
-  
-  private String column;
-  
-  @PersistenceContext
-  EntityManager entityManager;
-	
-  @Override
-  public void initialize(Exists name) {
-	  this.table = name.table();
-	  this.column = name.column();
-  }
+	private String table;
 
-  @Override
-  public boolean isValid(String name, ConstraintValidatorContext cxt) {
-	  String query = "SELECT " + column + " FROM " + table + " WHERE " + column + "= ?";
-	  Query q = entityManager.createNativeQuery(query);
-	  q.setParameter(1, name);
-	  
-	  String result;
-	  
-	  try {
-	  	result = (String) q.getSingleResult();
-	  	// List<Object[]> cats = q.getResultList();
-	  } catch (NoResultException e) {
-		  return true;
-	  }
-	  	
-	  if (name.compareToIgnoreCase(result) == 0) {
-		  return false;
-	  } else {
-		  return true;
-	  }
-  }
+	private String column;
+
+	@PersistenceContext
+	EntityManager entityManager;
+
+	@Override
+	public void initialize(Exists name) {
+		this.table = name.table();
+		this.column = name.column();
+	}
+
+	@Override
+	public boolean isValid(Object columnValue, ConstraintValidatorContext cxt) {
+		String strQuery = "SELECT " + column + " FROM " + table + " WHERE " + column + "= ?";
+		Query query = entityManager.createNativeQuery(strQuery);
+		query.setParameter(1, columnValue);
+
+		try {
+			query.getSingleResult();
+			return true;
+		} catch (NoResultException e) {
+			return false;
+		}
+	}
 
 }
-
