@@ -54,8 +54,7 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.PUT)
 	public Map<String, Object> update(
-			@Valid CategoryUpdateForm form,
-			@PathVariable Long id) {
+			@Valid CategoryUpdateForm form) {
 		Category updatedCategory = categoryService.update(form);
 		
 		response.attachContent(updatedCategory);
