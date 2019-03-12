@@ -2,7 +2,6 @@ package com.cristian.simplestore.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +29,7 @@ public class CategoryService {
 	}
 
 	public Category findCategoryById(Long id) {
-		Optional<Category> foundCategory = this.categoryRepository.findById(id);
-		return foundCategory.orElse(null);
+		return this.categoryRepository.findById(id).orElseGet(() -> null);
 	}
 
 	public Category create(Category category) {
