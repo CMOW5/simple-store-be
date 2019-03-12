@@ -17,19 +17,17 @@ import com.cristian.simplestore.validators.ExistsValidator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Exists {
     
-	String message() default "the field is not unique";
+	String message() default "the thing doesn't exists";
     
 	/**
 	 * @return size the table in which the attribute must be unique
 	 */
-	String table() default "";
+	String table();
 
 	/**
 	 * @return the column to compare to
 	 */
-	String column() default "";
-	
-	long exceptId();
+	String column();
 	
 	Class<?>[] groups() default {};
     
