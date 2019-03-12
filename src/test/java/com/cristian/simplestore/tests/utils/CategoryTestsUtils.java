@@ -24,7 +24,9 @@ public class CategoryTestsUtils {
 	 */
 	public Category generateRandomCategory() {
 		String name = faker.name().firstName();
-		return new Category(name);
+		Category category = new Category();
+		category.setName(name);
+		return category;
 	}
 	
 	/**
@@ -33,7 +35,9 @@ public class CategoryTestsUtils {
 	 */
 	public Category saveRandomCategoryOnDB() {
 		String name = faker.name().firstName();
-		return categoryRepository.save(new Category(name));
+		Category category = new Category();
+		category.setName(name);
+		return categoryRepository.save(category);
 	}
 	
 	/**
