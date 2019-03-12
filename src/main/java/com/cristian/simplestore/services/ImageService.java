@@ -2,6 +2,7 @@ package com.cristian.simplestore.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ public class ImageService {
 	@Autowired
 	private ImageStorageService imageStorageService;
 	
-	public Image save(MultipartFile file) {		
-		Image image = this.imageRepository.save(new Image());
-		String imageName = imageStorageService.store(file, generateImageName(image, file));
-		image.setName(imageName);
+	public Image save(MultipartFile file) {	
+		String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
+		Image image = new Image();
+		image.setName(imageNameWithPath);
 		return this.imageRepository.save(image);
 	}
 	
@@ -31,11 +32,7 @@ public class ImageService {
 		List<Image> savedImages = new ArrayList<Image>();
 		
 		for (MultipartFile imageFile : imagesFiles) {
-			Image image = this.imageRepository.save(new Image());
-			String imageName = 
-					imageStorageService.store(imageFile, 
-							generateImageName(image, imageFile));
-			image.setName(imageName);
+			Image image = save(imageFile);
 			savedImages.add(image);
 		}
 		return savedImages;
@@ -67,8 +64,15 @@ public class ImageService {
 	 * @param image the image repository
 	 * @param the image file
 	 * @return
+	 * @deprecated use {@link #generateImageName(MultipartFile)} instead.
 	 */
 	private String generateImageName(Image image, MultipartFile file) {
 		return String.valueOf(image.getId()) + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+	}
+	
+	private String generateImageName(MultipartFile file) {
+		String fileName = 
+				UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+		return fileName;
 	}
 }
