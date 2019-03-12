@@ -17,6 +17,7 @@ import com.cristian.simplestore.entities.Product;
 import com.cristian.simplestore.respositories.ProductRepository;
 import com.cristian.simplestore.services.ProductService;
 import com.cristian.simplestore.tests.BaseTest;
+import com.cristian.simplestore.tests.utils.ProductTestsUtils;
 import com.github.javafaker.Faker;
 
 @RunWith(SpringRunner.class)
@@ -31,27 +32,8 @@ public class ProductServiceTest extends BaseTest {
 	@Autowired
 	private ProductService productService;
 	
-	/**
-	 * create a product instance with random data
-	 * @return the newly created product
-	 */
-	public Product generateRandomProduct() {
-		Faker faker = new Faker();
-		String name = faker.commerce().productName(); 
-		String price = faker.commerce().price(0, Double.MAX_VALUE); 
-		return new Product(name, Double.valueOf(price));
-	}
-	
-	/**
-	 * stores a random product into the database
-	 * @return the newly created product
-	 */
-	public Product saveRandomProductOnDB() {
-		Faker faker = new Faker();
-		String name = faker.commerce().productName(); 
-		String price = faker.commerce().price(0, MAX_PRICE); 
-		return productRepository.save(new Product(name, Double.valueOf(price)));
-	}
+	@Autowired
+	private ProductTestsUtils utils;
 	
 	@Before
 	public void setUp() {
@@ -69,7 +51,7 @@ public class ProductServiceTest extends BaseTest {
 		int MAX_PRODUCTS_SIZE = 4;
 		List<Product> createdProducts = new ArrayList<Product>();
 		for (int i = 0; i < MAX_PRODUCTS_SIZE; i++) {
-			createdProducts.add(saveRandomProductOnDB());
+			createdProducts.add(utils.saveRandomProductOnDB());
 		}
 				
 		List<Product> products = this.productService.findAllProducts();
@@ -78,14 +60,14 @@ public class ProductServiceTest extends BaseTest {
 	
 	@Test
 	public void testItFindsAProductById() throws Exception {
-		Product product = saveRandomProductOnDB();
+		Product product = utils.saveRandomProductOnDB();
 		Product storedProduct = productService.findById(product.getId());
 		assertThat(storedProduct.getId()).isEqualTo(product.getId());
 	}
 	
 	@Test
 	public void testItCreatesAProduct() {
-		Product product = generateRandomProduct();
+		Product product = utils.generateRandomProduct();
 		Product storedProduct = productService.create(product);
 		assertThat(product.getId()).isEqualTo(storedProduct.getId());
 	}
@@ -94,7 +76,7 @@ public class ProductServiceTest extends BaseTest {
 	public void testItUpdatesAProduct() {
 		// TODO: check whether the new product name is already on db
 		Faker faker = new Faker();
-		Product product = saveRandomProductOnDB();
+		Product product = utils.saveRandomProductOnDB();
 		
 		product.setName((faker.commerce().productName()));
 		product.setPrice(Double.valueOf((faker.commerce().price(0, MAX_PRICE))));
@@ -107,7 +89,7 @@ public class ProductServiceTest extends BaseTest {
 	
 	@Test
 	public void testItDeletesAProduct() {
-		Product product = saveRandomProductOnDB();
+		Product product = utils.saveRandomProductOnDB();
 		productService.deleteById(product.getId());
 		
 		assertThat(productService.findById(product.getId())).isNull();

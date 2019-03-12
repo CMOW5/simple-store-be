@@ -2,7 +2,6 @@ package com.cristian.simplestore.tests.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -17,6 +16,7 @@ import com.cristian.simplestore.entities.Category;
 import com.cristian.simplestore.respositories.CategoryRepository;
 import com.cristian.simplestore.services.CategoryService;
 import com.cristian.simplestore.tests.BaseTest;
+import com.cristian.simplestore.tests.utils.CategoryTestsUtils;
 import com.github.javafaker.Faker;
 
 @RunWith(SpringRunner.class)
@@ -27,27 +27,11 @@ public class CategoryServiceTest extends BaseTest {
 	CategoryService categoryService;
 	
 	@Autowired
+	CategoryTestsUtils utils;
+	
+	@Autowired
 	CategoryRepository categoryRepository;
 	
-	/**
-	 * create a category instance with random data
-	 * @return the newly created category
-	 */
-	public Category generateRandomCategory() {
-		Faker faker = new Faker();
-		String name = faker.name().firstName();
-		return new Category(name);
-	}
-	
-	/**
-	 * stores a random category into the database
-	 * @return the newly created category
-	 */
-	public Category saveRandomCategoryOnDB() {
-		Faker faker = new Faker();
-		String name = faker.name().firstName();
-		return categoryRepository.save(new Category(name));
-	}
 	
 	@Before
 	public void setUp() {
@@ -61,20 +45,17 @@ public class CategoryServiceTest extends BaseTest {
 	
 	@Test
 	public void findAllCategories() {
-		// create a couple of categories on db
-		int MAX_CATEGORIES_SIZE = 4;
-		List<Category> createdCategories = new ArrayList<Category>();
-		for (int i = 0; i < MAX_CATEGORIES_SIZE; i++) {
-			createdCategories.add(saveRandomCategoryOnDB());
-		}
+		long CATEGORIES_SIZE = 4;
+		utils.saveRandomCategoriesOnDB(CATEGORIES_SIZE);
 		
 		List<Category> foundCategories = this.categoryService.findAllCategories();
-		assertThat(foundCategories.size()).isEqualTo(MAX_CATEGORIES_SIZE);
+		
+		assertThat(foundCategories.size()).isEqualTo(CATEGORIES_SIZE);
 	}
 	 
 	@Test
 	public void findCategoryById() {
-		Category category = saveRandomCategoryOnDB();
+		Category category = utils.saveRandomCategoryOnDB();
 		
 		Category foundCategory = this.categoryService.findCategoryById(category.getId());
 		assertThat(foundCategory.getId()).isEqualTo(category.getId());
@@ -82,33 +63,34 @@ public class CategoryServiceTest extends BaseTest {
 	
 	@Test
 	public void create() {
-		// TODO: check whether the new category name is already on db
-		Category category = generateRandomCategory();
+		Category category = utils.generateRandomCategory();
+		
 		Category savedCategory = this.categoryService.create(category);
+		
 		assertThat(savedCategory.getId()).isEqualTo(category.getId());
 		assertThat(savedCategory.getName()).isEqualTo(category.getName());
 	}
 	
 	@Test 
 	public void update() {
-		// TODO: check whether the new category name is already on db
-		Category categoryToUpdate = saveRandomCategoryOnDB();
-		String name = new Faker().commerce().department();
-		Category category = new Category(name);
-		categoryToUpdate.setName(category.getName());
+		Category categoryToUpdate = utils.saveRandomCategoryOnDB();
 		
+		String newName = new Faker().commerce().department();
+		categoryToUpdate.setName(newName);
 		Category updatedCategory = this.categoryService.update(categoryToUpdate.getId(), categoryToUpdate);
+		
 		assertThat(updatedCategory.getId()).isEqualTo(categoryToUpdate.getId());
 		assertThat(updatedCategory.getName()).isEqualTo(categoryToUpdate.getName());
 	}
 	 
 	@Test
 	public void delete() {
-		Category categoryToDelete = saveRandomCategoryOnDB();
+		Category categoryToDelete = utils.saveRandomCategoryOnDB();
 		
 		this.categoryService.deleteById(categoryToDelete.getId());
 		Category deletedCategory = 
 				this.categoryService.findCategoryById(categoryToDelete.getId());
+		
 		assertThat(deletedCategory).isNull();
 	}
 	
