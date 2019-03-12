@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cristian.simplestore.entities.Category;
+import com.cristian.simplestore.forms.CategoryCreateForm;
+import com.cristian.simplestore.forms.CategoryUpdateForm;
 import com.cristian.simplestore.respositories.CategoryRepository;
 import com.cristian.simplestore.services.CategoryService;
 import com.cristian.simplestore.tests.BaseTest;
@@ -63,24 +65,23 @@ public class CategoryServiceTest extends BaseTest {
 	
 	@Test
 	public void create() {
-		Category category = utils.generateRandomCategory();
+		CategoryCreateForm form = utils.generateRandomCategoryCreateForm();
 		
-		Category savedCategory = this.categoryService.create(category);
+		Category savedCategory = this.categoryService.create(form);
 		
-		assertThat(savedCategory.getId()).isEqualTo(category.getId());
-		assertThat(savedCategory.getName()).isEqualTo(category.getName());
+		assertThat(savedCategory.getName()).isEqualTo(form.getName());
 	}
 	
 	@Test 
 	public void update() {
 		Category categoryToUpdate = utils.saveRandomCategoryOnDB();
+		CategoryUpdateForm newCategoryData = utils.generateRandomCategoryUpdateForm();
+		newCategoryData.setId(categoryToUpdate.getId());
 		
-		String newName = new Faker().commerce().department();
-		categoryToUpdate.setName(newName);
-		Category updatedCategory = this.categoryService.update(categoryToUpdate.getId(), categoryToUpdate);
+		Category updatedCategory = this.categoryService.update(newCategoryData);
 		
-		assertThat(updatedCategory.getId()).isEqualTo(categoryToUpdate.getId());
-		assertThat(updatedCategory.getName()).isEqualTo(categoryToUpdate.getName());
+		assertThat(updatedCategory.getId()).isEqualTo(newCategoryData.getId());
+		assertThat(updatedCategory.getName()).isEqualTo(newCategoryData.getName());
 	}
 	 
 	@Test
