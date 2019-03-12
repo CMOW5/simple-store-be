@@ -7,7 +7,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +24,7 @@ import com.cristian.simplestore.utils.response.CustomResponse;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
+@RequestMapping("/api/admin/categories")
 public class CategoryController {
 	
 	private CustomResponse response = new CustomResponse();
@@ -27,7 +32,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 	
-	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.GET)
+	@GetMapping
 	public Map<String, Object> findAllCategories() {
 		List<Category> categories = categoryService.findAllCategories();
 		
@@ -35,7 +40,7 @@ public class CategoryController {
 		return response.build();
 	}
 	
-	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/{id}")
 	public Map<String, Object> findCategoryById(@PathVariable long id) {
 		Category foundCategory = categoryService.findCategoryById(id);
 		
@@ -43,7 +48,7 @@ public class CategoryController {
 		return response.build();
 	}
 	
-	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.POST)
+	@PostMapping
 	public Map<String, Object> create(
 			@Valid CategoryCreateForm form) {
 		Category createdCategory = categoryService.create(form);
@@ -52,7 +57,7 @@ public class CategoryController {
 		return response.build();
 	}
 	
-	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.PUT)
+	@PutMapping("/{id}")
 	public Map<String, Object> update(
 			@Valid CategoryUpdateForm form) {
 		Category updatedCategory = categoryService.update(form);
@@ -61,7 +66,7 @@ public class CategoryController {
 		return response.build();
 	}
 	
-	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.DELETE)
+	@DeleteMapping("/{id}")
 	public Map<String, Object> delete(@PathVariable Long id) {
 		categoryService.deleteById(id);
 		
@@ -69,7 +74,7 @@ public class CategoryController {
 		return response.build();
 	}
 	
-	@RequestMapping(value = "/api/admin/categories/count", method = RequestMethod.GET)
+	@GetMapping("/count")
 	public Map<String, Object> count() {
 		long categoriesCount = categoryService.count();
 		
