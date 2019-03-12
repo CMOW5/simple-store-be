@@ -95,7 +95,7 @@ public class ProductService {
 	}
 	
 	public Page<Product>  test() {
-		Page<Product> products = productRepository.findAll(new PageRequest(0,20));
+		Page<Product> products = productRepository.findAll(PageRequest.of(0,20));
 		return products;
 	}
 	
