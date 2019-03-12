@@ -37,16 +37,15 @@ public class CategoryController {
 	
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.GET)
 	public Map<String, Object> findCategoryById(@PathVariable long id) {
-		Category category = categoryService.findCategoryById(id);
+		Category foundCategory = categoryService.findCategoryById(id);
 		
-		response.attachContent(category);
+		response.attachContent(foundCategory);
 		return response.build();
 	}
 	
 	@RequestMapping(value = "/api/admin/categories", method = RequestMethod.POST)
 	public Map<String, Object> create(
 			@Valid CategoryCreateForm form) {
-		
 		Category createdCategory = categoryService.create(form);
 		
 		response.attachContent(createdCategory);
@@ -57,7 +56,6 @@ public class CategoryController {
 	public Map<String, Object> update(
 			@Valid CategoryUpdateForm form,
 			@PathVariable Long id) {
-
 		Category updatedCategory = categoryService.update(form);
 		
 		response.attachContent(updatedCategory);
@@ -65,8 +63,11 @@ public class CategoryController {
 	}
 	
 	@RequestMapping(value = "/api/admin/categories/{id}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable Long id) {
+	public Map<String, Object> delete(@PathVariable Long id) {
 		categoryService.deleteById(id);
+		
+		response.attachContent(null);
+		return response.build();
 	}
 	
 	@RequestMapping(value = "/api/admin/categories/count", method = RequestMethod.GET)
