@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,11 +115,10 @@ public class ProductServiceTest extends BaseTest {
 		assertThat(newProductData.getPrice()).isEqualTo(updatedProduct.getPrice());
 	}
 	
-	@Test
+	@Test(expected = EntityNotFoundException.class)
 	public void testItDeletesAProduct() {
 		Product product = utils.saveRandomProductOnDB();
 		productService.deleteById(product.getId());
-		
-		assertThat(productService.findById(product.getId())).isNull();
+		productService.findById(product.getId());		
 	}
 }

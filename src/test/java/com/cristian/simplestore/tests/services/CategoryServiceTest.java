@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,15 +85,12 @@ public class CategoryServiceTest extends BaseTest {
 		assertThat(updatedCategory.getName()).isEqualTo(newCategoryData.getName());
 	}
 	 
-	@Test
+	@Test(expected = EntityNotFoundException.class)
 	public void delete() {
 		Category categoryToDelete = utils.saveRandomCategoryOnDB();
 		
 		this.categoryService.deleteById(categoryToDelete.getId());
-		Category deletedCategory = 
-				this.categoryService.findCategoryById(categoryToDelete.getId());
-		
-		assertThat(deletedCategory).isNull();
+		this.categoryService.findCategoryById(categoryToDelete.getId());
 	}
 	
 
