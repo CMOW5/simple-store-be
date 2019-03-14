@@ -30,6 +30,8 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('com.h2database:h2')
 	runtimeOnly('mysql:mysql-connector-java')
+	implementation 'org.flywaydb:flyway-core'
+	
 	
 	// dev dependencies
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
