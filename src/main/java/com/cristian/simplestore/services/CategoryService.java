@@ -99,8 +99,9 @@ public class CategoryService {
 	}
 	
 	private Category updateParentCategory(Category categoryToUpdate, Category newParentCategory) {
-		// TODO: generate some validation error here
-		if (newParentCategory != null && newParentCategory.getId() == categoryToUpdate.getId()) {
+		// TODO: verify if one is null and the other is not
+		// TODO: should i throw an exception here?? 
+		if (isTheSameCategory(categoryToUpdate, newParentCategory)) {
 			newParentCategory = null;
 		}
 						
@@ -128,5 +129,14 @@ public class CategoryService {
 		}
 		
 		return categoryToUpdate;
+	}
+	
+	// TODO: replace this with a hasCode and isEquals impl
+	private boolean isTheSameCategory(Category category1, Category category2) {
+		if ((category1 != null && category2 != null) && (category1.getId() == category1.getId())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
