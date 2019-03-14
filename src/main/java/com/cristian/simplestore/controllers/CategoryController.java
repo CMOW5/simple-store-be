@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.entities.Category;
@@ -26,58 +29,65 @@ import com.cristian.simplestore.utils.response.CustomResponse;
 @RequestMapping("/api/admin/categories")
 public class CategoryController {
 	
-	private CustomResponse response = new CustomResponse();
+	private CustomResponse<Object> response = new CustomResponse<>();
 	
 	@Autowired
 	private CategoryService categoryService;
 	
 	@GetMapping
-	public Map<String, Object> findAllCategories() {
+	public ResponseEntity<Map<String, Object>> findAllCategories() {
 		List<Category> categories = categoryService.findAllCategories();
 		
-		response.attachContent(categories);
+		response.status(HttpStatus.OK).content(categories);
 		return response.build();
 	}
 	
 	@GetMapping(value = "/{id}")
-	public Map<String, Object> findCategoryById(@PathVariable long id) {
+	public ResponseEntity<Map<String, Object>> findCategoryById(@PathVariable long id) {
 		Category foundCategory = categoryService.findCategoryById(id);
 		
-		response.attachContent(foundCategory);
-		return response.build();
+		if (foundCategory != null) {
+			response.status(HttpStatus.OK).content(foundCategory);
+			return response.build();
+		} else {
+			response.status(HttpStatus.NOT_FOUND).content(foundCategory);
+			return response.build();
+		}
 	}
 	
 	@PostMapping
-	public Map<String, Object> create(
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Map<String, Object>> create(
 			@Valid CategoryCreateForm form) {
 		Category createdCategory = categoryService.create(form);
 		
-		response.attachContent(createdCategory);
+		response.status(HttpStatus.OK).content(createdCategory);
 		return response.build();
 	}
 	
 	@PutMapping("/{id}")
-	public Map<String, Object> update(
+	public ResponseEntity<Map<String, Object>> update(
 			@Valid CategoryUpdateForm form) {
 		Category updatedCategory = categoryService.update(form);
 		
-		response.attachContent(updatedCategory);
+		response.status(HttpStatus.OK).content(updatedCategory);
 		return response.build();
 	}
 	
 	@DeleteMapping("/{id}")
-	public Map<String, Object> delete(@PathVariable Long id) {
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
 		categoryService.deleteById(id);
 		
-		response.attachContent(null);
+		response.status(HttpStatus.NO_CONTENT).content(null);
 		return response.build();
 	}
 	
 	@GetMapping("/count")
-	public Map<String, Object> count() {
+	public ResponseEntity<Map<String, Object>> count() {
 		long categoriesCount = categoryService.count();
 		
-		response.attachContent(categoriesCount);
+		response.status(HttpStatus.OK).content(categoriesCount);
 		return response.build();	
 	}
 	

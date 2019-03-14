@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.forms.ProductCreateForm;
 import com.cristian.simplestore.services.ImageService;
-import com.cristian.simplestore.utils.response.CustomResponse;
+import com.cristian.simplestore.utils.response._CustomResponse;
 ;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TestController {
 
-	private CustomResponse response = new CustomResponse();
+	private _CustomResponse response = new _CustomResponse();
 
 	@Autowired ImageService imageService;
 	
