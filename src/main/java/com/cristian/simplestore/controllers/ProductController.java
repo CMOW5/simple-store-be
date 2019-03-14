@@ -3,6 +3,7 @@ package com.cristian.simplestore.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,51 +37,68 @@ public class ProductController {
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> findAllProducts() {
 		List<Product> products = productService.findAllProducts();
-
-		response.status(HttpStatus.OK).content(products);
-		return response.build();
+		return response.status(HttpStatus.OK)
+				.content(products)
+				.build();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> findProductById(@PathVariable long id) {
-		Product product = productService.findById(id);
-
-		response.status(HttpStatus.OK).content(product);
-		return response.build();
+		try {
+			Product product = productService.findById(id);
+			return response.status(HttpStatus.OK)
+					.content(product)
+					.build();
+		} catch (EntityNotFoundException exception) {
+			return response.status(HttpStatus.NOT_FOUND)
+					.content(null)
+					.build();
+		} 
 	}
 	
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> create(@Valid ProductCreateForm form) {
-		
 		Product createdProduct = productService.create(form);
-
-		response.status(HttpStatus.OK).content(createdProduct);
-		return response.build();
+		return response.status(HttpStatus.CREATED)
+				.content(createdProduct)
+				.build();
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> update(@PathVariable long id, 
 			@Valid ProductUpdateForm form) {
-
-		Product updatedProduct = productService.update(form);
-
-		response.status(HttpStatus.OK).content(updatedProduct);
-		return response.build();
+		try {
+			Product updatedProduct = productService.update(form);
+			return response.status(HttpStatus.OK)
+					.content(updatedProduct)
+					.build();
+		} catch (EntityNotFoundException exception) {
+			return response.status(HttpStatus.NOT_FOUND)
+					.content(null)
+					.build();
+		}
+		
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable long id) {
-		productService.deleteById(id);
-		
-		response.status(HttpStatus.NO_CONTENT).content(null);
-		return response.build();
+		try {
+			productService.deleteById(id);
+			return response.status(HttpStatus.NO_CONTENT)
+					.content(null)
+					.build();
+		} catch (EntityNotFoundException exception) {
+			return response.status(HttpStatus.NOT_FOUND)
+					.content(null)
+					.build();
+		}
 	}
 
 	@GetMapping("/count")
 	public ResponseEntity<Map<String, Object>> count() {
 		long productsCount = productService.count();
-
-		response.status(HttpStatus.OK).content(productsCount);
-		return response.build();
+		return response.status(HttpStatus.OK)
+				.content(productsCount)
+				.build();
 	}
 }

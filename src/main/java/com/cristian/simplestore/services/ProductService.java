@@ -2,10 +2,13 @@ package com.cristian.simplestore.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -33,7 +36,12 @@ public class ProductService {
 	}
 	
 	public Product findById(long id) {
-		return productRepository.findById(id).orElse(null);
+		try {
+			Product foundProduct = productRepository.findById(id).get();
+			return foundProduct;
+		} catch (NoSuchElementException exception) {
+			throw new EntityNotFoundException("The product with the given id was not found");
+		}
 	}
 	
 	@Transactional
@@ -67,31 +75,39 @@ public class ProductService {
 	
 	@Transactional
 	public Product update(ProductUpdateForm form) {
-		Product storedProduct = productRepository.findById(form.getId()).orElse(null);
-		List<Long> imagesIdsToDelete = form.getImagesIdsToDelete();
-		List<MultipartFile> newImages = form.getNewImages();
-		
-		storedProduct.setName(form.getName());
-		storedProduct.setDescription(form.getDescription());
-		storedProduct.setPrice(form.getPrice());
-		storedProduct.setPriceSale(form.getPriceSale());
-		storedProduct.setInSale(form.isInSale());
-		storedProduct.setActive(form.isActive());
-		storedProduct.setCategory(form.getCategory());
-		storedProduct.setUnits(form.getUnits());
-		
-		List<Image> images = this.imageService.saveAll(newImages);
-		storedProduct.addImages(images);
-		
-		
-		Iterable<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
-		storedProduct.removeImages(imagesToDelete);
-	
-		return storedProduct;
+		try {
+			Product storedProduct = productRepository.findById(form.getId()).get();
+			List<Long> imagesIdsToDelete = form.getImagesIdsToDelete();
+			List<MultipartFile> newImages = form.getNewImages();
+			
+			storedProduct.setName(form.getName());
+			storedProduct.setDescription(form.getDescription());
+			storedProduct.setPrice(form.getPrice());
+			storedProduct.setPriceSale(form.getPriceSale());
+			storedProduct.setInSale(form.isInSale());
+			storedProduct.setActive(form.isActive());
+			storedProduct.setCategory(form.getCategory());
+			storedProduct.setUnits(form.getUnits());
+			
+			List<Image> images = this.imageService.saveAll(newImages);
+			storedProduct.addImages(images);
+			
+			
+			Iterable<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
+			storedProduct.removeImages(imagesToDelete);
+			
+			return storedProduct;
+		} catch (NoSuchElementException exception) {
+			throw new EntityNotFoundException("The product with the given id was not found");
+		}
 	}
 	
 	public void deleteById(long id) {
-		productRepository.deleteById(id);
+		try {
+			productRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException exception) {
+			throw new EntityNotFoundException("The category with the given id was not found");
+		}
 	}
 	
 	public Page<Product>  test() {

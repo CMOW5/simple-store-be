@@ -2,8 +2,12 @@ package com.cristian.simplestore.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +33,12 @@ public class CategoryService {
 	}
 
 	public Category findCategoryById(Long id) {
-		return this.categoryRepository.findById(id).orElseGet(() -> null);
+		try {
+			Category foundCategory = categoryRepository.findById(id).get();
+			return foundCategory;
+		} catch (NoSuchElementException e) {
+			throw new EntityNotFoundException("The category with the given id was not found");
+		}
 	}
 
 	public Category create(Category category) {
@@ -52,23 +61,29 @@ public class CategoryService {
 	
 	// TODO: delete the images that are not used from storage after update
 	public Category update(CategoryUpdateForm form) {
-		Category storedCategory = this.categoryRepository.findById(form.getId()).get();
-		
-		String newName = form.getName();
-		Category newParentCategory = form.getParentCategory();
-		MultipartFile newImageFile = form.getNewImage();
-		Long imageIdToDelete = form.getImageIdToDelete();
-		
-		storedCategory.setName(newName);
-		storedCategory = updateParentCategory(storedCategory, newParentCategory);
-		storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
-		
-
-		return this.categoryRepository.save(storedCategory);
+		try {
+			Category storedCategory = categoryRepository.findById(form.getId()).get();
+			String newName = form.getName();
+			Category newParentCategory = form.getParentCategory();
+			MultipartFile newImageFile = form.getNewImage();
+			Long imageIdToDelete = form.getImageIdToDelete();
+			
+			storedCategory.setName(newName);
+			storedCategory = updateParentCategory(storedCategory, newParentCategory);
+			storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
+			return categoryRepository.save(storedCategory);
+		} catch (NoSuchElementException e) {
+			throw new EntityNotFoundException("The category with the given id was not found");
+		}
 	}
 
 	public void deleteById(Long id) {
-		this.categoryRepository.deleteById(id);
+		try {
+			this.categoryRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException exception) {
+			throw new EntityNotFoundException("The category with the given id was not found");
+		}
+		
 	}
 
 	public long count() {

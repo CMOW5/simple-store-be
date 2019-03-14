@@ -3,6 +3,7 @@ package com.cristian.simplestore.controllers;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,57 +39,72 @@ public class CategoryController {
 	public ResponseEntity<Map<String, Object>> findAllCategories() {
 		List<Category> categories = categoryService.findAllCategories();
 		
-		response.status(HttpStatus.OK).content(categories);
-		return response.build();
+		return response.status(HttpStatus.OK)
+					.content(categories)
+					.build();
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Map<String, Object>> findCategoryById(@PathVariable long id) {
-		Category foundCategory = categoryService.findCategoryById(id);
-		
-		if (foundCategory != null) {
-			response.status(HttpStatus.OK).content(foundCategory);
-			return response.build();
-		} else {
-			response.status(HttpStatus.NOT_FOUND).content(foundCategory);
-			return response.build();
+		try {
+			Category foundCategory = categoryService.findCategoryById(id);
+			return response.status(HttpStatus.OK)
+					.content(foundCategory)
+					.build();
+		} catch (EntityNotFoundException exception) {
+			return response.status(HttpStatus.NOT_FOUND)
+					.content(null)
+					.build();
 		}
 	}
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Map<String, Object>> create(
 			@Valid CategoryCreateForm form) {
 		Category createdCategory = categoryService.create(form);
 		
-		response.status(HttpStatus.OK).content(createdCategory);
-		return response.build();
+		return response.status(HttpStatus.CREATED)
+					.content(createdCategory)
+					.build();
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> update(
 			@Valid CategoryUpdateForm form) {
-		Category updatedCategory = categoryService.update(form);
-		
-		response.status(HttpStatus.OK).content(updatedCategory);
-		return response.build();
+		try {
+			Category updatedCategory = categoryService.update(form);
+			return response.status(HttpStatus.OK)
+					.content(updatedCategory)
+					.build();
+		} catch (EntityNotFoundException exception) {
+			return response.status(HttpStatus.NOT_FOUND)
+					.content(null)
+					.build();
+		}
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
-		categoryService.deleteById(id);
-		
-		response.status(HttpStatus.NO_CONTENT).content(null);
-		return response.build();
+		try {
+			categoryService.deleteById(id);
+			return response.status(HttpStatus.NO_CONTENT)
+					.content(null)
+					.build();
+		} catch (EntityNotFoundException exception) {
+			return response.status(HttpStatus.NOT_FOUND)
+					.content(null)
+					.build();
+		}
 	}
 	
 	@GetMapping("/count")
 	public ResponseEntity<Map<String, Object>> count() {
 		long categoriesCount = categoryService.count();
 		
-		response.status(HttpStatus.OK).content(categoriesCount);
-		return response.build();	
+		return response.status(HttpStatus.OK)
+				.content(categoriesCount)
+				.build();	
 	}
 	
 	// org.springframework.validation.BindException
