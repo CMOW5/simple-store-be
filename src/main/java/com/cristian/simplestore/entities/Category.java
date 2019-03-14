@@ -25,7 +25,7 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
-	@Column(nullable = false, unique = true) 
+	@Column(nullable = false, unique = true)
 	private String name;
 	
 	@ManyToOne
@@ -99,9 +99,9 @@ public class Category {
 	}
 	
 	/**
-	 * verify if the given category is a subcategory
+	 * verify if the given category is a sub category of the current category
 	 * @param category
-	 * @return true if the category is a subcategory of the current object
+	 * @return true if the given category is a sub category of the current object
 	 */
     public boolean hasSubcategory(Category category) {
         if (category == null) return false;

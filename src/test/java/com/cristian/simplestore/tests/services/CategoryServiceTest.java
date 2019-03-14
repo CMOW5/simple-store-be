@@ -19,7 +19,6 @@ import com.cristian.simplestore.respositories.CategoryRepository;
 import com.cristian.simplestore.services.CategoryService;
 import com.cristian.simplestore.tests.BaseTest;
 import com.cristian.simplestore.tests.utils.CategoryTestsUtils;
-import com.github.javafaker.Faker;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
