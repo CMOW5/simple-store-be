@@ -15,7 +15,7 @@ import com.cristian.simplestore.validators.annotations.ExistsDb;
   columnValueField = "name",
   exceptIdColumn = "id"
 )
-public class CategoryUpdateForm {
+public class CategoryUpdateForm implements Form<Category> {
 	
 	@NotNull
 	@Exists(table = "categories", column = "id", message = "the category doesn't exists")
@@ -69,7 +69,8 @@ public class CategoryUpdateForm {
 	public void setImageIdToDelete(Long imageIdToDelete) {
 		this.imageIdToDelete = imageIdToDelete;
 	}
-
+	
+	@Override
 	public Category getModel() {
 		Category category = new Category();
 		category.setName(name);

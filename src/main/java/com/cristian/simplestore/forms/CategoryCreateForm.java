@@ -13,7 +13,7 @@ import com.cristian.simplestore.validators.annotations.ExistsDb;
   columnName = "name",
   columnValueField = "name"
 )
-public class CategoryCreateForm {
+public class CategoryCreateForm implements Form<Category> {
 	
 	@NotNull @Size(min = 2, max = 200) 
 	private String name;
@@ -47,6 +47,7 @@ public class CategoryCreateForm {
 		this.image = image;
 	}
 	
+	@Override
 	public Category getModel() {
 		Category category = new Category();
 		category.setName(name);
