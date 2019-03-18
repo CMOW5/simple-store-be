@@ -11,12 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.entities.Category;
@@ -38,7 +38,6 @@ public class CategoryController {
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> findAllCategories() {
 		List<Category> categories = categoryService.findAllCategories();
-		
 		return response.status(HttpStatus.OK)
 					.content(categories)
 					.build();
@@ -46,23 +45,16 @@ public class CategoryController {
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Map<String, Object>> findCategoryById(@PathVariable long id) {
-		try {
-			Category foundCategory = categoryService.findCategoryById(id);
-			return response.status(HttpStatus.OK)
-					.content(foundCategory)
-					.build();
-		} catch (EntityNotFoundException exception) {
-			return response.status(HttpStatus.NOT_FOUND)
-					.content(null)
-					.build();
-		}
+		Category foundCategory = categoryService.findCategoryById(id);
+		return response.status(HttpStatus.OK)
+				.content(foundCategory)
+				.build();
 	}
 	
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> create(
 			@Valid CategoryCreateForm form) {
 		Category createdCategory = categoryService.create(form);
-		
 		return response.status(HttpStatus.CREATED)
 					.content(createdCategory)
 					.build();
@@ -71,41 +63,35 @@ public class CategoryController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> update(
 			@Valid CategoryUpdateForm form) {
-		try {
-			Category updatedCategory = categoryService.update(form);
-			return response.status(HttpStatus.OK)
-					.content(updatedCategory)
-					.build();
-		} catch (EntityNotFoundException exception) {
-			return response.status(HttpStatus.NOT_FOUND)
-					.content(null)
-					.build();
-		}
+		Category updatedCategory = categoryService.update(form);
+		return response.status(HttpStatus.OK)
+				.content(updatedCategory)
+				.build();
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
-		try {
-			categoryService.deleteById(id);
-			return response.status(HttpStatus.NO_CONTENT)
-					.content(null)
-					.build();
-		} catch (EntityNotFoundException exception) {
-			return response.status(HttpStatus.NOT_FOUND)
-					.content(null)
-					.build();
-		}
+		categoryService.deleteById(id);
+		return response.status(HttpStatus.NO_CONTENT)
+				.content(null)
+				.build();
 	}
 	
 	@GetMapping("/count")
 	public ResponseEntity<Map<String, Object>> count() {
 		long categoriesCount = categoryService.count();
-		
 		return response.status(HttpStatus.OK)
 				.content(categoriesCount)
 				.build();	
 	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<Map<String, Object>> handleError(Exception ex) {
+		return response.status(HttpStatus.NOT_FOUND)
+				.content(null)
+				.build();
+	}
+	
 	
 	// org.springframework.validation.BindException
 	
