@@ -27,22 +27,28 @@ public class TestController {
 	
 	@PersistenceContext EntityManager entityManager;
 
-	@RequestMapping(value = "/test", method = RequestMethod.POST)
-	// @Transactional
-	public Map<String, Object> create(
-			// @PathVariable Long id, 
-			@Valid ProductCreateForm form 
-			// BindingResult validationResult
-			) {
+	@RequestMapping(value = "/test", method = RequestMethod.GET
+				, consumes = "application/json")
+	public Map<String, Object> create() {
 		
 		
 		
 		String some = "some";
-
-
 		response.attachContent(some);
 		return response.build();
 	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.GET
+			, consumes = "multipart/form-data")
+	public Map<String, Object> create2() {
+		
+		
+		String some = "some 2";
+		response.attachContent(some);
+		return response.build();
+	}
+	
+	
 
 	// @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Data integrity violation")
 //	@ExceptionHandler(BindException.class)
