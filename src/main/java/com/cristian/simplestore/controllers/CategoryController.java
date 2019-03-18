@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +25,6 @@ import com.cristian.simplestore.services.CategoryService;
 import com.cristian.simplestore.utils.response.CustomResponse;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/admin/categories")
 public class CategoryController {
 	
@@ -86,12 +84,23 @@ public class CategoryController {
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<Map<String, Object>> handleError(Exception ex) {
+	public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
+			EntityNotFoundException ex) {
 		return response.status(HttpStatus.NOT_FOUND)
 				.content(null)
 				.build();
 	}
 	
+//	@ExceptionHandler(BindException.class)
+//	public ResponseEntity<Map<String, Object>> handleValidationException(
+//			BindException ex) {
+//		
+//
+//		return response.status(HttpStatus.NOT_FOUND)
+//				.content(ex.getFieldErrors())
+//				.build();
+//	}
+//	
 	
 	// org.springframework.validation.BindException
 	

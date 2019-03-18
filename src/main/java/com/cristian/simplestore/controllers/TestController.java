@@ -7,47 +7,45 @@ import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.forms.ProductCreateForm;
+import com.cristian.simplestore.forms.TestForm;
 import com.cristian.simplestore.services.ImageService;
-import com.cristian.simplestore.utils.response._CustomResponse;
+import com.cristian.simplestore.utils.response.CustomResponse;
 ;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TestController {
 
-	private _CustomResponse response = new _CustomResponse();
+	private CustomResponse<Object> response = new CustomResponse<Object>();
 
 	@Autowired ImageService imageService;
 	
 	@PersistenceContext EntityManager entityManager;
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET
-				, consumes = "application/json")
-	public Map<String, Object> create() {
-		
-		
-		
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> create(@Valid TestForm form) {
 		String some = "some";
-		response.attachContent(some);
+		response.content(some);
 		return response.build();
 	}
 	
-	@RequestMapping(value = "/test", method = RequestMethod.GET
-			, consumes = "multipart/form-data")
-	public Map<String, Object> create2() {
+	@ExceptionHandler(BindException.class)
+	public ResponseEntity<Map<String, Object>> handleValidationException(
+			BindException ex) {
 		
-		
-		String some = "some 2";
-		response.attachContent(some);
+		String some = "some error form";
+		response.content(null);
+		response.attach("errors", ex.getFieldErrors());
 		return response.build();
 	}
-	
 	
 
 	// @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Data integrity violation")
