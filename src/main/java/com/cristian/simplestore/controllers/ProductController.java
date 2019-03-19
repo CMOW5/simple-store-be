@@ -35,7 +35,7 @@ public class ProductController {
 
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> findAllProducts() {
-		List<Product> products = productService.findAllProducts();
+		List<Product> products = productService.findAll();
 		return response.status(HttpStatus.OK)
 				.content(products)
 				.build();

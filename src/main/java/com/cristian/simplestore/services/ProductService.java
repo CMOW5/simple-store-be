@@ -29,7 +29,7 @@ public class ProductService {
 	@Autowired
 	private ImageService imageService;
 	
-	public List<Product> findAllProducts() {
+	public List<Product> findAll() {
 		List<Product> products = new ArrayList<>();
 		productRepository.findAll().forEach(products::add);
 		return products;

@@ -49,7 +49,7 @@ public class ProductServiceTest extends BaseTest {
 		productRepository.deleteAll();
     }
 	
-	// @Test
+	@Test
 	public void testItFindsAllProducts() throws Exception {
 		// create a couple of products on db
 		int MAX_PRODUCTS_SIZE = 4;
@@ -58,7 +58,7 @@ public class ProductServiceTest extends BaseTest {
 			createdProducts.add(utils.saveRandomProductOnDB());
 		}
 				
-		List<Product> products = this.productService.findAllProducts();
+		List<Product> products = this.productService.findAll();
 		assertThat(products.size()).isEqualTo(MAX_PRODUCTS_SIZE);
 	}
 	
