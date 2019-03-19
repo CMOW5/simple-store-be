@@ -26,7 +26,7 @@ public class CategoryService {
 	@Autowired
 	private ImageService imageService;
 
-	public List<Category> findAllCategories() {
+	public List<Category> findAll() {
 		List<Category> foundCategories = new ArrayList<Category>();
 		this.categoryRepository.findAll().forEach(foundCategories::add);
 		return foundCategories;

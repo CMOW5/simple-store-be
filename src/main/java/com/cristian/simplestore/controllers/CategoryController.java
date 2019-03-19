@@ -35,7 +35,7 @@ public class CategoryController {
 	
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> findAllCategories() {
-		List<Category> categories = categoryService.findAllCategories();
+		List<Category> categories = categoryService.findAll();
 		return response.status(HttpStatus.OK)
 					.content(categories)
 					.build();

@@ -51,7 +51,7 @@ public class CategoryServiceTest extends BaseTest {
 		long CATEGORIES_SIZE = 4;
 		utils.saveRandomCategoriesOnDB(CATEGORIES_SIZE);
 		
-		List<Category> foundCategories = this.categoryService.findAllCategories();
+		List<Category> foundCategories = this.categoryService.findAll();
 		
 		assertThat(foundCategories.size()).isEqualTo(CATEGORIES_SIZE);
 	}
