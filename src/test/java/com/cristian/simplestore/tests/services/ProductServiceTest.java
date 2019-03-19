@@ -15,13 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cristian.simplestore.entities.Product;
-import com.cristian.simplestore.forms.ProductCreateForm;
-import com.cristian.simplestore.forms.ProductUpdateForm;
-import com.cristian.simplestore.respositories.ProductRepository;
-import com.cristian.simplestore.services.ProductService;
+import com.cristian.simplestore.business.services.ProductService;
+import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.respositories.ProductRepository;
 import com.cristian.simplestore.tests.BaseTest;
 import com.cristian.simplestore.tests.utils.ProductTestsUtils;
+import com.cristian.simplestore.web.forms.ProductCreateForm;
+import com.cristian.simplestore.web.forms.ProductUpdateForm;
 import com.github.javafaker.Faker;
 
 @RunWith(SpringRunner.class)

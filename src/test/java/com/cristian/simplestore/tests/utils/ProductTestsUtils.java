@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.entities.Category;
-import com.cristian.simplestore.entities.Product;
-import com.cristian.simplestore.forms.ProductCreateForm;
-import com.cristian.simplestore.forms.ProductUpdateForm;
-import com.cristian.simplestore.respositories.ProductRepository;
+import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.respositories.ProductRepository;
+import com.cristian.simplestore.web.forms.ProductCreateForm;
+import com.cristian.simplestore.web.forms.ProductUpdateForm;
 import com.github.javafaker.Faker;
 
 @Component

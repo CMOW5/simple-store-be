@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cristian.simplestore.entities.Category;
-import com.cristian.simplestore.forms.CategoryCreateForm;
-import com.cristian.simplestore.forms.CategoryUpdateForm;
-import com.cristian.simplestore.respositories.CategoryRepository;
-import com.cristian.simplestore.services.CategoryService;
+import com.cristian.simplestore.business.services.CategoryService;
+import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.respositories.CategoryRepository;
 import com.cristian.simplestore.tests.BaseTest;
 import com.cristian.simplestore.tests.utils.CategoryTestsUtils;
+import com.cristian.simplestore.web.forms.CategoryCreateForm;
+import com.cristian.simplestore.web.forms.CategoryUpdateForm;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

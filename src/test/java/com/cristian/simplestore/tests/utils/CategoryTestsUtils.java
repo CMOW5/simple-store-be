@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.entities.Category;
-import com.cristian.simplestore.forms.CategoryCreateForm;
-import com.cristian.simplestore.forms.CategoryUpdateForm;
-import com.cristian.simplestore.respositories.CategoryRepository;
+import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.respositories.CategoryRepository;
+import com.cristian.simplestore.web.forms.CategoryCreateForm;
+import com.cristian.simplestore.web.forms.CategoryUpdateForm;
 import com.github.javafaker.Faker;
 
 @Component

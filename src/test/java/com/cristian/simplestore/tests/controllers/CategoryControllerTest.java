@@ -25,8 +25,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.cristian.simplestore.entities.Category;
-import com.cristian.simplestore.respositories.CategoryRepository;
+import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.respositories.CategoryRepository;
 import com.cristian.simplestore.tests.BaseTest;
 import com.cristian.simplestore.tests.utils.CategoryTestsUtils;
 import com.fasterxml.jackson.core.JsonParseException;

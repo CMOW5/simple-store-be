@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.cristian.simplestore.entities.Product;
-import com.cristian.simplestore.respositories.ProductRepository;
+import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.respositories.ProductRepository;
 import com.cristian.simplestore.tests.BaseTest;
 import com.cristian.simplestore.tests.utils.ProductTestsUtils;
 import com.fasterxml.jackson.core.JsonParseException;
