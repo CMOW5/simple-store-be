@@ -19,7 +19,6 @@ import com.cristian.simplestore.forms.ProductCreateForm;
 import com.cristian.simplestore.forms.TestForm;
 import com.cristian.simplestore.services.ImageService;
 import com.cristian.simplestore.utils.response.CustomResponse;
-;
 
 @RestController
 public class TestController {
