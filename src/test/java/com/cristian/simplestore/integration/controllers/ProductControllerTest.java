@@ -1,4 +1,4 @@
-package com.cristian.simplestore.tests.controllers;
+package com.cristian.simplestore.integration.controllers;
 
 import org.junit.After;
 import org.junit.Before;
@@ -20,8 +20,8 @@ import org.springframework.util.MultiValueMap;
 
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.respositories.ProductRepository;
-import com.cristian.simplestore.tests.BaseTest;
-import com.cristian.simplestore.tests.utils.ProductTestsUtils;
+import com.cristian.simplestore.BaseTest;
+import com.cristian.simplestore.utils.ProductTestsUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

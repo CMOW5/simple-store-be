@@ -1,4 +1,4 @@
-package com.cristian.simplestore.tests.services;
+package com.cristian.simplestore.unit.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.respositories.ProductRepository;
-import com.cristian.simplestore.tests.BaseTest;
-import com.cristian.simplestore.tests.utils.ProductTestsUtils;
+import com.cristian.simplestore.BaseTest;
+import com.cristian.simplestore.utils.ProductTestsUtils;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
 import com.cristian.simplestore.web.forms.ProductUpdateForm;
 import com.github.javafaker.Faker;

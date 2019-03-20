@@ -1,4 +1,4 @@
-package com.cristian.simplestore.tests.utils;
+package com.cristian.simplestore.utils;
 
 import java.util.ArrayList;
 import java.util.List;

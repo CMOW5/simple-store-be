@@ -1,4 +1,4 @@
-package com.cristian.simplestore.tests.controllers;
+package com.cristian.simplestore.integration.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,8 +27,8 @@ import org.springframework.util.MultiValueMap;
 
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.respositories.CategoryRepository;
-import com.cristian.simplestore.tests.BaseTest;
-import com.cristian.simplestore.tests.utils.CategoryTestsUtils;
+import com.cristian.simplestore.BaseTest;
+import com.cristian.simplestore.utils.CategoryTestsUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
