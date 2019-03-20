@@ -29,7 +29,7 @@ import com.cristian.simplestore.web.utils.response.CustomResponse;
 @RequestMapping("/api/admin/categories")
 public class CategoryController {
 	
-	private CustomResponse<Object> response = new CustomResponse<>();
+	private CustomResponse response = new CustomResponse();
 	
 	@Autowired
 	private CategoryService categoryService;
@@ -86,11 +86,21 @@ public class CategoryController {
 	
 	@ExceptionHandler(EntityNotFoundException.class)
 	public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
-			EntityNotFoundException ex) {
+			EntityNotFoundException exception) {
 		return response.status(HttpStatus.NOT_FOUND)
 				.content(null)
 				.build();
 	}
+	
+//	@ExceptionHandler(BindException.class)
+//	public ResponseEntity<Map<String, Object>> handleValidationErrors(
+//			BindException exception) {
+//		return response.errors(exception.getAllErrors())
+//				.status(HttpStatus.BAD_REQUEST)
+//				.build();
+//		
+//		
+//	}
 	
 //	@ExceptionHandler(BindException.class)
 //	public ResponseEntity<Map<String, Object>> handleValidationException(

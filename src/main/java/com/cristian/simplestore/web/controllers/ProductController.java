@@ -32,7 +32,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	private CustomResponse<Object> response = new CustomResponse<>();
+	private CustomResponse response = new CustomResponse();
 
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> findAllProducts() {
