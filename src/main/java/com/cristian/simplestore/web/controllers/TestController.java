@@ -23,7 +23,7 @@ import com.cristian.simplestore.web.utils.response.CustomResponse;
 @RestController
 public class TestController {
 
-	private CustomResponse<Object> response = new CustomResponse<Object>();
+	private CustomResponse response = new CustomResponse();
 
 	@Autowired ImageService imageService;
 	
@@ -35,16 +35,16 @@ public class TestController {
 		response.content(some);
 		return response.build();
 	}
-	
-	@ExceptionHandler(BindException.class)
-	public ResponseEntity<Map<String, Object>> handleValidationException(
-			BindException ex) {
-		
-		String some = "some error form";
-		response.content(null);
-		response.attach("errors", ex.getFieldErrors());
-		return response.build();
-	}
+//	
+//	@ExceptionHandler(BindException.class)
+//	public ResponseEntity<Map<String, Object>> handleValidationErrors(
+//			BindException exception) {
+//		return response.errors(exception)
+//				.status(HttpStatus.BAD_REQUEST)
+//				.build();
+//		
+//		
+//	}
 	
 
 	// @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Data integrity violation")
