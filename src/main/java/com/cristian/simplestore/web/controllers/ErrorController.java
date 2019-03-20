@@ -1,5 +1,8 @@
 package com.cristian.simplestore.web.controllers;
 
+import java.util.Map;
+
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,13 @@ public class ErrorController {
 			BindException exception) {
 		return response.errors(exception)
 				.status(HttpStatus.BAD_REQUEST)
+				.build();
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<Map<String, Object>> handleError(Exception ex) {
+		return response.status(HttpStatus.NOT_FOUND)
+				.content(null)
 				.build();
 	}
 }
