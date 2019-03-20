@@ -22,7 +22,7 @@ import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
 import com.cristian.simplestore.web.forms.ProductUpdateForm;
-import com.cristian.simplestore.web.utils.response.CustomResponse;
+import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
 @RestController
@@ -32,7 +32,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	private CustomResponse response = new CustomResponse();
+	private ApiResponse response = new ApiResponse();
 
 	@GetMapping
 	public ResponseEntity<Map<String, Object>> findAllProducts() {

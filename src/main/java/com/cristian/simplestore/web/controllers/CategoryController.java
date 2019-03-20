@@ -22,14 +22,14 @@ import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.forms.CategoryCreateForm;
 import com.cristian.simplestore.web.forms.CategoryUpdateForm;
-import com.cristian.simplestore.web.utils.response.CustomResponse;
+import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
 @RestController
 @RequestMapping("/api/admin/categories")
 public class CategoryController {
 	
-	private CustomResponse response = new CustomResponse();
+	private ApiResponse response = new ApiResponse();
 	
 	@Autowired
 	private CategoryService categoryService;

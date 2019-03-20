@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.business.services.ImageService;
 import com.cristian.simplestore.web.forms.TestForm;
-import com.cristian.simplestore.web.utils.response.CustomResponse;
+import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
 @RestController
 public class TestController {
 
-	private CustomResponse response = new CustomResponse();
+	private ApiResponse response = new ApiResponse();
 
 	@Autowired ImageService imageService;
 	

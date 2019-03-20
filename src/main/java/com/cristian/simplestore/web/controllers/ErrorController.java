@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cristian.simplestore.web.utils.response.CustomResponse;
+import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 @ControllerAdvice(basePackageClasses = ErrorController.class)
 @ResponseBody
 public class ErrorController {
 	
-	CustomResponse response = new CustomResponse();
+	ApiResponse response = new ApiResponse();
 	
 	@ExceptionHandler(BindException.class)
 	ResponseEntity<?> handleControllersValidationException(HttpServletRequest request, 

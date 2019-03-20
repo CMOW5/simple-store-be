@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 
-public class CustomResponse {
+public class ApiResponse {
 	
 	private static final String CONTENT_KEY = "content";
 	private static final String ERRORS_KEY = "errors";
@@ -22,24 +22,24 @@ public class CustomResponse {
 	
 	private HttpStatus status = HttpStatus.OK;
 	
-	public CustomResponse() {
+	public ApiResponse() {
 		attachments = new HashMap<String, Object>();
 		this.attachments.put(CONTENT_KEY, null);
 	}
 		
-	public CustomResponse status(HttpStatus status) {
+	public ApiResponse status(HttpStatus status) {
 		this.status = status;
 		this.attachments.put(STATUS_KEY, this.status.value());
 		return this;
 	}
 	
-	public <T> CustomResponse content(T content) {
+	public <T> ApiResponse content(T content) {
 		this.content = content;
 		this.attachments.put(CONTENT_KEY, this.content);
 		return this;
 	}
 	
-	public CustomResponse errors(BindException exception) {
+	public ApiResponse errors(BindException exception) {
 		List<ApiError> errors = new ArrayList<>();
 		
 		for (FieldError fieldError : exception.getFieldErrors()) {
@@ -52,7 +52,7 @@ public class CustomResponse {
 	}
 	
 	
-	public <T> CustomResponse attach(String key, T attachment) {
+	public <T> ApiResponse attach(String key, T attachment) {
 		this.attachments.put(key, attachment);
 		return this;
 	}
