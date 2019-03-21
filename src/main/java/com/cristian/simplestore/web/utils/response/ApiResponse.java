@@ -16,14 +16,15 @@ public class ApiResponse {
 	private static final String ERRORS_KEY = "errors";
 	private static final String STATUS_KEY = "status";
 	
-	private Map<String, Object> attachments;
-	
+	private HttpStatus status;
 	private Object content;
-	
-	private HttpStatus status = HttpStatus.OK;
-	
+	private List<ApiError> errors;
+	private Map<String, Object> attachments;
+
 	public ApiResponse() {
 		attachments = new HashMap<String, Object>();
+		errors = new ArrayList<>();
+		status = HttpStatus.OK;
 		this.attachments.put(CONTENT_KEY, null);
 	}
 		
@@ -40,17 +41,22 @@ public class ApiResponse {
 	}
 	
 	public ApiResponse errors(BindException exception) {
-		List<ApiError> errors = new ArrayList<>();
-		
 		for (FieldError fieldError : exception.getFieldErrors()) {
 			ApiError error = new ApiError(fieldError);
-			errors.add(error);
+			this.errors.add(error);
 		}
-		
-		this.attachments.put(ERRORS_KEY, errors);
+		this.attachments.put(ERRORS_KEY, this.errors);
 		return this;
 	}
 	
+	public ApiResponse errors(List<FieldError> fieldErrors) {
+		for (FieldError fieldError : fieldErrors) {
+			ApiError error = new ApiError(fieldError);
+			this.errors.add(error);
+		}
+		this.attachments.put(ERRORS_KEY, this.errors);
+		return this;
+	}
 	
 	public <T> ApiResponse attach(String key, T attachment) {
 		this.attachments.put(key, attachment);
