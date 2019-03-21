@@ -29,6 +29,7 @@ import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.respositories.CategoryRepository;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
+import com.cristian.simplestore.utils.FormBuilder;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,12 +90,18 @@ public class CategoryControllerTest extends BaseTest {
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
-	
+		
 	@Test
 	public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
 		Category category = utils.generateRandomCategory();
 		
-		ResponseEntity<String> response = sendCategoryCreateRequest(category);
+		FormBuilder form = new FormBuilder();
+		form.add("name", category.getName());
+			// .add("parentCategory", parentCategoryId);
+			// .add("image", "some image");
+		
+		
+		ResponseEntity<String> response = sendCategoryCreateRequest(form);
 		Category createdCategory = (Category) getContentFromJsonRespose(response.getBody(), Category.class);
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -106,21 +113,48 @@ public class CategoryControllerTest extends BaseTest {
 		Category category = utils.saveRandomCategoryOnDB();
 		
 		String newName = new Faker().name().firstName();
-		category.setName(newName);
 		
-		ResponseEntity<String> response = sendCategoryUpdateRequest(category);
+		FormBuilder form = new FormBuilder();
+		form.add("name", newName);
+			// .add("parentCategory", parentCategoryId);
+			// .add("image", "some image");
+		
+		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
 		Category updatedCategory = (Category) getContentFromJsonRespose(response.getBody(), Category.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(updatedCategory.getName()).isEqualTo(newName);
 	}
 	
+	// @Test
+	public void testItCorrectlyUpdatesTheParentCategory() throws JsonParseException, JsonMappingException, IOException {
+		Category category = utils.saveRandomCategoryOnDB();
+		Category parentCategory = utils.saveRandomCategoryOnDB();
+		
+		category.setParentCategory(parentCategory);
+		category = this.categoryRepository.save(category);
+		
+		// here we manually create a circular reference
+		// Between the current category and its parent
+		// example A -> B -> A is not allowed
+		// it should update to null -> B -> A
+		parentCategory.setParentCategory(category);
+		
+		// ResponseEntity<String> response = sendCategoryUpdateRequest(parentCategory);
+		// Category updatedCategory = (Category) getContentFromJsonRespose(response.getBody(), Category.class);
+
+		// assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		// assertThat(updatedCategory.getName()).isEqualTo(newName);
+	}
+	
 	@Test
 	public void testItReturnsNotFoundWhenUpdating() throws JsonParseException, JsonMappingException, IOException {
-		Category newCategoryData = utils.generateRandomCategory();
-		newCategoryData.setId(new Long(1)); 
+		Long nonExistentCategoryId = new Long(1);
 		
-		ResponseEntity<String> response = sendCategoryUpdateRequest(newCategoryData);
+		FormBuilder form = new FormBuilder();
+		form.add("name", "some name");
+			
+		ResponseEntity<String> response = sendCategoryUpdateRequest(nonExistentCategoryId, form);
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 	}
@@ -129,17 +163,18 @@ public class CategoryControllerTest extends BaseTest {
 	public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
 		Category category = utils.saveRandomCategoryOnDB();
 		
-		ResponseEntity<String> response = sendCategoryDeleteRequest(category);
+		ResponseEntity<String> response = sendCategoryDeleteRequest(category.getId());
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 		categoryRepository.findById(category.getId()).get();
 	}
 	
+	@Test
 	public void testItReturnsNotFoundWhenDeleting() throws JsonParseException, JsonMappingException, IOException {
 		Category category = utils.generateRandomCategory();
 		category.setId(new Long(1));
 		
-		ResponseEntity<String> response = sendCategoryDeleteRequest(category);
+		ResponseEntity<String> response = sendCategoryDeleteRequest(category.getId());
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
@@ -156,30 +191,29 @@ public class CategoryControllerTest extends BaseTest {
 		return response;
 	} 
 	
-	public ResponseEntity<String> sendCategoryCreateRequest(Category category) throws JsonParseException, JsonMappingException, IOException {	
+	public ResponseEntity<String> sendCategoryCreateRequest(FormBuilder form) throws JsonParseException, JsonMappingException, IOException {	
 		String url = "/api/admin/categories";
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-		Map<String, Object> body = mapObject(category);
+		MultiValueMap<String, Object> body = form.build();
 		
 		ResponseEntity<String> jsonResponse = sendRequest(url, HttpMethod.POST, headers, body);		
 		return jsonResponse;
 	}
 	
-	public ResponseEntity<String> sendCategoryUpdateRequest(Category category) throws JsonParseException, JsonMappingException, IOException {	
-		String url = "/api/admin/categories/" + category.getId();
+	public ResponseEntity<String> sendCategoryUpdateRequest(Long categoryId, FormBuilder form) throws JsonParseException, JsonMappingException, IOException {	
+		String url = "/api/admin/categories/" + categoryId;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-		Map<String, Object> body = mapObject(category);
-		
+		MultiValueMap<String, Object> body = form.build();
+	
 		ResponseEntity<String> response = sendRequest(url, HttpMethod.PUT, headers, body);
 		return response;
 	}
 	
-	public ResponseEntity<String> sendCategoryDeleteRequest(Category category) throws JsonParseException, JsonMappingException, IOException {	
-		String url = "/api/admin/categories/" + category.getId();
+	public ResponseEntity<String> sendCategoryDeleteRequest(Long categoryId) throws JsonParseException, JsonMappingException, IOException {	
+		String url = "/api/admin/categories/" + categoryId;
 		HttpHeaders headers = new HttpHeaders();
-		// headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpMethod method = HttpMethod.DELETE;
 				
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
@@ -187,35 +221,17 @@ public class CategoryControllerTest extends BaseTest {
 		return response;
 	}
 	
-	public ResponseEntity<String> sendRequest(String url, HttpMethod method, HttpHeaders headers, Map<String, Object> body) {
-		MultiValueMap<String, Object> requestBody = new LinkedMultiValueMap<>();		
-		
-		body.forEach((key, value) -> { 
-				if (value instanceof List) {
-					requestBody.addAll(key, (List<? extends Object>) value);
-				} else {
-					requestBody.add(key, value);
-				}
-			}
-		);
-		
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+	public ResponseEntity<String> sendRequest(String url, HttpMethod method, HttpHeaders headers, MultiValueMap<String, Object> body) {
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 		ResponseEntity<String> response = this.restTemplate.exchange(url, method, requestEntity, String.class);
-		
 		return response;
 	}
 	
 	public <T> Object getContentFromJsonRespose(String jsonResponse, Class<T> classType) throws JsonParseException, JsonMappingException, IOException {	
 	    ObjectMapper mapper = new ObjectMapper();
-	    Map mapResponse = mapper.readValue(jsonResponse, Map.class);
+	    Map<?, ?> mapResponse = mapper.readValue(jsonResponse, Map.class);
 	    
 	    T content = mapper.convertValue(mapResponse.get("content"), classType);
 	    return content;
 	}
-	
-	public Map<String, Object> mapObject(Object o) {
-		 ObjectMapper mapper = new ObjectMapper();
-		 Map<String, Object> map = mapper.convertValue(o, Map.class);
-		 return map;
-	}  
 }
