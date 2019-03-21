@@ -2,7 +2,6 @@ package com.cristian.simplestore.integration.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,6 +26,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.respositories.CategoryRepository;
+import com.cristian.simplestore.persistence.respositories.ImageRepository;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
 import com.cristian.simplestore.utils.FormBuilder;
@@ -48,16 +47,21 @@ public class CategoryControllerTest extends BaseTest {
 	private CategoryRepository categoryRepository;
 	
 	@Autowired
+	private ImageRepository ImageRepository;
+	
+	@Autowired
 	private CategoryTestsUtils utils;
 	
 	@Before
 	public void setUp() {
 		categoryRepository.deleteAll();
+		ImageRepository.deleteAll();
 	}
 	
 	@After
 	public void tearDown() {
 		categoryRepository.deleteAll();
+		ImageRepository.deleteAll();
 	}
 	
 	@Test
