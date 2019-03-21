@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.util.StringUtils;
@@ -28,6 +29,9 @@ public class Image {
 	private Long id;
 	
 	private String name;
+	
+	@Transient
+	private String url;
 	
 	@OneToMany(
 			mappedBy = "image",
