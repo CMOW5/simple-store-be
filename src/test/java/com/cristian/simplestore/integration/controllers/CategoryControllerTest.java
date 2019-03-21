@@ -2,6 +2,7 @@ package com.cristian.simplestore.integration.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.cristian.simplestore.persistence.entities.Category;
@@ -30,6 +31,7 @@ import com.cristian.simplestore.persistence.respositories.CategoryRepository;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
 import com.cristian.simplestore.utils.FormBuilder;
+import com.cristian.simplestore.utils.ImageCreator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -94,29 +96,32 @@ public class CategoryControllerTest extends BaseTest {
 	@Test
 	public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
 		Category category = utils.generateRandomCategory();
+		Category parentCategory = utils.saveRandomCategoryOnDB();
 		
 		FormBuilder form = new FormBuilder();
-		form.add("name", category.getName());
-			// .add("parentCategory", parentCategoryId);
-			// .add("image", "some image");
-		
+		form.add("name", category.getName())
+			.add("parentCategory", parentCategory.getId())
+			.add("image", ImageCreator.getTestImage());
 		
 		ResponseEntity<String> response = sendCategoryCreateRequest(form);
 		Category createdCategory = (Category) getContentFromJsonRespose(response.getBody(), Category.class);
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 		assertThat(createdCategory.getName()).isEqualTo(category.getName());
+		assertThat(createdCategory.getImage()).isNotNull();
+		assertThat(createdCategory.getParentCategory().getId()).isEqualTo(parentCategory.getId());
 	}
 	
 	@Test
 	public void testItUpdatesACategory() throws JsonParseException, JsonMappingException, IOException {
 		Category category = utils.saveRandomCategoryOnDB();
 		
+		Category newParentCategory = utils.saveRandomCategoryOnDB();
 		String newName = new Faker().name().firstName();
 		
 		FormBuilder form = new FormBuilder();
-		form.add("name", newName);
-			// .add("parentCategory", parentCategoryId);
+		form.add("name", newName)
+			.add("parentCategory", newParentCategory.getId());
 			// .add("image", "some image");
 		
 		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
@@ -124,27 +129,34 @@ public class CategoryControllerTest extends BaseTest {
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(updatedCategory.getName()).isEqualTo(newName);
+		assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(newParentCategory.getId());
 	}
 	
-	// @Test
+	@Test
 	public void testItCorrectlyUpdatesTheParentCategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.saveRandomCategoryOnDB();
-		Category parentCategory = utils.saveRandomCategoryOnDB();
+		Category categoryA = utils.saveRandomCategoryOnDB();
+		Category categoryB = utils.saveRandomCategoryOnDB();
 		
-		category.setParentCategory(parentCategory);
-		category = this.categoryRepository.save(category);
+		categoryA.setParentCategory(categoryB);
+		categoryA = this.categoryRepository.save(categoryA);
 		
 		// here we manually create a circular reference
-		// Between the current category and its parent
-		// example A -> B -> A is not allowed
-		// it should update to null -> B -> A
-		parentCategory.setParentCategory(category);
+		// Between the category A and its parent, the category B.
+		// example B -> A -> B is not allowed
+		// it should update to null -> A -> B
+		FormBuilder form = new FormBuilder();
+		form.add("name", categoryB.getName())
+			.add("parentCategory", categoryA.getId());
 		
-		// ResponseEntity<String> response = sendCategoryUpdateRequest(parentCategory);
-		// Category updatedCategory = (Category) getContentFromJsonRespose(response.getBody(), Category.class);
+		ResponseEntity<String> response = sendCategoryUpdateRequest(categoryB.getId(), form);
+		Category updatedCategory = (Category) getContentFromJsonRespose(response.getBody(), Category.class);
 
-		// assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		// assertThat(updatedCategory.getName()).isEqualTo(newName);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(categoryA.getId());
+		
+		categoryA = this.categoryRepository.findById(categoryA.getId()).get();
+		assertThat(categoryA.getParentCategory()).isNull();
+
 	}
 	
 	@Test
