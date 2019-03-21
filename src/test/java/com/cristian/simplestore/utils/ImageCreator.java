@@ -17,7 +17,15 @@ public class ImageCreator {
 
 	public static Resource getTestImage() throws IOException {
 		Path testFile = Files.createTempFile("test-file", ".jpg");
-		File imageFile = createImage();
+		File imageFile = createImage("");
+		byte[] imageBytes = readFileToByteArray(imageFile);
+		Files.write(testFile, imageBytes);
+		return new FileSystemResource(testFile.toFile());
+	}
+	
+	public static Resource createTestImage(String path, String imageName) throws IOException {
+		Path testFile = Files.createTempFile("test-file", ".jpg");
+		File imageFile = createImage(path + "/" + imageName);
 		byte[] imageBytes = readFileToByteArray(imageFile);
 		Files.write(testFile, imageBytes);
 		return new FileSystemResource(testFile.toFile());
@@ -29,7 +37,11 @@ public class ImageCreator {
 		return new FileSystemResource(testFile.toFile());
 	}
 
-	public static File createImage() {
+	public static File createImage(String imagePath) {
+		if (imagePath.isEmpty()) {
+			imagePath = "myimage.jpg";
+		}
+		
 		int width = 250;
 		int height = 250;
 
@@ -56,7 +68,7 @@ public class ImageCreator {
 		g2d.dispose();
 
 		// Save as PNG
-		File file = new File("myimage.jpg");
+		File file = new File(imagePath);
 		try {
 			ImageIO.write(bufferedImage, "jpg", file);
 		} catch (IOException e) {

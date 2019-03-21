@@ -2,17 +2,25 @@ package com.cristian.simplestore.web.controllers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.business.services.ImageStorageService;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
+import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 @RestController
 public class ImageController {
@@ -22,16 +30,23 @@ public class ImageController {
 	@GetMapping(
 			value = "api/images/{filename:..+}"
 	)
-	public @ResponseBody byte[] serveImage(@PathVariable String filename) throws IOException {
+	public ResponseEntity<?> serveImage(@PathVariable String filename) throws IOException {
 		Resource file;
 		try {
 			file = imageStorageService.loadAsResource(filename);
 	        InputStream fileStream = file.getInputStream();
-	        return IOUtils.toByteArray(fileStream);
+	        return new ResponseEntity(IOUtils.toByteArray(fileStream), HttpStatus.OK);
 		} 
 		catch (StorageFileNotFoundException e) {
-			return null;
+			throw new EntityNotFoundException(e.getMessage());
 		}
 		 
     }
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseEntity<?>  handleEntityNotFoundException(
+			EntityNotFoundException exception) {
+		return new ResponseEntity(HttpStatus.NOT_FOUND);
+	}
 }
