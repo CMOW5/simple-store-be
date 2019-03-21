@@ -31,9 +31,9 @@ public class Category {
 	@ManyToOne
 	private Category parentCategory;
 	
-	@OneToMany(mappedBy = "parentCategory" ,cascade = CascadeType.ALL, orphanRemoval = true)
+	// @OneToMany(mappedBy = "parentCategory" , cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private List<Category> subcategories = new ArrayList<>();
+	// private List<Category> subcategories = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Product> products = new ArrayList<>();
@@ -72,8 +72,8 @@ public class Category {
 	}
 	
 	public void addSubCategory(Category subcategory) {
-		this.subcategories.add(subcategory);
-		subcategory.setParentCategory(this);
+		// this.subcategories.add(subcategory);
+		// subcategory.setParentCategory(this);
 	}
 	
 	@JsonIgnore
