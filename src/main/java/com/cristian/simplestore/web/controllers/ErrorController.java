@@ -1,7 +1,5 @@
 package com.cristian.simplestore.web.controllers;
 
-import java.util.Map;
-
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +19,7 @@ public class ErrorController {
 	ApiResponse response = new ApiResponse();
 	
 	@ExceptionHandler(BindException.class)
-	ResponseEntity<?> handleControllersValidationException(HttpServletRequest request, 
+	public ResponseEntity<?> handleControllersValidationException(HttpServletRequest request, 
 			BindException exception) {
 		return response.errors(exception)
 				.status(HttpStatus.BAD_REQUEST)
@@ -29,7 +27,7 @@ public class ErrorController {
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<Map<String, Object>> handleError(Exception ex) {
+	public ResponseEntity<?> handleError(Exception ex) {
 		return response.status(HttpStatus.NOT_FOUND)
 				.content(null)
 				.build();

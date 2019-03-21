@@ -2,7 +2,6 @@ package com.cristian.simplestore.web.controllers;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -14,13 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.business.services.ImageStorageService;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
-import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 @RestController
 public class ImageController {
@@ -35,7 +32,7 @@ public class ImageController {
 		try {
 			file = imageStorageService.loadAsResource(filename);
 	        InputStream fileStream = file.getInputStream();
-	        return new ResponseEntity(IOUtils.toByteArray(fileStream), HttpStatus.OK);
+	        return new ResponseEntity<>(IOUtils.toByteArray(fileStream), HttpStatus.OK);
 		} 
 		catch (StorageFileNotFoundException e) {
 			throw new EntityNotFoundException(e.getMessage());
@@ -47,6 +44,6 @@ public class ImageController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<?>  handleEntityNotFoundException(
 			EntityNotFoundException exception) {
-		return new ResponseEntity(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }

@@ -1,7 +1,6 @@
 package com.cristian.simplestore.web.controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -35,7 +34,7 @@ public class CategoryController {
 	private CategoryService categoryService;
 	
 	@GetMapping
-	public ResponseEntity<Map<String, Object>> findAllCategories() {
+	public ResponseEntity<?> findAllCategories() {
 		List<Category> categories = categoryService.findAll();
 		return response.status(HttpStatus.OK)
 					.content(categories)
@@ -43,7 +42,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Map<String, Object>> findCategoryById(@PathVariable long id) {
+	public ResponseEntity<?> findCategoryById(@PathVariable long id) {
 		Category foundCategory = categoryService.findCategoryById(id);
 		return response.status(HttpStatus.OK)
 				.content(foundCategory)
@@ -51,7 +50,7 @@ public class CategoryController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> create(
+	public ResponseEntity<?> create(
 			@Valid CategoryCreateForm form) {
 		Category createdCategory = categoryService.create(form);
 		return response.status(HttpStatus.CREATED)
@@ -60,7 +59,7 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Map<String, Object>> update(
+	public ResponseEntity<?> update(
 			@Valid CategoryUpdateForm form) {
 		Category updatedCategory = categoryService.update(form);
 		return response.status(HttpStatus.OK)
@@ -69,7 +68,7 @@ public class CategoryController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		categoryService.deleteById(id);
 		return response.status(HttpStatus.NO_CONTENT)
 				.content(null)
@@ -77,7 +76,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/count")
-	public ResponseEntity<Map<String, Object>> count() {
+	public ResponseEntity<?> count() {
 		long categoriesCount = categoryService.count();
 		return response.status(HttpStatus.OK)
 				.content(categoriesCount)
@@ -85,44 +84,10 @@ public class CategoryController {
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(
+	public ResponseEntity<?> handleEntityNotFoundException(
 			EntityNotFoundException exception) {
 		return response.status(HttpStatus.NOT_FOUND)
 				.content(null)
 				.build();
-	}
-	
-//	@ExceptionHandler(BindException.class)
-//	public ResponseEntity<Map<String, Object>> handleValidationErrors(
-//			BindException exception) {
-//		return response.errors(exception.getAllErrors())
-//				.status(HttpStatus.BAD_REQUEST)
-//				.build();
-//		
-//		
-//	}
-	
-//	@ExceptionHandler(BindException.class)
-//	public ResponseEntity<Map<String, Object>> handleValidationException(
-//			BindException ex) {
-//		
-//
-//		return response.status(HttpStatus.NOT_FOUND)
-//				.content(ex.getFieldErrors())
-//				.build();
-//	}
-//	
-	
-	// org.springframework.validation.BindException
-	
-//  @ResponseStatus(
-//		  value=HttpStatus.INTERNAL_SERVER_ERROR,
-//          reason="Data integrity violation") 
-//  @ExceptionHandler(Exception.class)
-//  public Map<String, Object> handleError(HttpServletRequest req, Exception ex) {
-//    // logger.error("Request: " + req.getRequestURL() + " raised " + ex);
-//	response.attachContent(ex.getMessage());
-//    return response.build();
-//  }
-	
+	}	
 }

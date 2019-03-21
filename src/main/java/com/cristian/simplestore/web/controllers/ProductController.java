@@ -1,7 +1,6 @@
 package com.cristian.simplestore.web.controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -35,7 +34,7 @@ public class ProductController {
 	private ApiResponse response = new ApiResponse();
 
 	@GetMapping
-	public ResponseEntity<Map<String, Object>> findAllProducts() {
+	public ResponseEntity<?> findAllProducts() {
 		List<Product> products = productService.findAll();
 		return response.status(HttpStatus.OK)
 				.content(products)
@@ -43,7 +42,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Map<String, Object>> findProductById(@PathVariable long id) {
+	public ResponseEntity<?> findProductById(@PathVariable long id) {
 		Product product = productService.findById(id);
 		return response.status(HttpStatus.OK)
 				.content(product)
@@ -51,7 +50,7 @@ public class ProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Map<String, Object>> create(@Valid ProductCreateForm form) {
+	public ResponseEntity<?> create(@Valid ProductCreateForm form) {
 		Product createdProduct = productService.create(form);
 		return response.status(HttpStatus.CREATED)
 				.content(createdProduct)
@@ -59,7 +58,7 @@ public class ProductController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Map<String, Object>> update(@PathVariable long id, 
+	public ResponseEntity<?> update(@PathVariable long id, 
 			@Valid ProductUpdateForm form) {
 		Product updatedProduct = productService.update(form);
 		return response.status(HttpStatus.OK)
@@ -69,7 +68,7 @@ public class ProductController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable long id) {
+	public ResponseEntity<?> delete(@PathVariable long id) {
 		productService.deleteById(id);
 		return response.status(HttpStatus.NO_CONTENT)
 				.content(null)
@@ -77,7 +76,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/count")
-	public ResponseEntity<Map<String, Object>> count() {
+	public ResponseEntity<?> count() {
 		long productsCount = productService.count();
 		return response.status(HttpStatus.OK)
 				.content(productsCount)
@@ -85,7 +84,7 @@ public class ProductController {
 	}
 	
 	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<Map<String, Object>> handleError(Exception ex) {
+	public ResponseEntity<?> handleError(Exception ex) {
 		return response.status(HttpStatus.NOT_FOUND)
 				.content(null)
 				.build();
