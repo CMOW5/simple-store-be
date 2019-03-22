@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.business.services.ImageStorageService;
@@ -41,9 +40,19 @@ public class ImageController {
     }
 	
 	@ExceptionHandler(EntityNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<?>  handleEntityNotFoundException(
 			EntityNotFoundException exception) {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
+
+// TODO: why is this not working ?? status code = 500 is returned instead 
+//	@ExceptionHandler(EntityNotFoundException.class)
+//	@ResponseStatus(HttpStatus.NOT_FOUND)
+//	public ResponseEntity<?> handleEntityNotFound(EntityNotFoundException exception) {
+//		ApiResponse response = new ApiResponse();
+//		return response
+//				.status(HttpStatus.NOT_FOUND)
+//				.content(null)
+//				.build();
+//	}
 }
