@@ -73,6 +73,11 @@ public class Image {
 		return "http://localhost:8000/api/images/" + name;
 	}
 	
+	@JsonIgnore
+	public boolean isAUrl() {
+		return this.isValidUrl(this.name);
+	}
+	
 	private boolean isValidUrl(String url) {
 		try {
 			new URL(this.name);
