@@ -22,9 +22,9 @@ public class ApiResponse {
 	private Map<String, Object> attachments;
 
 	public ApiResponse() {
-		attachments = new HashMap<String, Object>();
-		errors = new ArrayList<>();
-		status = HttpStatus.OK;
+		this.attachments = new HashMap<String, Object>();
+		this.errors = new ArrayList<>();
+		this.status = HttpStatus.OK;
 		this.attachments.put(CONTENT_KEY, null);
 	}
 		
@@ -58,12 +58,18 @@ public class ApiResponse {
 		return this;
 	}
 	
+	public ApiResponse addError(ApiError error) {
+		this.errors.add(error);
+		this.attachments.put(ERRORS_KEY, this.errors);
+		return this;
+	}
+	
 	public <T> ApiResponse attach(String key, T attachment) {
 		this.attachments.put(key, attachment);
 		return this;
 	}
 	
-	public ResponseEntity<Map<String, Object>> build() {		
-		return new ResponseEntity<>(attachments, status);
+	public ResponseEntity<?> build() {		
+		return new ResponseEntity<>(this.attachments, this.status);
 	}
 }
