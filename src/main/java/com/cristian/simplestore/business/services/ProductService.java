@@ -62,9 +62,7 @@ public class ProductService {
 		product.setActive(form.isActive());
 		product.setCategory(form.getCategory());
 		product.setUnits(form.getUnits());
-		
-		List<Image> images = this.imageService.saveAll(form.getImages());
-		product.addImages(images);
+		product = this.addImagesToProduct(product, form.getImages());
 		
 		return productRepository.save(product);
 	}
@@ -89,18 +87,26 @@ public class ProductService {
 			storedProduct.setActive(form.isActive());
 			storedProduct.setCategory(form.getCategory());
 			storedProduct.setUnits(form.getUnits());
-			
-			List<Image> images = this.imageService.saveAll(newImages);
-			storedProduct.addImages(images);
-			
-			
-			Iterable<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
-			storedProduct.removeImages(imagesToDelete);
+			storedProduct = this.addImagesToProduct(storedProduct, newImages);
+			storedProduct = this.deleteProductImages(storedProduct, imagesIdsToDelete);
 			
 			return storedProduct;
 		} catch (NoSuchElementException exception) {
 			throw new EntityNotFoundException("The product with the given id was not found");
 		}
+	}
+	
+	public Product addImagesToProduct(Product product, List<MultipartFile> newImages) {
+		List<Image> images = this.imageService.saveAll(newImages);
+		product.addImages(images);
+		return product;
+	}
+	
+	public Product deleteProductImages(Product product, List<Long> imagesIdsToDelete) {
+		Iterable<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
+		product.removeImages(imagesToDelete);
+		this.imageService.deleteAll(imagesToDelete);
+		return product;
 	}
 	
 	public void deleteById(long id) {

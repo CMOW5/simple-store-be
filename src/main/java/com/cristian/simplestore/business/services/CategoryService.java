@@ -49,7 +49,7 @@ public class CategoryService {
 		Category category = new Category();
 		category.setName(form.getName());
 		category.setParentCategory(form.getParentCategory());
-		category = addImageToCategory(category, form.getImage());
+		category = this.addImageToCategory(category, form.getImage());
 		
 		return categoryRepository.save(category);
 	}
@@ -59,19 +59,18 @@ public class CategoryService {
 		return this.categoryRepository.save(category);
 	}
 	
-	// TODO: delete the images that are not used from storage after update
 	public Category update(CategoryUpdateForm form) {
 		try {
-			Category storedCategory = categoryRepository.findById(form.getId()).get();
+			Category storedCategory = this.categoryRepository.findById(form.getId()).get();
 			String newName = form.getName();
 			Category newParentCategory = form.getParentCategory();
 			MultipartFile newImageFile = form.getNewImage();
 			Long imageIdToDelete = form.getImageIdToDelete();
 			
 			storedCategory.setName(newName);
-			storedCategory = updateParentCategory(storedCategory, newParentCategory);
-			storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
-			return categoryRepository.save(storedCategory);
+			storedCategory = this.updateParentCategory(storedCategory, newParentCategory);
+			storedCategory = this.updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
+			return this.categoryRepository.save(storedCategory);
 		} catch (NoSuchElementException e) {
 			throw new EntityNotFoundException("The category with the given id was not found");
 		}
@@ -99,7 +98,6 @@ public class CategoryService {
 	}
 	
 	private Category updateParentCategory(Category categoryToUpdate, Category newParentCategory) {
-		// TODO: verify if one is null and the other is not
 		// TODO: should i throw an exception here?? 
 		if (isTheSameCategory(categoryToUpdate, newParentCategory)) {
 			newParentCategory = null;
@@ -121,11 +119,13 @@ public class CategoryService {
 	
 	private Category updateCategoryImage(Category categoryToUpdate, MultipartFile newImageFile, Long imageIdToDelete) {
 		if (newImageFile != null) {
-			Image image = this.imageService.save(newImageFile);
-			categoryToUpdate.deleteImage();
-			categoryToUpdate.addImage(image);
+			Image newImage = this.imageService.save(newImageFile);
+			Image currentImage = categoryToUpdate.getImage();
+			this.imageService.delete(currentImage);
+			categoryToUpdate.addImage(newImage);
 		} else if (imageIdToDelete != null) { // TODO: verify the imageId
 			categoryToUpdate.deleteImage();
+			this.imageService.deleteById(imageIdToDelete);
 		}
 		
 		return categoryToUpdate;

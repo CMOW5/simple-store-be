@@ -57,8 +57,22 @@ public class ImageService {
 		this.imageRepository.deleteAll(imagesToDelete);
 	}
 	
+	public void delete(Image image) {
+		if (image == null) return;
+		this.imageRepository.delete(image);
+	}
+	
 	public void deleteById(Long id) {
 		this.imageRepository.deleteById(id);
+	}
+	
+	public void deleteAll(Iterable<Image> imagesToDelete) {
+		this.imageRepository.deleteAll(imagesToDelete);
+	}
+	
+	public void deleteAllById(Iterable<Long> imagesIdsToDelete) {
+		Iterable<Image> imagesToDelete = this.imageRepository.findAllById(imagesIdsToDelete);
+		this.imageRepository.deleteAll(imagesToDelete);
 	}
 		
 	private String generateImageName(MultipartFile file) {

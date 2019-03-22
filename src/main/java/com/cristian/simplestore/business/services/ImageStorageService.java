@@ -33,6 +33,16 @@ public class ImageStorageService implements StorageService {
         this.rootLocation = Paths.get(properties.getLocation());
     }
     
+    public void delete(String filename) {
+    	Path fileToDeletePath = Paths.get(this.rootLocation.toString() + "/" + filename);
+        try {
+			Files.delete(fileToDeletePath);
+		} catch (IOException e) {
+			//
+			e.printStackTrace();
+		}
+    }
+    
     /**
      * this method store a image in the storage folder
      * with the given filename, the method returns the 
