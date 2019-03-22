@@ -91,7 +91,7 @@ CREATE TABLE `products` (
   `name` varchar(255) NOT NULL,
   `price` double NOT NULL,
   `price_sale` double NOT NULL,
-  `units` bigint(20) DEFAULT NULL,
+  `stock` bigint(20) DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `category_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

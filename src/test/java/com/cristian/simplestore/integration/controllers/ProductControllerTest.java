@@ -91,7 +91,7 @@ public class ProductControllerTest extends BaseTest {
 		assertThat(foundProduct.getPriceSale()).isEqualTo(product.getPriceSale());
 		assertThat(foundProduct.isInSale()).isEqualTo(product.isInSale());
 		assertThat(foundProduct.isActive()).isEqualTo(product.isActive());
-		assertThat(foundProduct.getUnits()).isEqualTo(product.getUnits());
+		assertThat(foundProduct.getStock()).isEqualTo(product.getStock());
 	}
 	
 	@Test
@@ -113,7 +113,7 @@ public class ProductControllerTest extends BaseTest {
 			.add("priceSale", product.getPriceSale())
 			.add("inSale", product.isInSale())
 			.add("active", product.isActive())
-			.add("units", product.getUnits())
+			.add("stock", product.getStock())
 			.add("category", category.getId());
 		
 		ResponseEntity<String> response = sendProductCreateRequest(form);
@@ -127,7 +127,7 @@ public class ProductControllerTest extends BaseTest {
 		assertThat(createdProduct.getPriceSale()).isEqualTo(product.getPriceSale());
 		assertThat(createdProduct.isInSale()).isEqualTo(product.isInSale());
 		assertThat(createdProduct.isActive()).isEqualTo(product.isActive());
-		assertThat(createdProduct.getUnits()).isEqualTo(product.getUnits());
+		assertThat(createdProduct.getStock()).isEqualTo(product.getStock());
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class ProductControllerTest extends BaseTest {
 			.add("priceSale", newProductData.getPriceSale())
 			.add("inSale", newProductData.isInSale())
 			.add("active", newProductData.isActive())
-			.add("units", newProductData.getUnits())
+			.add("stock", newProductData.getStock())
 			.add("category", newCategory.getId());
 		
 		
@@ -158,7 +158,7 @@ public class ProductControllerTest extends BaseTest {
 		assertThat(updatedProduct.getPriceSale()).isEqualTo(newProductData.getPriceSale());
 		assertThat(updatedProduct.isInSale()).isEqualTo(newProductData.isInSale());
 		assertThat(updatedProduct.isActive()).isEqualTo(newProductData.isActive());
-		assertThat(updatedProduct.getUnits()).isEqualTo(newProductData.getUnits());
+		assertThat(updatedProduct.getStock()).isEqualTo(newProductData.getStock());
 	}
 	
 	@Test

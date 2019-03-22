@@ -37,7 +37,7 @@ public class ProductTestsUtils {
 		boolean inSale = false;
 		boolean active = true;
 		Category category = null;
-		Long units = (long) faker.number().numberBetween(0, 200);
+		Long stock = (long) faker.number().numberBetween(0, 200);
 
 		product.setName(name);
 		product.setDescription(description);
@@ -46,7 +46,7 @@ public class ProductTestsUtils {
 		product.setInSale(inSale);
 		product.setActive(active);
 		product.setCategory(category);
-		product.setUnits(units);
+		product.setStock(stock);
 		
 		return product;
 	}
@@ -86,7 +86,7 @@ public class ProductTestsUtils {
 		boolean inSale = false;
 		boolean active = true;
 		Category category = null;
-		Long units = (long) faker.number().numberBetween(0, 200);
+		Long stock = (long) faker.number().numberBetween(0, 200);
 		
 
 		form.setName(name);
@@ -96,7 +96,7 @@ public class ProductTestsUtils {
 		form.setInSale(inSale);
 		form.setActive(active);
 		form.setCategory(category);
-		form.setUnits(units);
+		form.setStock(stock);
 		
 		return form;
 	}
@@ -111,7 +111,7 @@ public class ProductTestsUtils {
 		boolean inSale = false;
 		boolean active = true;
 		Category category = null;
-		Long units = (long) faker.number().numberBetween(0, 200);
+		Long stock = (long) faker.number().numberBetween(0, 200);
 		
 
 		form.setName(name);
@@ -121,7 +121,7 @@ public class ProductTestsUtils {
 		form.setInSale(inSale);
 		form.setActive(active);
 		form.setCategory(category);
-		form.setUnits(units);
+		form.setStock(stock);
 		
 		return form;
 	}

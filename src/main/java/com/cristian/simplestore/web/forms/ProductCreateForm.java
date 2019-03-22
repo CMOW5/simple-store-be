@@ -40,7 +40,7 @@ public class ProductCreateForm implements Form<Product> {
 	
 	private List<MultipartFile> images = new ArrayList<MultipartFile>();
 
-	private Long units;
+	private Long stock;
 
 	public String getName() {
 		return name;
@@ -105,12 +105,12 @@ public class ProductCreateForm implements Form<Product> {
 	public void setImages(List<MultipartFile> images) {
 		this.images = images;
 	}
-	public Long getUnits() {
-		return units;
+	public Long getStock() {
+		return stock;
 	}
 
-	public void setUnits(Long units) {
-		this.units = units;
+	public void setStock(Long stock) {
+		this.stock = stock;
 	}
 
 	@Override

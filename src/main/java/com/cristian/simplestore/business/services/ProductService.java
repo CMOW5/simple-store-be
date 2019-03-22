@@ -61,7 +61,7 @@ public class ProductService {
 		product.setInSale(form.isInSale());
 		product.setActive(form.isActive());
 		product.setCategory(form.getCategory());
-		product.setUnits(form.getUnits());
+		product.setStock(form.getStock());
 		product = this.addImagesToProduct(product, form.getImages());
 		
 		return productRepository.save(product);
@@ -86,7 +86,7 @@ public class ProductService {
 			storedProduct.setInSale(form.isInSale());
 			storedProduct.setActive(form.isActive());
 			storedProduct.setCategory(form.getCategory());
-			storedProduct.setUnits(form.getUnits());
+			storedProduct.setStock(form.getStock());
 			storedProduct = this.addImagesToProduct(storedProduct, newImages);
 			storedProduct = this.deleteProductImages(storedProduct, imagesIdsToDelete);
 			

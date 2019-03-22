@@ -44,7 +44,7 @@ public class ProductUpdateForm implements Form<Product> {
 	
 	private Category category;
 	
-	private Long units;
+	private Long stock;
 	
 	private List<MultipartFile> newImages = new ArrayList<>();
 	
@@ -114,12 +114,12 @@ public class ProductUpdateForm implements Form<Product> {
 		this.category = category;
 	}
 	
-	public Long getUnits() {
-		return units;
+	public Long getStock() {
+		return stock;
 	}
 
-	public void setUnits(Long units) {
-		this.units = units;
+	public void setStock(Long stock) {
+		this.stock = stock;
 	}
 
 	public List<MultipartFile> getNewImages() {

@@ -54,7 +54,7 @@ public class Product {
 	)
 	private List<ProductImage> images = new ArrayList<>();
 	
-	private Long units;
+	private Long stock;
 
 	@CreationTimestamp
 	private LocalDateTime createdDate;
@@ -134,12 +134,12 @@ public class Product {
 		this.category = category;
 	}
 	
-	public Long getUnits() {
-		return units;
+	public Long getStock() {
+		return stock;
 	}
 
-	public void setUnits(Long units) {
-		this.units = units;
+	public void setStock(Long stock) {
+		this.stock = stock;
 	}
 	
 	public List<Image> getImages() {
