@@ -26,7 +26,7 @@ public class ApiResponseTest extends BaseTest {
 	public void testsTheResponseBody() {
 		ApiResponse apiResponse = new ApiResponse();
 		ResponseEntity<Map<String, Object>> response = 
-				apiResponse.content("some content").status(HttpStatus.BAD_REQUEST).build();
+				(ResponseEntity<Map<String, Object>>) apiResponse.content("some content").status(HttpStatus.BAD_REQUEST).build();
 		
 		String expectedBody = "{content=some content, status=400}";
 		assertThat(response.getBody().toString()).isEqualTo(expectedBody);
@@ -40,10 +40,10 @@ public class ApiResponseTest extends BaseTest {
 		ApiResponse apiResponse = new ApiResponse();
 		
 		ResponseEntity<Map<String, Object>> response = 
-				apiResponse.content("some content")
-						.status(HttpStatus.BAD_REQUEST)
-						.errors(errors)
-						.build();
+				(ResponseEntity<Map<String, Object>>) apiResponse.content("some content")
+				.status(HttpStatus.BAD_REQUEST)
+				.errors(errors)
+				.build();
 		
 		List<ApiError> responseErrors = (List<ApiError>) response.getBody().get("errors");
 		
