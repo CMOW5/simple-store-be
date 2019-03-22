@@ -63,8 +63,8 @@ ALTER TABLE `images`
 CREATE TABLE `categories` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `image_id` bigint(20) DEFAULT NULL,
-  `parent_category_id` bigint(20) DEFAULT NULL
+  `parent_category_id` bigint(20) DEFAULT NULL,
+  `image_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -84,16 +84,16 @@ ALTER TABLE `categories`
 
 CREATE TABLE `products` (
   `id` bigint(20) NOT NULL,
-  `active` bit(1) NOT NULL DEFAULT b'1',
-  `created_date` datetime DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `in_sale` bit(1) NOT NULL DEFAULT b'0',
   `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1',
   `price` double NOT NULL,
   `price_sale` double NOT NULL,
+  `in_sale` bit(1) NOT NULL DEFAULT b'0',
   `stock` bigint(20) DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
-  `category_id` bigint(20) DEFAULT NULL
+  `category_id` bigint(20) DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
