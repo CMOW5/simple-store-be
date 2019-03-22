@@ -16,6 +16,12 @@ public class ApiError {
 		this.rejectedValue = fieldError.getRejectedValue();
 	}
 	
+	public ApiError(String field, String defaultMessage, Object rejectedValue) {
+		this.field = field;
+		this.defaultMessage = defaultMessage;
+		this.rejectedValue = rejectedValue;
+	}
+
 	public String getField() {
 		return field;
 	}
