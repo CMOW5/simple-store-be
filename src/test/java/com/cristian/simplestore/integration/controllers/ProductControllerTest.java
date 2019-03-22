@@ -184,7 +184,8 @@ public class ProductControllerTest extends BaseTest {
 		productRepository.findById(product.getId()).get();
 	}
 	
-	private void testItReturnsNotFoundWhenDeleting() throws JsonParseException, JsonMappingException, IOException {
+	@Test
+	public void testItReturnsNotFoundWhenDeleting() throws JsonParseException, JsonMappingException, IOException {
 		Long nonExistentId = new Long(1);
 		
 		ResponseEntity<String> response = sendProductDeleteRequest(nonExistentId);
