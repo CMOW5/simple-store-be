@@ -25,12 +25,23 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `image_id` bigint(20) DEFAULT NULL,
+  `parent_category_id` bigint(20) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
 -- Table structure for table `hibernate_sequence`
 --
 
 CREATE TABLE `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hibernate_sequence`
@@ -41,6 +52,8 @@ INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 (1),
 (1);
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `images`
 --
@@ -48,34 +61,7 @@ INSERT INTO `hibernate_sequence` (`next_val`) VALUES
 CREATE TABLE `images` (
   `id` bigint(20) NOT NULL,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Indexes for table `images`
---
-ALTER TABLE `images`
-  ADD PRIMARY KEY (`id`);
-
---
--- Table structure for table `categories`
---
-
-CREATE TABLE `categories` (
-  `id` bigint(20) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `image_id` bigint(20) DEFAULT NULL,
-  `parent_category_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `categories_name_unique` (`name`),
-  ADD KEY `categories_image_id_foreign` (`image_id`),
-  ADD KEY `categories_parent_category_id_foreign` (`parent_category_id`),
-  ADD CONSTRAINT `categories_image_id_foreign` FOREIGN KEY (`image_id`) REFERENCES `images` (`id`);
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
 --
@@ -94,17 +80,7 @@ CREATE TABLE `products` (
   `units` bigint(20) DEFAULT NULL,
   `updated_date` datetime DEFAULT NULL,
   `category_id` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Indexes for table `products`
---
-ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `products_name_unique` (`name`),
-  ADD KEY `products_category_id_foreign` (`category_id`),
-  ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
-
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
 --
@@ -114,19 +90,7 @@ ALTER TABLE `products`
 CREATE TABLE `product_image` (
   `product_id` bigint(20) NOT NULL,
   `image_id` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Indexes for table `product_image`
---
-ALTER TABLE `product_image`
-  ADD PRIMARY KEY (`product_id`,`image_id`),
-  ADD KEY `product_image_image_id_foreign` (`image_id`),
-  ADD KEY `product_image_product_id_foreign` (`product_id`),
-  ADD CONSTRAINT `product_image_image_id_foreign` FOREIGN KEY (`image_id`) REFERENCES `images` (`id`),
-  ADD CONSTRAINT `product_image_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
-
-COMMIT;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
 --
@@ -136,6 +100,37 @@ COMMIT;
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UK_t8o6pivur7nn124jehx7cygw5` (`name`),
+  ADD KEY `IMAGE_ID_FK` (`image_id`),
+  ADD KEY `FK9il7y6fehxwunjeepq0n7g5rd` (`parent_category_id`);
+
+--
+-- Indexes for table `images`
+--
+ALTER TABLE `images`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UK_o61fmio5yukmmiqgnxf8pnavn` (`name`),
+  ADD KEY `FKog2rp4qthbtt2lfyhfo32lsw9` (`category_id`);
+
+--
+-- Indexes for table `product_image`
+--
+ALTER TABLE `product_image`
+  ADD PRIMARY KEY (`product_id`,`image_id`),
+  ADD KEY `FKanpsonqgb5uwbw83m3m7phnms` (`image_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
