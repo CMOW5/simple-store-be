@@ -1,5 +1,18 @@
 package com.cristian.simplestore.utils;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
+import javax.imageio.ImageIO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -10,42 +23,50 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.business.services.storage.StorageConfig;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.Path;
-import java.nio.file.Files;
-import javax.imageio.ImageIO;
-
 @Component
-public class ImageCreator {
+public class ImageBuilder {
+		
+	private Path defaultRootPath;
 	
-	private static String DEFAULT_TEMP_FILE_NAME = "test-file";
-	private static String DEFAULT_IMAGE_NAME = "test-image";
-	private static String DEFAULT_EXTENSION = ".jpg";
-	private static String DEFAULT_PATH = "upload-dir"; 
+	private String defaultExtension = ".jpg";
 	
 	@Autowired
-	static StorageConfig storageConfig;
-	
-	public static Resource createTestImage() throws IOException {
-		return createTestImage(DEFAULT_PATH, DEFAULT_IMAGE_NAME);
+	public ImageBuilder(StorageConfig storageConfig) {
+		this.defaultRootPath = Paths.get(storageConfig.getLocation());
 	}
 	
-	public static Resource createTestImage(String path, String imageName) throws IOException {
-		Path testFile = Files.createTempFile(DEFAULT_TEMP_FILE_NAME, DEFAULT_EXTENSION);
-		File imageFile = createImage(path + "/" + imageName);
+	public MultipartFile createMultipartImage() throws IOException {
+		Resource resource = this.createImage();
+		byte[] fileBytes = readFileToByteArray(resource.getFile());
+		String imageName = generateRandomName();
+		
+		MultipartFile result = new MockMultipartFile(imageName, imageName, 
+				MediaType.IMAGE_PNG_VALUE, fileBytes);
+		
+		return result;
+	}
+	
+	public Resource createImage() throws IOException {
+		return createImage(this.defaultRootPath.toString(), this.generateRandomImageName());
+	}
+	
+	public Resource createImage(String filename) throws IOException {
+		return createImage(this.defaultRootPath.toString(), filename);
+	}
+	
+	public Resource createImage(String path, String imageName) throws IOException {
+		Path tempFile = Files.createFile(Paths.get(path + "/" + this.generateRandomImageName()));
+		String fullPath = path + "/" + imageName;
+		File imageFile = createImageFile(fullPath);
 		byte[] imageBytes = readFileToByteArray(imageFile);
-		Files.write(testFile, imageBytes);
-		return new FileSystemResource(testFile.toFile());
+		Files.write(tempFile, imageBytes);
+		return new FileSystemResource(tempFile.toFile());
 	}
-
-	public static File createImage(String imagePath) {
+	
+	public File createImageFile(String imagePath) {
 		if (imagePath.isEmpty()) {
-			imagePath = DEFAULT_PATH + "/" + DEFAULT_IMAGE_NAME;
+			imagePath = this.defaultRootPath.toString() + 
+					"/" + this.generateRandomImageName();
 		}
 		
 		int width = 250;
@@ -85,21 +106,6 @@ public class ImageCreator {
 		return file;
 	}
 	
-	public static MultipartFile createMultipartImage() {
-		byte[] content = ImageCreator.createImageByte("");
-		String name = DEFAULT_TEMP_FILE_NAME;
-		String originalFileName = DEFAULT_TEMP_FILE_NAME;
-		
-		MultipartFile result = new MockMultipartFile(name,
-                originalFileName, MediaType.IMAGE_PNG_VALUE, content);
-		return result;
-	}
-	
-	public static byte[] createImageByte(String imagePath) {
-		File file = createImage(imagePath);
-		return readFileToByteArray(file);
-	}
-	
 	private static byte[] readFileToByteArray(File file) {
 		FileInputStream fis = null;
 		// Creating a byte array using the length of the file
@@ -115,4 +121,13 @@ public class ImageCreator {
 		}
 		return bArray;
 	}
+	
+	public String generateRandomImageName() {
+		return this.generateRandomName() + this.defaultExtension;
+	}
+	
+	private String generateRandomName() {
+		return UUID.randomUUID().toString();
+	}
+
 }
