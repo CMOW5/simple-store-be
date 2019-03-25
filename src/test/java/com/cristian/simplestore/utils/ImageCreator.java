@@ -19,8 +19,7 @@ public class ImageCreator {
 	private static String DEFAULT_IMAGE_NAME = "test-image";
 	private static String DEFAULT_EXTENSION = ".jpg";
 	private static String DEFAULT_PATH = "upload-dir"; 
-
-
+	
 	public static Resource createTestImage() throws IOException {
 		return createTestImage(DEFAULT_PATH, DEFAULT_IMAGE_NAME);
 	}
