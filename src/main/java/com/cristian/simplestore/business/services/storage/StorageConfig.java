@@ -1,8 +1,6 @@
 package com.cristian.simplestore.business.services.storage;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
 
 @ConfigurationProperties("storage")
 public class StorageConfig {
