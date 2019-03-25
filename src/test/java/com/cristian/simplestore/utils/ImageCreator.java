@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Files;
 import javax.imageio.ImageIO;
 
+@Deprecated 
 @Component
 public class ImageCreator {
 	

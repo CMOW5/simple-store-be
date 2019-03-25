@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ImageService;
+import com.cristian.simplestore.business.services.storage.StorageConfig;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.respositories.ImageRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;
-import com.cristian.simplestore.utils.ImageCreator;
-
+import com.cristian.simplestore.utils.ImageBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -31,6 +32,12 @@ public class ImageControllerTest extends BaseTest {
 	
 	@Autowired
 	ImageService imageService;
+	
+	@Autowired
+	ImageBuilder imageBuilder;
+	
+	@Autowired
+	StorageConfig storageConfig;
 	
 	private ApiRequestUtils apiUtils;
 	
@@ -71,14 +78,10 @@ public class ImageControllerTest extends BaseTest {
 	}
 	
 	private Image saveRandomImageOnDb() throws IOException {
-		String path = "upload-dir";
-		String imageName = "testimage.jpg";
-		String fullPath = path + "/" + imageName;
-		
-		ImageCreator.createTestImage(path, imageName);
+		Resource resource = imageBuilder.createImage();
 		
 		Image image = new Image();
-		image.setName(fullPath);
+		image.setName(resource.getFile().getPath());
 		return this.imageService.save(image);
 	}
 	
