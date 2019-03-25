@@ -60,7 +60,7 @@ public class Product {
 	private LocalDateTime createdDate;
 
 	@UpdateTimestamp
-	private Date updatedDate;
+	private LocalDateTime updatedDate;
 
 	public Product() {
 	}
