@@ -6,7 +6,6 @@ import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.persistence.entities.Category;
-
 import com.cristian.simplestore.web.validators.annotations.ExistsDb;
 
 @ExistsDb(

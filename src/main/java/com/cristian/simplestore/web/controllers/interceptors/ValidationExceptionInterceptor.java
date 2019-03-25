@@ -8,6 +8,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 @ControllerAdvice(basePackages = "com.cristian.simplestore.web.controllers")

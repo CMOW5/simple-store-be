@@ -1,5 +1,8 @@
 package com.cristian.simplestore.persistence.events;
 
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManagerFactory;
+
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;
 import org.hibernate.event.spi.PostDeleteEvent;
@@ -11,9 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.persistence.entities.Image;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManagerFactory;
 
 @Component
 public class ImageEntityEventListener implements PostDeleteEventListener {

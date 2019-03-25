@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.respositories.ProductRepository;
-import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.utils.ProductTestsUtils;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
 import com.cristian.simplestore.web.forms.ProductUpdateForm;
