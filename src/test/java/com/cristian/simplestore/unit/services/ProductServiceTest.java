@@ -2,7 +2,6 @@ package com.cristian.simplestore.unit.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -53,26 +52,28 @@ public class ProductServiceTest extends BaseTest {
 	public void testItFindsAllProducts() throws Exception {
 		// create a couple of products on db
 		int MAX_PRODUCTS_SIZE = 4;
-		List<Product> createdProducts = new ArrayList<Product>();
-		for (int i = 0; i < MAX_PRODUCTS_SIZE; i++) {
-			createdProducts.add(utils.saveRandomProductOnDB());
-		}
+		List<Product> createdProducts = utils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 				
-		List<Product> products = this.productService.findAll();
-		assertThat(products.size()).isEqualTo(MAX_PRODUCTS_SIZE);
+		List<Product> expectedProducts = this.productService.findAll();
+		
+		assertThat(expectedProducts.size()).isEqualTo(createdProducts.size());
 	}
 	
 	@Test
 	public void testItFindsAProductById() throws Exception {
 		Product product = utils.saveRandomProductOnDB();
+		
 		Product storedProduct = productService.findById(product.getId());
+		
 		assertThat(storedProduct.getId()).isEqualTo(product.getId());
 	}
 	
 	@Test
 	public void testItCreatesAProduct() {
 		Product product = utils.generateRandomProduct();
+		
 		Product storedProduct = productService.create(product);
+		
 		assertThat(product.getId()).isEqualTo(storedProduct.getId());
 	}
 	
@@ -82,6 +83,7 @@ public class ProductServiceTest extends BaseTest {
 				utils.generateRandomProductCreateForm();
 		
 		Product storedProduct = productService.create(productForm);
+		
 		assertThat(productForm.getName()).isEqualTo(storedProduct.getName());
 		assertThat(productForm.getDescription()).isEqualTo(storedProduct.getDescription());
 		assertThat(productForm.getPrice()).isEqualTo(storedProduct.getPrice());
@@ -91,6 +93,7 @@ public class ProductServiceTest extends BaseTest {
 	public void testItUpdatesAProduct() {
 		Faker faker = new Faker();
 		Product product = utils.saveRandomProductOnDB();
+		// Product newProductData = utils.generateRandomProduct();
 		
 		product.setName((faker.commerce().productName()));
 		product.setPrice(Double.valueOf((faker.commerce().price(0, MAX_PRICE))));
