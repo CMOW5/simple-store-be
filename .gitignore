@@ -3,6 +3,7 @@
 !gradle/wrapper/gradle-wrapper.jar
 
 upload-dir/
+test-upload-dir/
 
 *#
 *.iml
