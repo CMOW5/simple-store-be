@@ -36,7 +36,7 @@ public class ProductService {
 		return products;
 	}
 	
-	public Product findById(long id) {
+	public Product findById(Long id) {
 		try {
 			Product foundProduct = productRepository.findById(id).get();
 			return foundProduct;
@@ -109,7 +109,7 @@ public class ProductService {
 		return product;
 	}
 	
-	public void deleteById(long id) {
+	public void deleteById(Long id) {
 		try {
 			productRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException exception) {

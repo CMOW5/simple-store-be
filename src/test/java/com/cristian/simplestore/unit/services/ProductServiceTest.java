@@ -21,14 +21,11 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.utils.ProductTestsUtils;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
 import com.cristian.simplestore.web.forms.ProductUpdateForm;
-import com.github.javafaker.Faker;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProductServiceTest extends BaseTest {
-	
-	private final double MAX_PRICE = 10000000000.0;
-	
+		
 	@Autowired
 	private ProductRepository productRepository;
 	
@@ -50,7 +47,6 @@ public class ProductServiceTest extends BaseTest {
 	
 	@Test
 	public void testItFindsAllProducts() throws Exception {
-		// create a couple of products on db
 		int MAX_PRODUCTS_SIZE = 4;
 		List<Product> createdProducts = utils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 				
@@ -63,18 +59,24 @@ public class ProductServiceTest extends BaseTest {
 	public void testItFindsAProductById() throws Exception {
 		Product product = utils.saveRandomProductOnDB();
 		
-		Product storedProduct = productService.findById(product.getId());
+		Product expectedProduct = productService.findById(product.getId());
 		
-		assertThat(storedProduct.getId()).isEqualTo(product.getId());
+		assertThat(expectedProduct.getId()).isEqualTo(product.getId());
+	}
+	
+	@Test(expected = EntityNotFoundException.class)
+	public void testItDoesNotFindAProductById() {
+		long nonExistentProductId = 1;
+		productService.findById(nonExistentProductId);
 	}
 	
 	@Test
 	public void testItCreatesAProduct() {
 		Product product = utils.generateRandomProduct();
 		
-		Product storedProduct = productService.create(product);
+		Product expectedProduct = productService.create(product);
 		
-		assertThat(product.getId()).isEqualTo(storedProduct.getId());
+		assertThat(expectedProduct.getId()).isEqualTo(product.getId());
 	}
 	
 	@Test
@@ -82,28 +84,24 @@ public class ProductServiceTest extends BaseTest {
 		ProductCreateForm productForm = 
 				utils.generateRandomProductCreateForm();
 		
-		Product storedProduct = productService.create(productForm);
+		Product expectedProduct = productService.create(productForm);
 		
-		assertThat(productForm.getName()).isEqualTo(storedProduct.getName());
-		assertThat(productForm.getDescription()).isEqualTo(storedProduct.getDescription());
-		assertThat(productForm.getPrice()).isEqualTo(storedProduct.getPrice());
+		assertThat(expectedProduct.getName()).isEqualTo(productForm.getName());
+		assertThat(expectedProduct.getDescription()).isEqualTo(productForm.getDescription());
+		assertThat(expectedProduct.getPrice()).isEqualTo(productForm.getPrice());
 	}
 	
 	@Test
 	public void testItUpdatesAProduct() {
-		Faker faker = new Faker();
-		Product product = utils.saveRandomProductOnDB();
-		// Product newProductData = utils.generateRandomProduct();
+		Product productToUpdate = utils.saveRandomProductOnDB();
+		Product newProductData = utils.generateRandomProduct();
 		
-		product.setName((faker.commerce().productName()));
-		product.setPrice(Double.valueOf((faker.commerce().price(0, MAX_PRICE))));
+		Product expectedProduct = productService.update(productToUpdate.getId(), newProductData);
 		
-		Product updatedProduct = productService.update(product.getId(), product);
-		
-		assertThat(product.getName()).isEqualTo(updatedProduct.getName());
-		assertThat(product.getPrice()).isEqualTo(updatedProduct.getPrice());
+		assertThat(expectedProduct.getName()).isEqualTo(newProductData.getName());
+		assertThat(expectedProduct.getPrice()).isEqualTo(newProductData.getPrice());
 	}
-	
+		
 	@Test
 	public void testItUpdatesAProductWithForm() {
 		Product productToUpdate = utils.saveRandomProductOnDB();
@@ -111,11 +109,21 @@ public class ProductServiceTest extends BaseTest {
 				utils.generateRandomProductUpdateForm();
 		newProductData.setId(productToUpdate.getId());
 		
-		Product updatedProduct = productService.update(newProductData);
+		Product expectedProduct = productService.update(newProductData);
 		
-		assertThat(newProductData.getName()).isEqualTo(updatedProduct.getName());
-		assertThat(newProductData.getDescription()).isEqualTo(updatedProduct.getDescription());
-		assertThat(newProductData.getPrice()).isEqualTo(updatedProduct.getPrice());
+		assertThat(expectedProduct.getName()).isEqualTo(newProductData.getName());
+		assertThat(expectedProduct.getDescription()).isEqualTo(newProductData.getDescription());
+		assertThat(expectedProduct.getPrice()).isEqualTo(newProductData.getPrice());
+	}
+	
+	@Test(expected = EntityNotFoundException.class)
+	public void testItDoesNotUpdateAProductWithForm() {
+		long nonExistentProductId = 1;
+		ProductUpdateForm newProductData = 
+				utils.generateRandomProductUpdateForm();
+		newProductData.setId(nonExistentProductId);
+		
+		productService.update(newProductData);
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
@@ -123,5 +131,11 @@ public class ProductServiceTest extends BaseTest {
 		Product product = utils.saveRandomProductOnDB();
 		productService.deleteById(product.getId());
 		productService.findById(product.getId());		
+	}
+	
+	@Test(expected = EntityNotFoundException.class)
+	public void testItDoesNotFoundDeleteProduct() {
+		long nonExistentProductId = 1;
+		productService.deleteById(nonExistentProductId);
 	}
 }

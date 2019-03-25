@@ -25,8 +25,7 @@ public class ApiResponseTest extends BaseTest {
 	@Test
 	public void testsTheResponseBody() {
 		ApiResponse apiResponse = new ApiResponse();
-		ResponseEntity<Map<String, Object>> response = 
-				(ResponseEntity<Map<String, Object>>) apiResponse.content("some content").status(HttpStatus.BAD_REQUEST).build();
+		ResponseEntity<?> response = apiResponse.content("some content").status(HttpStatus.BAD_REQUEST).build();
 		
 		String expectedBody = "{content=some content, status=400}";
 		assertThat(response.getBody().toString()).isEqualTo(expectedBody);

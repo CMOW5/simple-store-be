@@ -106,7 +106,7 @@ public class CategoryControllerTest extends BaseTest {
 		FormBuilder form = new FormBuilder();
 		form.add("name", category.getName())
 			.add("parentCategory", parentCategory.getId())
-			.add("image", ImageCreator.getTestImage());
+			.add("image", ImageCreator.createTestImage());
 		
 		ResponseEntity<String> response = sendCategoryCreateRequest(form);
 		Category createdCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);

@@ -14,26 +14,22 @@ import java.nio.file.Files;
 import javax.imageio.ImageIO;
 
 public class ImageCreator {
+	
+	private static String DEFAULT_TEMP_FILE_NAME = "test-file";
+	private static String DEFAULT_IMAGE_NAME = "test-image";
+	private static String DEFAULT_EXTENSION = ".jpg";
+	private static String DEFAULT_PATH = "upload-dir"; 
 
-	public static Resource getTestImage() throws IOException {
-		Path testFile = Files.createTempFile("test-file", ".jpg");
-		File imageFile = createImage("");
-		byte[] imageBytes = readFileToByteArray(imageFile);
-		Files.write(testFile, imageBytes);
-		return new FileSystemResource(testFile.toFile());
+
+	public static Resource createTestImage() throws IOException {
+		return createTestImage(DEFAULT_PATH, DEFAULT_IMAGE_NAME);
 	}
 	
 	public static Resource createTestImage(String path, String imageName) throws IOException {
-		Path testFile = Files.createTempFile("test-file", ".jpg");
+		Path testFile = Files.createTempFile(DEFAULT_TEMP_FILE_NAME, DEFAULT_EXTENSION);
 		File imageFile = createImage(path + "/" + imageName);
 		byte[] imageBytes = readFileToByteArray(imageFile);
 		Files.write(testFile, imageBytes);
-		return new FileSystemResource(testFile.toFile());
-	}
-
-	public static Resource getTestFile() throws IOException {
-		Path testFile = Files.createTempFile("test-file", ".jpg");
-		Files.write(testFile, "Hello World !!, This is a test file.".getBytes());
 		return new FileSystemResource(testFile.toFile());
 	}
 
@@ -67,7 +63,7 @@ public class ImageCreator {
 		// is using.
 		g2d.dispose();
 
-		// Save as PNG
+		// Save as JPG
 		File file = new File(imagePath);
 		try {
 			ImageIO.write(bufferedImage, "jpg", file);
@@ -78,14 +74,7 @@ public class ImageCreator {
 
 		return file;
 	}
-
-	/**
-	 * This method uses java.io.FileInputStream to read file content into a byte
-	 * array
-	 * 
-	 * @param file
-	 * @return
-	 */
+	
 	private static byte[] readFileToByteArray(File file) {
 		FileInputStream fis = null;
 		// Creating a byte array using the length of the file
