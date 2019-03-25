@@ -1,4 +1,4 @@
-package com.cristian.simplestore.business.services;
+package com.cristian.simplestore.business.services.storage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +17,6 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.business.services.storage.StorageConfig;
-import com.cristian.simplestore.business.services.storage.StorageService;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageException;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
 
@@ -33,14 +31,10 @@ public class ImageStorageService implements StorageService {
         this.rootLocation = Paths.get(properties.getLocation());
     }
     
-    public void delete(String filename) {
-    	Path fileToDeletePath = Paths.get(this.rootLocation.toString() + "/" + filename);
-        try {
-			Files.delete(fileToDeletePath);
-		} catch (IOException e) {
-			//
-			e.printStackTrace();
-		}
+    @Override
+    public String store(MultipartFile file) {
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        return store(file, filename);
     }
     
     /**
@@ -54,10 +48,10 @@ public class ImageStorageService implements StorageService {
      * @param filename
      * @return
      */
-    public String store(MultipartFile file, String filename) {
-        Path fullPath = this.rootLocation.resolve(filename);
-        
+    public String store(MultipartFile file, String filename) {        
         try {
+        	Path fullPath = this.rootLocation.resolve(filename);
+        	
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + filename);
             }
@@ -71,36 +65,12 @@ public class ImageStorageService implements StorageService {
                 Files.copy(inputStream, this.rootLocation.resolve(filename),
                     StandardCopyOption.REPLACE_EXISTING);
             }
+            
+            return fullPath.toString();
         }
         catch (IOException e) {
             throw new StorageException("Failed to store file " + filename, e);
         }
-        return fullPath.toString();
-    }
-
-    @Override
-    public String store(MultipartFile file) {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        
-        try {
-            if (file.isEmpty()) {
-                throw new StorageException("Failed to store empty file " + filename);
-            }
-            if (filename.contains("..")) {
-                // This is a security check
-                throw new StorageException(
-                        "Cannot store file with relative path outside current directory "
-                                + filename);
-            }
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
-                    StandardCopyOption.REPLACE_EXISTING);
-            }
-        }
-        catch (IOException e) {
-            throw new StorageException("Failed to store file " + filename, e);
-        }
-        return filename;
     }
 
     @Override
@@ -138,6 +108,16 @@ public class ImageStorageService implements StorageService {
         catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
         }
+    }
+    
+    public void delete(String filename) {
+    	Path fileToDeletePath = Paths.get(this.rootLocation.toString() + "/" + filename);
+        try {
+			Files.delete(fileToDeletePath);
+		} catch (IOException e) {
+			//
+			e.printStackTrace();
+		}
     }
 
     @Override

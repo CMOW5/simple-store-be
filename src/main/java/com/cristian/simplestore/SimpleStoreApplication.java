@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import com.cristian.simplestore.business.services.ImageStorageService;
+import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.business.services.storage.StorageConfig;
 import com.cristian.simplestore.persistence.database.seeders.CategorySeeder;
 

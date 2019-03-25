@@ -9,7 +9,7 @@ import org.hibernate.persister.entity.EntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.business.services.ImageStorageService;
+import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.persistence.entities.Image;
 
 import javax.annotation.PostConstruct;
