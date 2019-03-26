@@ -36,8 +36,7 @@ public class ImageBuilder {
 	}
 	
 	public MultipartFile createMultipartImage() throws IOException {
-		Resource resource = this.createImage();
-		byte[] fileBytes = readFileToByteArray(resource.getFile());
+		byte[] fileBytes = createImageBytes();
 		String imageName = generateRandomName();
 		
 		MultipartFile result = new MockMultipartFile(imageName, imageName, 
@@ -55,12 +54,17 @@ public class ImageBuilder {
 	}
 	
 	public Resource createImage(String path, String imageName) throws IOException {
-		Path tempFile = Files.createFile(Paths.get(path + "/" + this.generateRandomImageName()));
 		String fullPath = path + "/" + imageName;
-		File imageFile = createImageFile(fullPath);
-		byte[] imageBytes = readFileToByteArray(imageFile);
-		Files.write(tempFile, imageBytes);
-		return new FileSystemResource(tempFile.toFile());
+		File imageFile = createImageFile(fullPath);		
+		return new FileSystemResource(imageFile);
+	}
+	
+	public byte[] createImageBytes() throws IOException {
+		String fullPath = this.defaultRootPath.toString() + "/" + this.generateRandomImageName();
+		File tempFile = createImageFile(fullPath);	
+		byte[] fileBytes = readFileToByteArray(tempFile);
+		Files.delete(tempFile.toPath());
+		return fileBytes;
 	}
 	
 	public File createImageFile(String imagePath) {

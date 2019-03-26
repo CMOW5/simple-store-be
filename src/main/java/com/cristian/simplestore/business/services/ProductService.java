@@ -103,7 +103,7 @@ public class ProductService {
 	}
 	
 	public Product deleteProductImages(Product product, List<Long> imagesIdsToDelete) {
-		Iterable<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
+		List<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
 		product.removeImages(imagesToDelete);
 		this.imageService.deleteAll(imagesToDelete);
 		return product;

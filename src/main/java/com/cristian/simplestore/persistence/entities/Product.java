@@ -167,12 +167,6 @@ public class Product {
 		productImage.setImage(null);
 	}
 	
-	public void removeImages(Iterable<Image> images) {
-		for (Image image: images) {
-			this.removeImage(image);
-		}
-	}
-	
 	public void removeImages(List<Image> images) {
 		for (Image image: images) {
 			this.removeImage(image);

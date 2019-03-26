@@ -29,7 +29,7 @@ import com.cristian.simplestore.persistence.respositories.ImageRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
 import com.cristian.simplestore.utils.FormBuilder;
-import com.cristian.simplestore.utils.ImageCreator;
+import com.cristian.simplestore.utils.ImageBuilder;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.github.javafaker.Faker;
@@ -41,8 +41,6 @@ public class CategoryControllerTest extends BaseTest {
 	@Autowired
 	TestRestTemplate restTemplate;
 	
-	private ApiRequestUtils apiUtils;
-	
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
@@ -51,6 +49,11 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Autowired
 	private CategoryTestsUtils utils;
+	
+	@Autowired
+	private ImageBuilder imageBuilder;
+	
+	private ApiRequestUtils apiUtils;
 	
 	@Before
 	public void setUp() {
@@ -106,7 +109,7 @@ public class CategoryControllerTest extends BaseTest {
 		FormBuilder form = new FormBuilder();
 		form.add("name", category.getName())
 			.add("parentCategory", parentCategory.getId())
-			.add("image", ImageCreator.createTestImage());
+			.add("image", imageBuilder.createImage());
 		
 		ResponseEntity<String> response = sendCategoryCreateRequest(form);
 		Category createdCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
