@@ -1,9 +1,7 @@
 package com.cristian.simplestore.unit.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +50,7 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test
-	public void testItFindsAnImageById() throws IOException {	
+	public void testItFindsAnImageById() {	
 		Image image = this.saveRandomImageOnDb();
 		
 		Image expectedImage = this.imageService.findById(image.getId());
@@ -61,14 +59,14 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
-	public void testItDoesNotFindsAnImageById() throws IOException {	
+	public void testItDoesNotFindsAnImageById() {	
 		Long nonExistentImageId = 1L;
 		
 		this.imageService.findById(nonExistentImageId);
 	}
 	
 	@Test
-	public void testItFindsAllImagesById() throws IOException {	
+	public void testItFindsAllImagesById() {	
 		long MAX_IMAGE_SIZE = 3;
 		List<Image> images = this.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 		List<Long> ids = new ArrayList<>();
@@ -80,7 +78,7 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test
-	public void testItsavesAnImageFile() throws IOException {	
+	public void testItsavesAnImageFile() {	
 		MultipartFile imageFile = this.imageBuilder.createMultipartImage();
 		
 		Image expectedImage = this.imageService.save(imageFile);
@@ -89,7 +87,7 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test
-	public void testItsavesAllsImages() throws IOException {	
+	public void testItsavesAllsImages() {	
 		int MAX_IMAGE_FILES = 3;
 		List<MultipartFile> imageFiles = this.generateRandomImageFiles(MAX_IMAGE_FILES);
 		
@@ -99,7 +97,7 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
-	public void testItDeletesAnImage() throws IOException {	
+	public void testItDeletesAnImage() {	
 		Image image = this.saveRandomImageOnDb();
 		
 		this.imageService.delete(image);
@@ -108,7 +106,7 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
-	public void testItDeletesAnImageById() throws IOException {	
+	public void testItDeletesAnImageById() {	
 		Image image = this.saveRandomImageOnDb();
 		
 		this.imageService.deleteById(image.getId());
@@ -117,14 +115,14 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
-	public void testItDoesNotDeleteAnImageById() throws IOException {	
+	public void testItDoesNotDeleteAnImageById() {	
 		Long nonExistentImageId = 1L;
 		
 		this.imageService.deleteById(nonExistentImageId);
 	}
 	
 	@Test
-	public void testItDeletesAllById() throws IOException {	
+	public void testItDeletesAllById() {	
 		long MAX_IMAGE_SIZE = 3;
 		List<Image> images = this.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 		List<Long> ids = new ArrayList<>();
@@ -134,19 +132,19 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	@Test
-	public void testItDeletesAllImages() throws IOException {	
+	public void testItDeletesAllImages() {	
 		long MAX_IMAGE_SIZE = 3;
 		List<Image> images = this.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 		
 		this.imageService.deleteAll(images);
 	}
 	
-	private Image saveRandomImageOnDb() throws IOException {
+	private Image saveRandomImageOnDb() {
 		MultipartFile imageFile = this.imageBuilder.createMultipartImage();
 		return this.imageService.save(imageFile);
 	}
 	
-	private List<MultipartFile> generateRandomImageFiles(long numberOfImages) throws IOException {
+	private List<MultipartFile> generateRandomImageFiles(long numberOfImages) {
 		List<MultipartFile> files = new ArrayList<>();
 		
 		for (int i = 0; i < numberOfImages; i++) {
@@ -156,7 +154,7 @@ public class ImageServiceTest extends BaseTest {
 		return files;
 	}
 	
-	private List<Image> saveRandomImagesOnDb(long numberOfImages) throws IOException {
+	private List<Image> saveRandomImagesOnDb(long numberOfImages) {
 		List<Image> savedImages = new ArrayList<>();
 		
 		for (int i = 0; i < numberOfImages; i++) {

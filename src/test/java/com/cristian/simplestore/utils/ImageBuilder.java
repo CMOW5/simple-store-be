@@ -35,7 +35,7 @@ public class ImageBuilder {
 		this.defaultRootPath = Paths.get(storageConfig.getLocation());
 	}
 	
-	public MultipartFile createMultipartImage() throws IOException {
+	public MultipartFile createMultipartImage() {
 		byte[] fileBytes = createImageBytes();
 		String imageName = generateRandomName();
 		
@@ -45,25 +45,31 @@ public class ImageBuilder {
 		return result;
 	}
 	
-	public Resource createImage() throws IOException {
+	public Resource createImage() {
 		return createImage(this.defaultRootPath.toString(), this.generateRandomImageName());
 	}
 	
-	public Resource createImage(String filename) throws IOException {
+	public Resource createImage(String filename) {
 		return createImage(this.defaultRootPath.toString(), filename);
 	}
 	
-	public Resource createImage(String path, String imageName) throws IOException {
+	public Resource createImage(String path, String imageName) {
 		String fullPath = path + "/" + imageName;
 		File imageFile = createImageFile(fullPath);		
 		return new FileSystemResource(imageFile);
 	}
 	
-	public byte[] createImageBytes() throws IOException {
+	public byte[] createImageBytes() {
 		String fullPath = this.defaultRootPath.toString() + "/" + this.generateRandomImageName();
 		File tempFile = createImageFile(fullPath);	
 		byte[] fileBytes = readFileToByteArray(tempFile);
-		Files.delete(tempFile.toPath());
+		
+		try {
+			Files.delete(tempFile.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return fileBytes;
 	}
 	

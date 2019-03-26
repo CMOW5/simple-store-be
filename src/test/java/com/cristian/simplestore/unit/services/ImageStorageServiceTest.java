@@ -49,7 +49,7 @@ public class ImageStorageServiceTest extends BaseTest {
 	}
 
 	@Test 
-	public void testItStoresAImage() throws IOException {
+	public void testItStoresAImage() {
 		MultipartFile imageFile = imageBuilder.createMultipartImage();
 		String imageName = imageBuilder.generateRandomImageName();
 		
@@ -71,7 +71,7 @@ public class ImageStorageServiceTest extends BaseTest {
 	}
 	
 	@Test(expected = StorageFileNotFoundException.class) 
-	public void testItDoesntLoadsAImage() throws IOException {
+	public void testItDoesntLoadsAImage() {
 		String filename = "someNonExistentImage.jpg";
 		imageBuilder.createImage();
 		
