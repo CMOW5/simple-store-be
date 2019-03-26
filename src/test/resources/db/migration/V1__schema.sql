@@ -75,7 +75,7 @@ ALTER TABLE `categories`
   ADD UNIQUE KEY `categories_name_unique` (`name`),
   ADD KEY `categories_image_id_foreign` (`image_id`),
   ADD KEY `categories_parent_category_id_foreign` (`parent_category_id`),
-  ADD CONSTRAINT `categories_image_id_foreign` FOREIGN KEY (`image_id`) REFERENCES `images` (`id`);
+  ADD CONSTRAINT `categories_image_id_foreign` FOREIGN KEY (`image_id`) REFERENCES `images` (`id`) ON DELETE SET NULL;
 
 
 --
