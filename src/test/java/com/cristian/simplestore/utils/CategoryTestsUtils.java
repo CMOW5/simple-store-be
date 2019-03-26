@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.respositories.CategoryRepository;
 import com.cristian.simplestore.web.forms.CategoryCreateForm;
 import com.cristian.simplestore.web.forms.CategoryUpdateForm;
@@ -17,6 +19,12 @@ public class CategoryTestsUtils {
 	
 	@Autowired 
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private ImageBuilder imageBuilder;
+	
+	@Autowired
+	private ImageTestsUtils imageUtils;
 	
 	private Faker faker = new Faker();
 	
@@ -35,10 +43,13 @@ public class CategoryTestsUtils {
 		CategoryCreateForm form = new CategoryCreateForm();
 		
 		String name = faker.name().firstName();
-		Category parentCategory = null;
+		Category parentCategory = this.saveRandomCategoryOnDB();
+		MultipartFile image = this.imageBuilder.createMultipartImage();
+		
 		form.setName(name);
 		form.setParentCategory(parentCategory);
-		// form.setImage(image);
+		form.setImage(image);
+		
 		return form;
 	}
 	
@@ -46,10 +57,13 @@ public class CategoryTestsUtils {
 		CategoryUpdateForm form = new CategoryUpdateForm();
 		
 		String name = faker.name().firstName();
-		Category parentCategory = null;
+		Category parentCategory = this.saveRandomCategoryOnDB();
+		MultipartFile newImage = this.imageBuilder.createMultipartImage();
+
 		form.setName(name);
 		form.setParentCategory(parentCategory);
-		// form.setImage(image);
+		form.setNewImage(newImage);
+		
 		return form;
 	}
 	
@@ -59,8 +73,12 @@ public class CategoryTestsUtils {
 	 */
 	public Category saveRandomCategoryOnDB() {
 		String name = faker.name().firstName();
+		Image image = imageUtils.saveRandomImageOnDb();
+		
 		Category category = new Category();
 		category.setName(name);
+		category.addImage(image);
+		
 		return categoryRepository.save(category);
 	}
 	

@@ -121,10 +121,16 @@ public class CategoryService {
 		if (newImageFile != null) {
 			Image newImage = this.imageService.save(newImageFile);
 			Image currentImage = categoryToUpdate.getImage();
-			this.imageService.delete(currentImage);
 			categoryToUpdate.addImage(newImage);
+			
+			// TODO: this step is necessary because the image has a constraint with the
+			// current category, so we need to update the category relationship with the 
+			// current image first, and then we can safely delete the current image
+			this.categoryRepository.save(categoryToUpdate);
+			this.imageService.delete(currentImage);
 		} else if (imageIdToDelete != null) { // TODO: verify the imageId
 			categoryToUpdate.deleteImage();
+			this.categoryRepository.save(categoryToUpdate);
 			this.imageService.deleteById(imageIdToDelete);
 		}
 		
