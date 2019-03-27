@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.respositories.ImageRepository;
 import com.cristian.simplestore.persistence.respositories.ProductRepository;
 import com.cristian.simplestore.utils.ProductTestsUtils;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
@@ -33,17 +34,25 @@ public class ProductServiceTest extends BaseTest {
 	private ProductService productService;
 	
 	@Autowired
+	ImageRepository imageRepository;
+	
+	@Autowired
 	private ProductTestsUtils utils;
 	
 	@Before
 	public void setUp() {
-		productRepository.deleteAll();
+		cleanUpDb();
 	}
 	
 	@After
     public void tearDown() {
-		productRepository.deleteAll();
+		cleanUpDb();
     }
+	
+	public void cleanUpDb() {
+		productRepository.deleteAll();
+		imageRepository.deleteAll();
+	}
 	
 	@Test
 	public void testItFindsAllProducts() throws Exception {
@@ -89,6 +98,7 @@ public class ProductServiceTest extends BaseTest {
 		assertThat(expectedProduct.getName()).isEqualTo(productForm.getName());
 		assertThat(expectedProduct.getDescription()).isEqualTo(productForm.getDescription());
 		assertThat(expectedProduct.getPrice()).isEqualTo(productForm.getPrice());
+		assertThat(expectedProduct.getImages().size()).isEqualTo(productForm.getImages().size());
 	}
 	
 	@Test
@@ -105,6 +115,7 @@ public class ProductServiceTest extends BaseTest {
 	@Test
 	public void testItUpdatesAProductWithForm() {
 		Product productToUpdate = utils.saveRandomProductOnDB();
+		
 		ProductUpdateForm newProductData = 
 				utils.generateRandomProductUpdateForm();
 		newProductData.setId(productToUpdate.getId());
@@ -114,6 +125,20 @@ public class ProductServiceTest extends BaseTest {
 		assertThat(expectedProduct.getName()).isEqualTo(newProductData.getName());
 		assertThat(expectedProduct.getDescription()).isEqualTo(newProductData.getDescription());
 		assertThat(expectedProduct.getPrice()).isEqualTo(newProductData.getPrice());
+		assertThat(expectedProduct.getImages().size()).isEqualTo(newProductData.getNewImages().size());
+	}
+	
+	@Test
+	public void teststest() {
+		Product productToUpdate = utils.saveRandomProductOnDB();
+		
+		ProductUpdateForm newProductData = 
+				utils.generateRandomProductUpdateForm();
+		newProductData.setId(productToUpdate.getId());
+		
+		Product expectedProduct = productService.update(newProductData);
+		
+		assertThat(expectedProduct.getName()).isEqualTo(newProductData.getName());
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
