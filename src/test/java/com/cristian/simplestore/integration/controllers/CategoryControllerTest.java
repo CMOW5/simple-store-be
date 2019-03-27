@@ -140,6 +140,38 @@ public class CategoryControllerTest extends BaseTest {
 	}
 	
 	@Test
+	public void testItUpdatesACategoryImage() throws JsonParseException, JsonMappingException, IOException {
+		Category category = utils.saveRandomCategoryOnDB();
+		
+		FormBuilder form = new FormBuilder();
+		form.add("name", category.getName())
+			.add("newImage", imageBuilder.createImage());
+		
+		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
+		Category updatedCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(updatedCategory.getImage()).isNotNull();
+		assertThat(updatedCategory.getImage().getName()).isNotEqualTo(category.getImage().getName());
+	}
+	
+	@Test
+	public void testItDeletesACategoryImage() throws JsonParseException, JsonMappingException, IOException {
+		Category category = utils.saveRandomCategoryOnDB();
+		Long imageIdToDelete = category.getImage().getId();
+		
+		FormBuilder form = new FormBuilder();
+		form.add("name", category.getName())
+			.add("imageIdToDelete", imageIdToDelete);
+		
+		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
+		Category updatedCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(updatedCategory.getImage()).isNull();
+	}
+	
+	@Test
 	public void testItCorrectlyUpdatesTheParentCategory() throws JsonParseException, JsonMappingException, IOException {
 		Category categoryA = utils.saveRandomCategoryOnDB();
 		Category categoryB = utils.saveRandomCategoryOnDB();

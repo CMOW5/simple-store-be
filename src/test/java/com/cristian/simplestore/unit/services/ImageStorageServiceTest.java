@@ -50,7 +50,7 @@ public class ImageStorageServiceTest extends BaseTest {
 
 	@Test 
 	public void testItStoresAImage() {
-		MultipartFile imageFile = imageBuilder.createMultipartImage();
+		MultipartFile imageFile = imageBuilder.createMockMultipartImage();
 		String imageName = imageBuilder.generateRandomImageName();
 		
 		String expectedPath = imageStorageService.store(imageFile, imageName);

@@ -79,7 +79,7 @@ public class ImageServiceTest extends BaseTest {
 	
 	@Test
 	public void testItsavesAnImageFile() {	
-		MultipartFile imageFile = this.imageBuilder.createMultipartImage();
+		MultipartFile imageFile = this.imageBuilder.createMockMultipartImage();
 		
 		Image expectedImage = this.imageService.save(imageFile);
 		
@@ -140,7 +140,7 @@ public class ImageServiceTest extends BaseTest {
 	}
 	
 	private Image saveRandomImageOnDb() {
-		MultipartFile imageFile = this.imageBuilder.createMultipartImage();
+		MultipartFile imageFile = this.imageBuilder.createMockMultipartImage();
 		return this.imageService.save(imageFile);
 	}
 	
@@ -148,7 +148,7 @@ public class ImageServiceTest extends BaseTest {
 		List<MultipartFile> files = new ArrayList<>();
 		
 		for (int i = 0; i < numberOfImages; i++) {
-			files.add(this.imageBuilder.createMultipartImage());
+			files.add(this.imageBuilder.createMockMultipartImage());
 		}
 		
 		return files;

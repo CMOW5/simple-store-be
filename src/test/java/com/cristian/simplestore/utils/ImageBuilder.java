@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -35,7 +37,7 @@ public class ImageBuilder {
 		this.defaultRootPath = Paths.get(storageConfig.getLocation());
 	}
 	
-	public MultipartFile createMultipartImage() {
+	public MultipartFile createMockMultipartImage() {
 		byte[] fileBytes = createImageBytes();
 		String imageName = generateRandomName();
 		
@@ -57,6 +59,14 @@ public class ImageBuilder {
 		String fullPath = path + "/" + imageName;
 		File imageFile = createImageFile(fullPath);		
 		return new FileSystemResource(imageFile);
+	}
+	
+	public List<Resource> createImages(int size) {
+		List<Resource> images = new ArrayList<>();
+		for (int i = 0; i < size; i++) {
+			images.add(createImage());
+		}
+		return images;
 	}
 	
 	public byte[] createImageBytes() {

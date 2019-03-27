@@ -20,7 +20,7 @@ public class ImageTestsUtils {
 	ImageBuilder imageBuilder;
 	
 	public Image saveRandomImageOnDb() {
-		MultipartFile imageFile = this.imageBuilder.createMultipartImage();
+		MultipartFile imageFile = this.imageBuilder.createMockMultipartImage();
 		return this.imageService.save(imageFile);
 	}
 	
@@ -38,7 +38,7 @@ public class ImageTestsUtils {
 		List<MultipartFile> files = new ArrayList<>();
 		
 		for (int i = 0; i < numberOfImages; i++) {
-			files.add(this.imageBuilder.createMultipartImage());
+			files.add(this.imageBuilder.createMockMultipartImage());
 		}
 		
 		return files;

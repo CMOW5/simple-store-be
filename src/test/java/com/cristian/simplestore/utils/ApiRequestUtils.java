@@ -35,4 +35,11 @@ public class ApiRequestUtils {
 	    T content = mapper.convertValue(mapResponse.get("content"), classType);
 	    return content;
 	}
+	
+	public Map<?, ?> mapJsonRespose(String jsonResponse) throws JsonParseException, JsonMappingException, IOException {	
+	    ObjectMapper mapper = new ObjectMapper();
+	    Map<?, ?> mapResponse = mapper.readValue(jsonResponse, Map.class);
+	    Map<?, ?> content = mapper.convertValue(mapResponse.get("content"), Map.class);
+	    return content;
+	}
 }

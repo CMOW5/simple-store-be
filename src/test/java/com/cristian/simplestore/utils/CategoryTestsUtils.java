@@ -44,7 +44,7 @@ public class CategoryTestsUtils {
 		
 		String name = faker.name().firstName();
 		Category parentCategory = this.saveRandomCategoryOnDB();
-		MultipartFile image = this.imageBuilder.createMultipartImage();
+		MultipartFile image = this.imageBuilder.createMockMultipartImage();
 		
 		form.setName(name);
 		form.setParentCategory(parentCategory);
@@ -58,7 +58,7 @@ public class CategoryTestsUtils {
 		
 		String name = faker.name().firstName();
 		Category parentCategory = this.saveRandomCategoryOnDB();
-		MultipartFile newImage = this.imageBuilder.createMultipartImage();
+		MultipartFile newImage = this.imageBuilder.createMockMultipartImage();
 
 		form.setName(name);
 		form.setParentCategory(parentCategory);
