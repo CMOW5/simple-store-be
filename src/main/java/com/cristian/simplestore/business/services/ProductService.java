@@ -67,11 +67,6 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 	
-	public Product update(long id, Product product) {
-		product.setId(id);
-		return productRepository.save(product);
-	}
-	
 	@Transactional
 	public Product update(ProductUpdateForm form) {
 		try {
