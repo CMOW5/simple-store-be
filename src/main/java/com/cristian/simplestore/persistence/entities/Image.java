@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Image {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	private String name;
@@ -33,11 +33,7 @@ public class Image {
 	@Transient
 	private String url;
 	
-	@OneToMany(
-			mappedBy = "image",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true
-		)
+	@OneToMany(mappedBy = "image", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductImage> owners = new ArrayList<>();
 
 	public Long getId() {
