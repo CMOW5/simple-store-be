@@ -251,8 +251,7 @@ public class ProductControllerTest extends BaseTest {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
-	private ResponseEntity<String> sendFindAllProductsRequest()
-			throws JsonParseException, JsonMappingException, IOException {
+	private ResponseEntity<String> sendFindAllProductsRequest() {
 		String url = "/api/admin/products";
 		ResponseEntity<String> response = this.apiUtils.sendRequest(url, HttpMethod.GET, null, null);
 		return response;
