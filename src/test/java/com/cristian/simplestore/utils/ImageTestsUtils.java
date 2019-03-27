@@ -34,7 +34,7 @@ public class ImageTestsUtils {
 		return savedImages;
 	}
 	
-	public List<MultipartFile> generateRandomImageFiles(long numberOfImages) {
+	public List<MultipartFile> generateRandomMultiPartFiles(long numberOfImages) {
 		List<MultipartFile> files = new ArrayList<>();
 		
 		for (int i = 0; i < numberOfImages; i++) {
