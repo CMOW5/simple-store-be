@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.respositories.ProductRepository;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
@@ -19,7 +20,10 @@ public class ProductTestsUtils {
 	
 	@Autowired
 	private ProductFactory productFactory;
-			
+	
+	@Autowired
+	private ImageTestsUtils imageUtils;
+				
 	/**
 	 * create a product instance with random data
 	 * @return the newly created product
@@ -30,10 +34,21 @@ public class ProductTestsUtils {
 	
 	/**
 	 * stores a random product into the database
-	 * @return the newly created product
+	 * @return the newly saved product
 	 */
 	public Product saveRandomProductOnDB() {
-		return productRepository.save(productFactory.generateRandomProduct());
+		return productRepository.save(generateRandomProduct());
+	}
+	
+	/**
+	 * stores a random product into the database
+	 * @return the newly saved product
+	 */
+	public Product saveRandomProductOnDBWithImages() {
+		List<Image> images = imageUtils.saveRandomImagesOnDb(2);
+		Product product = productFactory.generateRandomProduct();
+		product.addImages(images);
+		return productRepository.save(product);
 	}
 	
 	/**
