@@ -1,6 +1,10 @@
 package com.cristian.simplestore.utils;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Product;
@@ -13,6 +17,9 @@ public class ProductFactory {
 	
 	private Faker faker = new Faker();	
 	private static double MAX_PRICE = 10000000000.0;
+	
+	@Autowired
+	ImageTestsUtils imageUtils;
 
 	public Product generateRandomProduct() {
 		Product product = new Product();
@@ -49,6 +56,7 @@ public class ProductFactory {
 		boolean active = true;
 		Category category = null;
 		Long stock = (long) faker.number().numberBetween(0, 200);
+		List<MultipartFile> images = imageUtils.generateRandomImageFiles(2);
 		
 		form.setName(name);
 		form.setDescription(description);
@@ -58,6 +66,7 @@ public class ProductFactory {
 		form.setActive(active);
 		form.setCategory(category);
 		form.setStock(stock);
+		form.setImages(images);
 		
 		return form;
 	}
@@ -73,6 +82,7 @@ public class ProductFactory {
 		boolean active = true;
 		Category category = null;
 		Long stock = (long) faker.number().numberBetween(0, 200);
+		List<MultipartFile> newImages = imageUtils.generateRandomImageFiles(2);
 		
 		form.setName(name);
 		form.setDescription(description);
@@ -82,6 +92,7 @@ public class ProductFactory {
 		form.setActive(active);
 		form.setCategory(category);
 		form.setStock(stock);
+		form.setNewImages(newImages);
 		
 		return form;
 	}
