@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
@@ -45,11 +47,8 @@ public class Product {
 	@ManyToOne
 	private Category category;
 
-	@OneToMany(
-			mappedBy = "product", 
-			cascade = CascadeType.ALL, 
-			orphanRemoval = true
-	)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	@Fetch(FetchMode.JOIN) 
 	private List<ProductImage> images = new ArrayList<>();
 	
 	private Long stock;
@@ -172,5 +171,4 @@ public class Product {
 			this.removeImage(image);
 		}
 	}
-	
 }

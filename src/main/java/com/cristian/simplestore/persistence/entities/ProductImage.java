@@ -11,10 +11,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "product_image")
 public class ProductImage implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3567125929224490136L;
+
+	private static final long serialVersionUID = 1360932026416839388L;
 
 	@Id
 	@ManyToOne
