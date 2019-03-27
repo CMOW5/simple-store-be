@@ -2,6 +2,7 @@ package com.cristian.simplestore.persistence.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -116,5 +117,23 @@ public class Category {
         }
         return false;
     }
+    
+    @Override
+	public boolean equals(Object o) {
+		if ( this == o ) {
+			return true;
+		}
+		if ( o == null || getClass() != o.getClass() ) {
+			return false;
+		}
+		Category category = (Category) o;
+		return Objects.equals(name, category.name) && 
+				Objects.equals(id, category.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, id);
+	}
 	
 }

@@ -3,6 +3,7 @@ package com.cristian.simplestore.persistence.entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -138,7 +139,7 @@ public class Product {
 	public void setStock(Long stock) {
 		this.stock = stock;
 	}
-	
+
 	public List<Image> getImages() {
 		List<Image> images = new ArrayList<Image>();
 		List<ProductImage> productImages = this.images;
@@ -170,5 +171,23 @@ public class Product {
 		for (Image image: images) {
 			this.removeImage(image);
 		}
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if ( this == o ) {
+			return true;
+		}
+		if ( o == null || getClass() != o.getClass() ) {
+			return false;
+		}
+		Product product = (Product) o;
+		return Objects.equals(name, product.name) && 
+				Objects.equals(id, product.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, id);
 	}
 }
