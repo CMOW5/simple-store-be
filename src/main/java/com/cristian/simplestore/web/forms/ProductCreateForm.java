@@ -123,6 +123,7 @@ public class ProductCreateForm implements Form<Product> {
 		product.setInSale(inSale);
 		product.setActive(active);
 		product.setCategory(category);
+		product.setStock(stock);
 		return product;
 	}
 	
