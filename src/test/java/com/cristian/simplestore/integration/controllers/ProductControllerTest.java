@@ -30,6 +30,7 @@ import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.respositories.ProductRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
+import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.FormBuilder;
 import com.cristian.simplestore.utils.ImageBuilder;
 import com.cristian.simplestore.utils.ProductResponseDTO;
@@ -55,24 +56,31 @@ public class ProductControllerTest extends BaseTest {
 
 	@Autowired
 	private ImageBuilder imageBuilder;
+	
+	@Autowired
+	DbCleaner dbCleaner;
 
 	private ApiRequestUtils apiUtils;
 
 	@Before
 	public void setUp() {
 		this.apiUtils = new ApiRequestUtils(restTemplate);
-		productRepository.deleteAll();
+		cleanUpDb();
 	}
 
 	@After
 	public void tearDown() {
-		productRepository.deleteAll();
+		cleanUpDb();
+	}
+	
+	public void cleanUpDb() {
+		dbCleaner.cleanProductsTable();
 	}
 
 	@Test
 	public void testItFindsAllProducts() throws JsonParseException, JsonMappingException, IOException {
 		long MAX_PRODUCTS_SIZE = 4;
-		this.productsUtils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
+		productsUtils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 
 		ResponseEntity<String> response = sendFindAllProductsRequest();
 
@@ -85,11 +93,11 @@ public class ProductControllerTest extends BaseTest {
 
 	@Test
 	public void testItFindsAProductById() throws JsonParseException, JsonMappingException, IOException {
-		Product product = this.productsUtils.saveRandomProductOnDB();
+		Product product = productsUtils.saveRandomProductOnDB();
 
 		ResponseEntity<String> response = sendFindProductByIdRequest(product.getId());
 
-		ProductResponseDTO foundProduct = (ProductResponseDTO) this.apiUtils.getContentFromJsonRespose(response.getBody(), ProductResponseDTO.class);
+		ProductResponseDTO foundProduct = (ProductResponseDTO) apiUtils.getContentFromJsonRespose(response.getBody(), ProductResponseDTO.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(foundProduct.getName()).isEqualTo(product.getName());
@@ -103,15 +111,16 @@ public class ProductControllerTest extends BaseTest {
 
 	@Test
 	public void testItDoesNotFindAProductById() throws JsonParseException, JsonMappingException, IOException {
-		ResponseEntity<String> response = sendFindProductByIdRequest(new Long(1));
+		Long nonExistentProductId = 1L;
+		ResponseEntity<String> response = sendFindProductByIdRequest(nonExistentProductId);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 
 	@Test
 	public void testItCreatesAProduct() throws JsonParseException, JsonMappingException, IOException {
-		Product product = this.productsUtils.generateRandomProduct();
-		Category category = this.categoriesUtils.saveRandomCategoryOnDB();
+		Product product = productsUtils.generateRandomProduct();
+		Category category = categoriesUtils.saveRandomCategoryOnDB();
 		int IMAGES_SIZE = 2;
 		
 		FormBuilder form = new FormBuilder();
@@ -123,11 +132,11 @@ public class ProductControllerTest extends BaseTest {
 			.add("active", product.isActive())
 			.add("stock", product.getStock())
 			.add("category", category.getId())
-			.add("images", imageBuilder.createImages(IMAGES_SIZE));
+			.add("images", imageBuilder.storeImagesOnDisk(IMAGES_SIZE));
 
 		ResponseEntity<String> response = sendProductCreateRequest(form);
 		
-		ProductResponseDTO createdProduct = (ProductResponseDTO) this.apiUtils.getContentFromJsonRespose(response.getBody(), ProductResponseDTO.class);
+		ProductResponseDTO createdProduct = (ProductResponseDTO) apiUtils.getContentFromJsonRespose(response.getBody(), ProductResponseDTO.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 		assertThat(createdProduct.getName()).isEqualTo(product.getName());
@@ -156,9 +165,9 @@ public class ProductControllerTest extends BaseTest {
 
 	@Test
 	public void testItUpdatesAProduct() throws JsonParseException, JsonMappingException, IOException {
-		Product product = this.productsUtils.saveRandomProductOnDB();
-		Product newProductData = this.productsUtils.generateRandomProduct();
-		Category newCategory = this.categoriesUtils.saveRandomCategoryOnDB();
+		Product product = productsUtils.saveRandomProductOnDB();
+		Product newProductData = productsUtils.generateRandomProduct();
+		Category newCategory = categoriesUtils.saveRandomCategoryOnDB();
 		int IMAGES_SIZE = 2;
 
 		FormBuilder form = new FormBuilder();
@@ -170,7 +179,7 @@ public class ProductControllerTest extends BaseTest {
 			.add("active", newProductData.isActive())
 			.add("stock", newProductData.getStock())
 			.add("category", newCategory.getId())
-			.add("newImages", imageBuilder.createImages(IMAGES_SIZE));
+			.add("newImages", imageBuilder.storeImagesOnDisk(IMAGES_SIZE));
 
 		ResponseEntity<String> response = sendProductUpdateRequest(product.getId(), form);
 		
@@ -189,10 +198,7 @@ public class ProductControllerTest extends BaseTest {
 	
 	@Test
 	public void testItUpdatesAProductImages() throws JsonParseException, JsonMappingException, IOException {
-		Product product = this.productsUtils.saveRandomProductOnDBWithImages();
-		List<Image> images = product.getImages();
-		List<Long> imagesIdsToDelete = new ArrayList<>();
-		images.forEach(image -> imagesIdsToDelete.add(image.getId()));
+		Product product = productsUtils.saveRandomProductOnDBWithImages();
 	
 		FormBuilder form = new FormBuilder();
 		form.add("name", product.getName())
@@ -204,10 +210,10 @@ public class ProductControllerTest extends BaseTest {
 			.add("stock", product.getStock())
 			.add("category", product.getId())
 			.add("newImages", null)
-			.add("imagesIdsToDelete", imagesIdsToDelete);
+			.add("imagesIdsToDelete", getIdsFromImages(product.getImages()));
 		
 		ResponseEntity<String> response = sendProductUpdateRequest(product.getId(), form);
-		ProductResponseDTO updatedProduct = (ProductResponseDTO) this.apiUtils.getContentFromJsonRespose(response.getBody(), ProductResponseDTO.class);
+		ProductResponseDTO updatedProduct = (ProductResponseDTO) apiUtils.getContentFromJsonRespose(response.getBody(), ProductResponseDTO.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(updatedProduct.getName()).isEqualTo(product.getName());
@@ -222,7 +228,7 @@ public class ProductControllerTest extends BaseTest {
 
 	@Test
 	public void testItReturnsNotFoundWhenUpdating() throws JsonParseException, JsonMappingException, IOException {
-		Long nonExistentId = new Long(1);
+		Long nonExistentId = 1L;
 
 		FormBuilder form = new FormBuilder();
 		form.add("name", "some name").add("description", "some description");
@@ -244,7 +250,7 @@ public class ProductControllerTest extends BaseTest {
 
 	@Test
 	public void testItReturnsNotFoundWhenDeleting() throws JsonParseException, JsonMappingException, IOException {
-		Long nonExistentId = new Long(1);
+		Long nonExistentId = 1L;
 
 		ResponseEntity<String> response = sendProductDeleteRequest(nonExistentId);
 
@@ -291,5 +297,11 @@ public class ProductControllerTest extends BaseTest {
 		String url = "/api/admin/products/" + productId;
 		ResponseEntity<String> response = this.apiUtils.sendRequest(url, HttpMethod.DELETE, null, null);
 		return response;
+	}
+	
+	private List<Long> getIdsFromImages(List<Image> images) {
+		List<Long> imagesIds = new ArrayList<>();
+		images.forEach((image) -> imagesIds.add(image.getId()));
+		return imagesIds;
 	}
 }

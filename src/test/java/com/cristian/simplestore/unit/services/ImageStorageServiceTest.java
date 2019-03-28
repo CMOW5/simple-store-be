@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,7 +20,7 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.business.services.storage.StorageConfig;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
-import com.cristian.simplestore.utils.ImageBuilder;
+import com.cristian.simplestore.utils.ImageTestsUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,9 +31,9 @@ public class ImageStorageServiceTest extends BaseTest {
 	
 	@Autowired
 	StorageConfig storageConfig;
-	
+		
 	@Autowired 
-	ImageBuilder imageBuilder;
+	ImageTestsUtils imageUtils;
 	
 	@Before
 	public void setUp() {
@@ -45,13 +46,13 @@ public class ImageStorageServiceTest extends BaseTest {
 	}
 	
 	private void deleteAllFiles() {
-		this.imageStorageService.deleteAll();
+		imageStorageService.deleteAll();
 	}
 
 	@Test 
 	public void testItStoresAImage() {
-		MultipartFile imageFile = imageBuilder.createMockMultipartImage();
-		String imageName = imageBuilder.generateRandomImageName();
+		MultipartFile imageFile = imageUtils.generateMockMultipartFile();
+		String imageName = generateRandomName();
 		
 		String expectedPath = imageStorageService.store(imageFile, imageName);
 		
@@ -61,8 +62,8 @@ public class ImageStorageServiceTest extends BaseTest {
 	
 	@Test 
 	public void testItLoadsAImage() throws IOException {
-		String filename = "loadedfilename.jpg";
-		Resource savedResource =  imageBuilder.createImage(filename);
+		String filename = generateRandomName();
+		Resource savedResource =  imageUtils.storeImageOnDisk(filename);
 		
 		Resource expectedResource = imageStorageService.loadAsResource(filename);
 
@@ -72,8 +73,7 @@ public class ImageStorageServiceTest extends BaseTest {
 	
 	@Test(expected = StorageFileNotFoundException.class) 
 	public void testItDoesntLoadsAImage() {
-		String filename = "someNonExistentImage.jpg";
-		imageBuilder.createImage();
+		String filename = generateRandomName();
 		
 		imageStorageService.loadAsResource(filename);
 	}
@@ -81,5 +81,9 @@ public class ImageStorageServiceTest extends BaseTest {
 	private void assertThatImageWasStored(String filename) {
 		Resource file = imageStorageService.loadAsResource(filename);
 		assertTrue(file.isFile());
+	}
+	
+	private String generateRandomName() {
+		return UUID.randomUUID().toString();
 	}
 }

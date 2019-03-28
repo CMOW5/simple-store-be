@@ -70,7 +70,7 @@ public class ProductTestsUtils {
 		return productFactory.generateRandomProductCreateForm();
 	}
 	
-	public ProductUpdateForm generateRandomProductUpdateForm() {
-		return productFactory.generateRandomProductUpdateForm();
+	public ProductUpdateForm generateRandomProductUpdateForm(Long id) {
+		return productFactory.generateRandomProductUpdateForm(id);
 	}
 }

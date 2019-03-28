@@ -25,11 +25,11 @@ import org.springframework.util.MultiValueMap;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.respositories.CategoryRepository;
-import com.cristian.simplestore.persistence.respositories.ImageRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
+import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.FormBuilder;
-import com.cristian.simplestore.utils.ImageBuilder;
+import com.cristian.simplestore.utils.ImageTestsUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.github.javafaker.Faker;
@@ -43,35 +43,38 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+		
+	@Autowired
+	private CategoryTestsUtils categoryUtils;
 	
 	@Autowired
-	private ImageRepository ImageRepository;
+	private ImageTestsUtils imageUtils;
 	
 	@Autowired
-	private CategoryTestsUtils utils;
-	
-	@Autowired
-	private ImageBuilder imageBuilder;
+	DbCleaner dbCleaner;
 	
 	private ApiRequestUtils apiUtils;
 	
 	@Before
 	public void setUp() {
-		this.apiUtils = new ApiRequestUtils(restTemplate);
-		categoryRepository.deleteAll();
-		ImageRepository.deleteAll();
+		apiUtils = new ApiRequestUtils(restTemplate);
+		cleanUpDb();
 	}
 	
 	@After
 	public void tearDown() {
-		categoryRepository.deleteAll();
-		ImageRepository.deleteAll();
+		cleanUpDb();
+	}
+	
+	public void cleanUpDb() {
+		dbCleaner.cleanCategoriesTable();
+		dbCleaner.cleanImagesTable();
 	}
 	
 	@Test
 	public void testItFindsAllCategories() throws JsonParseException, JsonMappingException, IOException {
 		long MAX_CATEGORIES_SIZE = 4;
-		utils.saveRandomCategoriesOnDB(MAX_CATEGORIES_SIZE);
+		categoryUtils.saveRandomCategoriesOnDB(MAX_CATEGORIES_SIZE);
 		
 		ResponseEntity<String> response = sendFindAllCategoriesRequest();
 		
@@ -83,7 +86,7 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test
 	public void testItFindsACategoryById() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.saveRandomCategoryOnDB(); 
+		Category category = categoryUtils.saveRandomCategoryOnDB(); 
 		
 		ResponseEntity<String> response = sendFindCategoryByIdRequest(category.getId());
 		
@@ -96,20 +99,21 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test
 	public void testItDoesNotFindACategoryById() throws JsonParseException, JsonMappingException, IOException {
-		ResponseEntity<String> response = sendFindCategoryByIdRequest(new Long(1));
+		Long nonExistentCategoryId = 1L;
+		ResponseEntity<String> response = sendFindCategoryByIdRequest(nonExistentCategoryId);
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 		
 	@Test
 	public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.generateRandomCategory();
-		Category parentCategory = utils.saveRandomCategoryOnDB();
+		Category category = categoryUtils.generateRandomCategory();
+		Category parentCategory = categoryUtils.saveRandomCategoryOnDB();
 		
 		FormBuilder form = new FormBuilder();
 		form.add("name", category.getName())
 			.add("parentCategory", parentCategory.getId())
-			.add("image", imageBuilder.createImage());
+			.add("image", imageUtils.storeImageOnDisk());
 		
 		ResponseEntity<String> response = sendCategoryCreateRequest(form);
 		Category createdCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
@@ -122,9 +126,8 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test
 	public void testItUpdatesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.saveRandomCategoryOnDB();
-		
-		Category newParentCategory = utils.saveRandomCategoryOnDB();
+		Category category = categoryUtils.saveRandomCategoryOnDB();
+		Category newParentCategory = categoryUtils.saveRandomCategoryOnDB();
 		String newName = new Faker().name().firstName();
 		
 		FormBuilder form = new FormBuilder();
@@ -141,11 +144,11 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test
 	public void testItUpdatesACategoryImage() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.saveRandomCategoryOnDB();
+		Category category = categoryUtils.saveRandomCategoryOnDB();
 		
 		FormBuilder form = new FormBuilder();
 		form.add("name", category.getName())
-			.add("newImage", imageBuilder.createImage());
+			.add("newImage", imageUtils.storeImageOnDisk());
 		
 		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
 		Category updatedCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
@@ -157,7 +160,7 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test
 	public void testItDeletesACategoryImage() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.saveRandomCategoryOnDB();
+		Category category = categoryUtils.saveRandomCategoryOnDB();
 		Long imageIdToDelete = category.getImage().getId();
 		
 		FormBuilder form = new FormBuilder();
@@ -173,11 +176,11 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test
 	public void testItCorrectlyUpdatesTheParentCategory() throws JsonParseException, JsonMappingException, IOException {
-		Category categoryA = utils.saveRandomCategoryOnDB();
-		Category categoryB = utils.saveRandomCategoryOnDB();
+		Category categoryA = categoryUtils.saveRandomCategoryOnDB();
+		Category categoryB = categoryUtils.saveRandomCategoryOnDB();
 		
 		categoryA.setParentCategory(categoryB);
-		categoryA = this.categoryRepository.save(categoryA);
+		categoryA = categoryRepository.save(categoryA);
 		
 		// here we manually create a circular reference
 		// Between the category A and its parent, the category B.
@@ -193,14 +196,14 @@ public class CategoryControllerTest extends BaseTest {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(categoryA.getId());
 		
-		categoryA = this.categoryRepository.findById(categoryA.getId()).get();
+		categoryA = categoryRepository.findById(categoryA.getId()).get();
 		assertThat(categoryA.getParentCategory()).isNull();
 
 	}
 	
 	@Test
 	public void testItReturnsNotFoundWhenUpdating() throws JsonParseException, JsonMappingException, IOException {
-		Long nonExistentCategoryId = new Long(1);
+		Long nonExistentCategoryId = 1L;
 		
 		FormBuilder form = new FormBuilder();
 		form.add("name", "some name");
@@ -212,7 +215,7 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test(expected = NoSuchElementException.class)
 	public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.saveRandomCategoryOnDB();
+		Category category = categoryUtils.saveRandomCategoryOnDB();
 		
 		ResponseEntity<String> response = sendCategoryDeleteRequest(category.getId());
 		
@@ -222,23 +225,22 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test
 	public void testItReturnsNotFoundWhenDeleting() throws JsonParseException, JsonMappingException, IOException {
-		Category category = utils.generateRandomCategory();
-		category.setId(new Long(1));
+		Long nonExistentId = 1L;
 		
-		ResponseEntity<String> response = sendCategoryDeleteRequest(category.getId());
+		ResponseEntity<String> response = sendCategoryDeleteRequest(nonExistentId);
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 	
 	private ResponseEntity<String> sendFindAllCategoriesRequest() throws JsonParseException, JsonMappingException, IOException {		
 		String url = "/api/admin/categories";
-		ResponseEntity<String> response = this.apiUtils.sendRequest(url, HttpMethod.GET, null, null);	
+		ResponseEntity<String> response = apiUtils.sendRequest(url, HttpMethod.GET, null, null);	
 		return response;
 	} 
 	
 	private ResponseEntity<String> sendFindCategoryByIdRequest(Long id) throws JsonParseException, JsonMappingException, IOException {
 		String url = "/api/admin/categories/" + id;
-		ResponseEntity<String> response = this.apiUtils.sendRequest(url, HttpMethod.GET, null, null);	
+		ResponseEntity<String> response = apiUtils.sendRequest(url, HttpMethod.GET, null, null);	
 		return response;
 	} 
 	
@@ -264,7 +266,7 @@ public class CategoryControllerTest extends BaseTest {
 	
 	private ResponseEntity<String> sendCategoryDeleteRequest(Long categoryId) throws JsonParseException, JsonMappingException, IOException {	
 		String url = "/api/admin/categories/" + categoryId;
-		ResponseEntity<String> response = this.apiUtils.sendRequest(url, HttpMethod.DELETE, null, null);	
+		ResponseEntity<String> response = apiUtils.sendRequest(url, HttpMethod.DELETE, null, null);	
 		return response;
 	}
 }

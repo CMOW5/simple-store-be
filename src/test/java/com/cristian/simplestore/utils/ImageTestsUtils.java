@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,13 +35,25 @@ public class ImageTestsUtils {
 		return savedImages;
 	}
 	
-	public List<MultipartFile> generateRandomMultiPartFiles(long numberOfImages) {
+	public MultipartFile generateMockMultipartFile() {
+		return imageBuilder.createMockMultipartImage();
+	}
+	
+	public List<MultipartFile> generateMockMultiPartFiles(long numberOfImages) {
 		List<MultipartFile> files = new ArrayList<>();
 		
 		for (int i = 0; i < numberOfImages; i++) {
-			files.add(this.imageBuilder.createMockMultipartImage());
+			files.add(generateMockMultipartFile());
 		}
 		
 		return files;
+	}
+	
+	public Resource storeImageOnDisk() {
+		return imageBuilder.storeImageOnDisk();
+	}
+	
+	public Resource storeImageOnDisk(String filename) {
+		return imageBuilder.storeImageOnDisk(filename);
 	}
 }

@@ -78,7 +78,7 @@ public class ImageControllerTest extends BaseTest {
 	}
 	
 	private Image saveRandomImageOnDb() throws IOException {
-		Resource resource = imageBuilder.createImage();
+		Resource resource = imageBuilder.storeImageOnDisk();
 		
 		Image image = new Image();
 		image.setName(resource.getFile().getPath());

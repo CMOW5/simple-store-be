@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ImageService;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.respositories.ImageRepository;
-import com.cristian.simplestore.utils.ImageBuilder;
+import com.cristian.simplestore.utils.DbCleaner;
+import com.cristian.simplestore.utils.ImageTestsUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,138 +30,116 @@ public class ImageServiceTest extends BaseTest {
 	ImageService imageService;
 	
 	@Autowired
-	ImageRepository imageRepository;
+	DbCleaner dbCleaner;
 	
 	@Autowired
-	ImageBuilder imageBuilder;
-	
+	ImageTestsUtils imageUtils;
+		
 	@Before
 	public void setUp() {
-		this.cleanUpDb();
+		cleanUpDb();
 	}
 	
 	@After
 	public void tearDown() {
-		this.cleanUpDb();
+		cleanUpDb();
 	}
 	
 	private void cleanUpDb() {
-		this.imageRepository.deleteAll();
+		dbCleaner.cleanImagesTable();
 	}
 	
 	@Test
 	public void testItFindsAnImageById() {	
-		Image image = this.saveRandomImageOnDb();
+		Image image = imageUtils.saveRandomImageOnDb();
 		
-		Image expectedImage = this.imageService.findById(image.getId());
+		Image savedImage = imageService.findById(image.getId());
 		
-		assertThat(expectedImage).isNotNull();
+		assertThat(savedImage).isNotNull();
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
 	public void testItDoesNotFindsAnImageById() {	
 		Long nonExistentImageId = 1L;
 		
-		this.imageService.findById(nonExistentImageId);
+		imageService.findById(nonExistentImageId);
 	}
 	
 	@Test
 	public void testItFindsAllImagesById() {	
 		long MAX_IMAGE_SIZE = 3;
-		List<Image> images = this.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
-		List<Long> ids = new ArrayList<>();
-		images.forEach((image) -> ids.add(image.getId()));
+		List<Image> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 		
-		List<Image> expectedImages = this.imageService.findAllById(ids);
+		List<Image> expectedImages = imageService.findAllById(getIdsFromImages(images));
 		
 		assertThat(expectedImages.size()).isEqualTo(MAX_IMAGE_SIZE);
 	}
 	
 	@Test
 	public void testItsavesAnImageFile() {	
-		MultipartFile imageFile = this.imageBuilder.createMockMultipartImage();
+		MultipartFile imageFile = imageUtils.generateMockMultipartFile();
 		
-		Image expectedImage = this.imageService.save(imageFile);
+		Image savedImage = imageService.save(imageFile);
 		
-		assertThat(expectedImage).isNotNull();
+		assertThat(savedImage).isNotNull();
 	}
 	
 	@Test
 	public void testItsavesAllsImages() {	
 		int MAX_IMAGE_FILES = 3;
-		List<MultipartFile> imageFiles = this.generateRandomImageFiles(MAX_IMAGE_FILES);
+		List<MultipartFile> imageFiles = 
+				imageUtils.generateMockMultiPartFiles(MAX_IMAGE_FILES);
 		
-		List<Image> expectedImages = this.imageService.saveAll(imageFiles);
+		List<Image> savedImages = imageService.saveAll(imageFiles);
 		
-		assertThat(expectedImages.size()).isEqualTo(MAX_IMAGE_FILES);
+		assertThat(savedImages .size()).isEqualTo(MAX_IMAGE_FILES);
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
 	public void testItDeletesAnImage() {	
-		Image image = this.saveRandomImageOnDb();
+		Image image = imageUtils.saveRandomImageOnDb();
 		
-		this.imageService.delete(image);
+		imageService.delete(image);
 		
-		this.imageService.findById(image.getId());
+		imageService.findById(image.getId());
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
 	public void testItDeletesAnImageById() {	
-		Image image = this.saveRandomImageOnDb();
+		Image image = imageUtils.saveRandomImageOnDb();
 		
-		this.imageService.deleteById(image.getId());
+		imageService.deleteById(image.getId());
 		
-		this.imageService.findById(image.getId());
+		imageService.findById(image.getId());
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
 	public void testItDoesNotDeleteAnImageById() {	
 		Long nonExistentImageId = 1L;
 		
-		this.imageService.deleteById(nonExistentImageId);
+		imageService.deleteById(nonExistentImageId);
 	}
 	
 	@Test
 	public void testItDeletesAllById() {	
 		long MAX_IMAGE_SIZE = 3;
-		List<Image> images = this.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
-		List<Long> ids = new ArrayList<>();
-		images.forEach((image) -> ids.add(image.getId()));
+		List<Image> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 		
-		this.imageService.deleteAllById(ids);
+		imageService.deleteAllById(getIdsFromImages(images));
 	}
 	
 	@Test
 	public void testItDeletesAllImages() {	
 		long MAX_IMAGE_SIZE = 3;
-		List<Image> images = this.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
+		List<Image> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 		
-		this.imageService.deleteAll(images);
+		imageService.deleteAll(images);
 	}
 	
-	private Image saveRandomImageOnDb() {
-		MultipartFile imageFile = this.imageBuilder.createMockMultipartImage();
-		return this.imageService.save(imageFile);
-	}
-	
-	private List<MultipartFile> generateRandomImageFiles(long numberOfImages) {
-		List<MultipartFile> files = new ArrayList<>();
-		
-		for (int i = 0; i < numberOfImages; i++) {
-			files.add(this.imageBuilder.createMockMultipartImage());
-		}
-		
-		return files;
-	}
-	
-	private List<Image> saveRandomImagesOnDb(long numberOfImages) {
-		List<Image> savedImages = new ArrayList<>();
-		
-		for (int i = 0; i < numberOfImages; i++) {
-			savedImages.add(this.saveRandomImageOnDb());
-		}
-		
-		return savedImages;
+	private List<Long> getIdsFromImages(List<Image> images) {
+		List<Long> imagesIds = new ArrayList<>();
+		images.forEach((image) -> imagesIds.add(image.getId()));
+		return imagesIds;
 	}
 	
 }

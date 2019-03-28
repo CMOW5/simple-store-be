@@ -53,13 +53,14 @@ public class CategoryTestsUtils {
 		return form;
 	}
 	
-	public CategoryUpdateForm generateRandomCategoryUpdateForm() {
+	public CategoryUpdateForm generateRandomCategoryUpdateForm(Long id) {
 		CategoryUpdateForm form = new CategoryUpdateForm();
 		
 		String name = faker.name().firstName();
 		Category parentCategory = this.saveRandomCategoryOnDB();
 		MultipartFile newImage = this.imageBuilder.createMockMultipartImage();
-
+		
+		form.setId(id);
 		form.setName(name);
 		form.setParentCategory(parentCategory);
 		form.setNewImage(newImage);

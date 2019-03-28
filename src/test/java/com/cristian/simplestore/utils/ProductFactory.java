@@ -47,14 +47,15 @@ public class ProductFactory {
 		form.setActive(true);
 		form.setStock(generateRandomStock());
 		form.setCategory(categoryUtils.saveRandomCategoryOnDB());
-		form.setImages(imageUtils.generateRandomMultiPartFiles(2));
+		form.setImages(imageUtils.generateMockMultiPartFiles(2));
 	
 		return form;
 	}
 	
-	public ProductUpdateForm generateRandomProductUpdateForm() {
+	public ProductUpdateForm generateRandomProductUpdateForm(Long id) {
 		ProductUpdateForm form = new ProductUpdateForm();
-				
+		
+		form.setId(id);
 		form.setName(generateRandomName());
 		form.setDescription(generateRandomDescription());
 		form.setPrice(generateRandomPrice());
@@ -63,7 +64,7 @@ public class ProductFactory {
 		form.setActive(true);
 		form.setStock(generateRandomStock());
 		form.setCategory(categoryUtils.saveRandomCategoryOnDB());
-		form.setNewImages(imageUtils.generateRandomMultiPartFiles(2));
+		form.setNewImages(imageUtils.generateMockMultiPartFiles(2));
 		
 		return form;
 	}

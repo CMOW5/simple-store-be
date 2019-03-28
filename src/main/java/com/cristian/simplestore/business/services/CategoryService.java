@@ -32,7 +32,7 @@ public class CategoryService {
 		return foundCategories;
 	}
 
-	public Category findCategoryById(Long id) {
+	public Category findById(Long id) {
 		try {
 			Category foundCategory = categoryRepository.findById(id).get();
 			return foundCategory;

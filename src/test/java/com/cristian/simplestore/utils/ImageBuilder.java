@@ -47,24 +47,24 @@ public class ImageBuilder {
 		return result;
 	}
 	
-	public Resource createImage() {
-		return createImage(this.defaultRootPath.toString(), this.generateRandomImageName());
+	public Resource storeImageOnDisk() {
+		return storeImageOnDisk(this.defaultRootPath.toString(), this.generateRandomImageName());
 	}
 	
-	public Resource createImage(String filename) {
-		return createImage(this.defaultRootPath.toString(), filename);
+	public Resource storeImageOnDisk(String filename) {
+		return storeImageOnDisk(this.defaultRootPath.toString(), filename);
 	}
 	
-	public Resource createImage(String path, String imageName) {
+	public Resource storeImageOnDisk(String path, String imageName) {
 		String fullPath = path + "/" + imageName;
 		File imageFile = createImageFile(fullPath);		
 		return new FileSystemResource(imageFile);
 	}
 	
-	public List<Resource> createImages(int size) {
+	public List<Resource> storeImagesOnDisk(int size) {
 		List<Resource> images = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			images.add(createImage());
+			images.add(storeImageOnDisk());
 		}
 		return images;
 	}

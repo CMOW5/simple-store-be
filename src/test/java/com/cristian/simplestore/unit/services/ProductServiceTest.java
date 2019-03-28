@@ -20,10 +20,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.persistence.respositories.CategoryRepository;
-import com.cristian.simplestore.persistence.respositories.ImageRepository;
-import com.cristian.simplestore.persistence.respositories.ProductRepository;
+import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.ProductTestsUtils;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
 import com.cristian.simplestore.web.forms.ProductUpdateForm;
@@ -31,21 +30,15 @@ import com.cristian.simplestore.web.forms.ProductUpdateForm;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProductServiceTest extends BaseTest {
-		
-	@Autowired
-	private ProductRepository productRepository;
-	
+			
 	@Autowired
 	private ProductService productService;
 	
 	@Autowired
-	ImageRepository imageRepository;
+	DbCleaner dbCleaner;
 	
 	@Autowired
-	CategoryRepository categoryRepository;
-	
-	@Autowired
-	private ProductTestsUtils utils;
+	private ProductTestsUtils productUtils;
 	
 	@Before
 	public void setUp() {
@@ -58,24 +51,24 @@ public class ProductServiceTest extends BaseTest {
     }
 	
 	public void cleanUpDb() {
-		productRepository.deleteAll();
-		imageRepository.deleteAll();
-		categoryRepository.deleteAll();
+		dbCleaner.cleanProductsTable();
+		dbCleaner.cleanImagesTable();
+		dbCleaner.cleanCategoriesTable();
 	}
 	
 	@Test
 	public void testItFindsAllProducts() throws Exception {
 		int MAX_PRODUCTS_SIZE = 4;
-		List<Product> createdProducts = utils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
+		List<Product> createdProducts = productUtils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 				
-		List<Product> expectedProducts = this.productService.findAll();
+		List<Product> expectedProducts = productService.findAll();
 		
 		assertThat(expectedProducts.size()).isEqualTo(createdProducts.size());
 	}
 	
 	@Test
 	public void testItFindsAProductById() throws Exception {
-		Product product = utils.saveRandomProductOnDB();
+		Product product = productUtils.saveRandomProductOnDB();
 		
 		Product expectedProduct = productService.findById(product.getId());
 		
@@ -90,7 +83,7 @@ public class ProductServiceTest extends BaseTest {
 	
 	@Test
 	public void testItCreatesAProduct() {
-		Product product = utils.generateRandomProduct();
+		Product product = productUtils.generateRandomProduct();
 		
 		Product expectedProduct = productService.create(product);
 		
@@ -99,7 +92,7 @@ public class ProductServiceTest extends BaseTest {
 	
 	@Test
 	public void testItCreatesAProductWithForm() {
-		ProductCreateForm productForm = utils.generateRandomProductCreateForm();
+		ProductCreateForm productForm = productUtils.generateRandomProductCreateForm();
 	
 		Product expectedProduct = productService.create(productForm);
 		
@@ -110,9 +103,9 @@ public class ProductServiceTest extends BaseTest {
 		
 	@Test
 	public void testItUpdatesAProductWithForm() {
-		Product productToUpdate = utils.saveRandomProductOnDB();
-		ProductUpdateForm newProductData = utils.generateRandomProductUpdateForm();
-		newProductData.setId(productToUpdate.getId());
+		Product productToUpdate = productUtils.saveRandomProductOnDB();
+		ProductUpdateForm newProductData = 
+				productUtils.generateRandomProductUpdateForm(productToUpdate.getId());
 		
 		Product expectedProduct = productService.update(newProductData);
 		
@@ -123,14 +116,13 @@ public class ProductServiceTest extends BaseTest {
 	
 	@Test
 	public void testItDeletesAProductImages() {
-		Product productToUpdate = utils.saveRandomProductOnDBWithImages();
-		ProductUpdateForm newProductData = utils.generateRandomProductUpdateForm();
-		newProductData.setId(productToUpdate.getId());
+		Product productToUpdate = productUtils.saveRandomProductOnDBWithImages();
+		ProductUpdateForm newProductData = 
+				productUtils.generateRandomProductUpdateForm(productToUpdate.getId());
 		newProductData.setNewImages(null);
-		
-		List<Long> imagesIdsToDelete = new ArrayList<Long>();
-		productToUpdate.getImages().forEach(image -> imagesIdsToDelete.add(image.getId()));
-		newProductData.setImagesIdsToDelete(imagesIdsToDelete);
+		newProductData.setImagesIdsToDelete(
+			getIdsFromImages(productToUpdate.getImages())
+		);
 		
 		Product expectedProduct = productService.update(newProductData);
 		
@@ -142,15 +134,14 @@ public class ProductServiceTest extends BaseTest {
 	public void testItDoesNotUpdateAProductWithForm() {
 		long nonExistentProductId = 1;
 		ProductUpdateForm newProductData = 
-				utils.generateRandomProductUpdateForm();
-		newProductData.setId(nonExistentProductId);
-		
+				productUtils.generateRandomProductUpdateForm(nonExistentProductId);
+
 		productService.update(newProductData);
 	}
 	
 	@Test(expected = EntityNotFoundException.class)
 	public void testItDeletesAProduct() {
-		Product product = utils.saveRandomProductOnDB();
+		Product product = productUtils.saveRandomProductOnDB();
 		productService.deleteById(product.getId());
 		productService.findById(product.getId());		
 	}
@@ -176,5 +167,11 @@ public class ProductServiceTest extends BaseTest {
 		Optional<Category> category1 = Optional.ofNullable(c1);
 		Optional<Category> category2 = Optional.ofNullable(c2);
 		return category1.equals(category2);
+	}
+	
+	private List<Long> getIdsFromImages(List<Image> images) {
+		List<Long> imagesIds = new ArrayList<>();
+		images.forEach((image) -> imagesIds.add(image.getId()));
+		return imagesIds;
 	}
 }
