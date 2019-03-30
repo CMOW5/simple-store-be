@@ -9,12 +9,15 @@ import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.validators.annotations.Exists;
 import com.cristian.simplestore.web.validators.annotations.ExistsDb;
 
+import lombok.Data;
+
 @ExistsDb(
   table = "categories",
   columnName = "name",
   columnValueField = "name",
   exceptIdColumn = "id"
 )
+@Data
 public class CategoryUpdateForm implements Form<Category> {
 	
 	@NotNull
@@ -29,46 +32,6 @@ public class CategoryUpdateForm implements Form<Category> {
 	private MultipartFile newImage;
 	
 	private Long imageIdToDelete;
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Category getParentCategory() {
-		return parentCategory;
-	}
-
-	public void setParentCategory(Category parentCategory) {
-		this.parentCategory = parentCategory;
-	}
-
-	public MultipartFile getNewImage() {
-		return newImage;
-	}
-
-	public void setNewImage(MultipartFile newImage) {
-		this.newImage = newImage;
-	}
-
-	public Long getImageIdToDelete() {
-		return imageIdToDelete;
-	}
-
-	public void setImageIdToDelete(Long imageIdToDelete) {
-		this.imageIdToDelete = imageIdToDelete;
-	}
 	
 	@Override
 	public Category getModel() {
