@@ -15,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,7 +35,7 @@ public class Category {
 	private Category parentCategory;
 	
 	// @OneToMany(mappedBy = "parentCategory" , cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	// @JsonIgnore
 	// private List<Category> subcategories = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
