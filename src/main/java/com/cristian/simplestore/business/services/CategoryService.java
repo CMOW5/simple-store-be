@@ -92,7 +92,7 @@ public class CategoryService {
 	private Category addImageToCategory(Category category, MultipartFile imageFile) {
 		if (imageFile != null) {
 			Image image = this.imageService.save(imageFile);
-			category.addImage(image);
+			category.setImage(image);
 		}
 		return category;
 	}
@@ -121,7 +121,7 @@ public class CategoryService {
 		if (newImageFile != null) {
 			Image newImage = this.imageService.save(newImageFile);
 			Image currentImage = categoryToUpdate.getImage();
-			categoryToUpdate.addImage(newImage);
+			categoryToUpdate.setImage(newImage);
 			
 			// TODO: this step is necessary because the image has a constraint with the
 			// current category, so we need to update the category relationship with the 

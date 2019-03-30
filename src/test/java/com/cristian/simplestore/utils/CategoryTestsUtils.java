@@ -105,7 +105,7 @@ public class CategoryTestsUtils {
 		
 		Category category = new Category();
 		category.setName(name);
-		category.addImage(image);
+		category.setImage(image);
 		
 		return categoryRepository.save(category);
 	}

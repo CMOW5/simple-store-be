@@ -8,8 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "product_image")
+@Data
+@NoArgsConstructor
 public class ProductImage implements Serializable {
 
 	private static final long serialVersionUID = 1360932026416839388L;
@@ -22,29 +27,11 @@ public class ProductImage implements Serializable {
 	@ManyToOne
 	private Image image;
 	
-	public ProductImage() {}
-
 	public ProductImage(Product product, Image image) {
 		this.product = product;
 		this.image = image;
 	}
 
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product person) {
-		this.product = person;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
-	}
-	
 	@Override
 	public boolean equals(Object o) {
 		if ( this == o ) {

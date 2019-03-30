@@ -42,7 +42,7 @@ public class CategorySeeder {
 	private Category createRandomCategoryOnDB() {
 		Category category = new Category();
 		category.setName(faker.commerce().department());
-		category.addImage(generateRandomImageOnDB());
+		category.setImage(generateRandomImageOnDB());
 		categoryRepository.save(category);
 		return category;
 	}
@@ -52,13 +52,13 @@ public class CategorySeeder {
 			Category category1 = new Category();
 			category1.setName(this.faker.commerce().department());
 			category1.setParentCategory(parentCategory);
-			category1.addImage(generateRandomImageOnDB());
+			category1.setImage(generateRandomImageOnDB());
 			categoryRepository.save(category1);
 			
 			Category category2 = new Category();
 			category2.setName(this.faker.commerce().department());
 			category2.setParentCategory(category1);
-			category2.addImage(generateRandomImageOnDB());
+			category2.setImage(generateRandomImageOnDB());
 			categoryRepository.save(category2);
 		}
 	}

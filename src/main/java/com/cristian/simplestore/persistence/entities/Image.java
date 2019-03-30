@@ -17,11 +17,14 @@ import javax.persistence.Transient;
 import org.springframework.context.annotation.Scope;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Scope("prototype")
 @Table(name = "images")
+@Data
+@NoArgsConstructor
 public class Image {
 	
 	@Id
@@ -35,14 +38,6 @@ public class Image {
 	
 	@OneToMany(mappedBy = "image", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductImage> owners = new ArrayList<>();
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
 	public String getName() {
 		if (isValidUrl(this.name)) {
@@ -51,17 +46,13 @@ public class Image {
 			return StringUtils.getFilename(name);
 		}
 	}
-	
-	public String getUrl() {
-		if (isValidUrl(this.name)) {
-			return this.name;
-		} else {
-			return convertNameToUrl(this.getName());
-		}
-	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getUrl() {
+		if (isValidUrl(name)) {
+			return name;
+		} else {
+			return convertNameToUrl(getName());
+		}
 	}
 	
 	// TODO FIX THE HARCODED ROUTE
@@ -69,22 +60,16 @@ public class Image {
 		return "http://localhost:8000/api/images/" + name;
 	}
 	
-	@JsonIgnore
 	public boolean isAUrl() {
-		return this.isValidUrl(this.name);
+		return isValidUrl(name);
 	}
 	
 	private boolean isValidUrl(String url) {
 		try {
-			new URL(this.name);
+			new URL(name);
 			return true;
 		} catch (MalformedURLException e) {
 			return false;
 		}
-	}
-
-	@JsonIgnore
-	public List<ProductImage> getOwners() {
-		return owners;
 	}
 }

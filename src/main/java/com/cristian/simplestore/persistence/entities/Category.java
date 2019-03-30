@@ -17,8 +17,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "categories")
+@NoArgsConstructor
+@Data
 public class Category {
 	
 	@Id
@@ -42,57 +47,18 @@ public class Category {
 	@JoinColumn(name = "image_id")
 	private Image image;
 	
-	public Category() {}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Category getParentCategory() {
-		return parentCategory;
-	}
-
-	public void setParentCategory(Category parentCategory) {
-		this.parentCategory = parentCategory;
-	}
-	
 	public void addSubCategory(Category subcategory) {
 		// this.subcategories.add(subcategory);
 		// subcategory.setParentCategory(this);
 	}
 	
-	@JsonIgnore
-	public List<Product> getProducts() {
-		return products;
-	}
-
 	public void addProduct(Product product) {
 		this.products.add(product);
 		product.setCategory(this);
 	}
 	
-	public void addImage(Image image) {
-		this.image = image;
-	}
-	
 	public void deleteImage() {
 		this.image = null;
-	}
-	
-	public Image getImage() {
-		return this.image;
 	}
 	
 	/**
