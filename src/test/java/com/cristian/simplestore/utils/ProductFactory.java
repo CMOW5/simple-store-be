@@ -31,7 +31,7 @@ public class ProductFactory {
 		product.setInSale(false);
 		product.setActive(true);
 		product.setStock(generateRandomStock());
-		product.setCategory(categoryUtils.saveRandomCategoryOnDB());
+		product.setCategory(categoryUtils.saveRandomCategoryOnDb());
 		
 		return product;
 	}
@@ -46,7 +46,7 @@ public class ProductFactory {
 		form.setInSale(false);
 		form.setActive(true);
 		form.setStock(generateRandomStock());
-		form.setCategory(categoryUtils.saveRandomCategoryOnDB());
+		form.setCategory(categoryUtils.saveRandomCategoryOnDb());
 		form.setImages(imageUtils.generateMockMultiPartFiles(2));
 	
 		return form;
@@ -63,7 +63,7 @@ public class ProductFactory {
 		form.setInSale(false);
 		form.setActive(true);
 		form.setStock(generateRandomStock());
-		form.setCategory(categoryUtils.saveRandomCategoryOnDB());
+		form.setCategory(categoryUtils.saveRandomCategoryOnDb());
 		form.setNewImages(imageUtils.generateMockMultiPartFiles(2));
 		
 		return form;

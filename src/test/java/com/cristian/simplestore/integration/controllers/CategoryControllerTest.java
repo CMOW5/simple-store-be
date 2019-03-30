@@ -29,10 +29,9 @@ import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
 import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.FormBuilder;
-import com.cristian.simplestore.utils.ImageTestsUtils;
+import com.cristian.simplestore.web.dto.CategoryResponseDto;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.github.javafaker.Faker;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -46,10 +45,7 @@ public class CategoryControllerTest extends BaseTest {
 		
 	@Autowired
 	private CategoryTestsUtils categoryUtils;
-	
-	@Autowired
-	private ImageTestsUtils imageUtils;
-	
+
 	@Autowired
 	DbCleaner dbCleaner;
 	
@@ -74,23 +70,23 @@ public class CategoryControllerTest extends BaseTest {
 	@Test
 	public void testItFindsAllCategories() throws JsonParseException, JsonMappingException, IOException {
 		long MAX_CATEGORIES_SIZE = 4;
-		categoryUtils.saveRandomCategoriesOnDB(MAX_CATEGORIES_SIZE);
+		List<Category> categories = categoryUtils.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
 		
 		ResponseEntity<String> response = sendFindAllCategoriesRequest();
 		
-		List<Category> responseCategories = (List<Category>) apiUtils.getContentFromJsonRespose(response.getBody(), List.class);
+		List<?> responseCategories = (List<?>) apiUtils.getContentFromJsonRespose(response.getBody(), List.class);
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(responseCategories.size()).isEqualTo(MAX_CATEGORIES_SIZE);	
+		assertThat(responseCategories.size()).isEqualTo(categories.size());	
 	}
 	
 	@Test
 	public void testItFindsACategoryById() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryUtils.saveRandomCategoryOnDB(); 
+		Category category = categoryUtils.saveRandomCategoryOnDb(); 
 		
 		ResponseEntity<String> response = sendFindCategoryByIdRequest(category.getId());
 		
-	    Category foundCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
+	    CategoryResponseDto foundCategory = (CategoryResponseDto) apiUtils.getContentFromJsonRespose(response.getBody(), CategoryResponseDto.class);
 
 	    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(foundCategory.getName()).isEqualTo(category.getName());
@@ -107,77 +103,35 @@ public class CategoryControllerTest extends BaseTest {
 		
 	@Test
 	public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryUtils.generateRandomCategory();
-		Category parentCategory = categoryUtils.saveRandomCategoryOnDB();
-		
-		FormBuilder form = new FormBuilder();
-		form.add("name", category.getName())
-			.add("parentCategory", parentCategory.getId())
-			.add("image", imageUtils.storeImageOnDisk());
+		FormBuilder form = categoryUtils.generateRandomCategoryCreateRequesForm(); 
 		
 		ResponseEntity<String> response = sendCategoryCreateRequest(form);
-		Category createdCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
+		CategoryResponseDto createdCategory = (CategoryResponseDto) apiUtils.getContentFromJsonRespose(response.getBody(), CategoryResponseDto.class);
 		
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		assertThat(createdCategory.getName()).isEqualTo(category.getName());
+		assertThat(createdCategory.getName()).isEqualTo(form.get("name"));
+		assertThat(createdCategory.getParentCategory().getId()).isEqualTo(form.get("parentCategory"));
 		assertThat(createdCategory.getImage()).isNotNull();
-		assertThat(createdCategory.getParentCategory().getId()).isEqualTo(parentCategory.getId());
 	}
 	
 	@Test
 	public void testItUpdatesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryUtils.saveRandomCategoryOnDB();
-		Category newParentCategory = categoryUtils.saveRandomCategoryOnDB();
-		String newName = new Faker().name().firstName();
+		Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb();
+		FormBuilder form = categoryUtils.generateRandomCategoryUpdateRequesForm(); 
 		
-		FormBuilder form = new FormBuilder();
-		form.add("name", newName)
-			.add("parentCategory", newParentCategory.getId());
-		
-		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
-		Category updatedCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
+		ResponseEntity<String> response = sendCategoryUpdateRequest(categoryToUpdate.getId(), form);
+		CategoryResponseDto updatedCategory = (CategoryResponseDto) apiUtils.getContentFromJsonRespose(response.getBody(), CategoryResponseDto.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(updatedCategory.getName()).isEqualTo(newName);
-		assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(newParentCategory.getId());
-	}
-	
-	@Test
-	public void testItUpdatesACategoryImage() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryUtils.saveRandomCategoryOnDB();
-		
-		FormBuilder form = new FormBuilder();
-		form.add("name", category.getName())
-			.add("newImage", imageUtils.storeImageOnDisk());
-		
-		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
-		Category updatedCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(updatedCategory.getImage()).isNotNull();
-		assertThat(updatedCategory.getImage().getName()).isNotEqualTo(category.getImage().getName());
-	}
-	
-	@Test
-	public void testItDeletesACategoryImage() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryUtils.saveRandomCategoryOnDB();
-		Long imageIdToDelete = category.getImage().getId();
-		
-		FormBuilder form = new FormBuilder();
-		form.add("name", category.getName())
-			.add("imageIdToDelete", imageIdToDelete);
-		
-		ResponseEntity<String> response = sendCategoryUpdateRequest(category.getId(), form);
-		Category updatedCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(updatedCategory.getImage()).isNull();
+		assertThat(updatedCategory.getName()).isEqualTo(form.get("name"));
+		assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(form.get("parentCategory"));
+		assertThat(updatedCategory.getImage().getId()).isNotEqualTo(categoryToUpdate.getImage().getId());
 	}
 	
 	@Test
 	public void testItCorrectlyUpdatesTheParentCategory() throws JsonParseException, JsonMappingException, IOException {
-		Category categoryA = categoryUtils.saveRandomCategoryOnDB();
-		Category categoryB = categoryUtils.saveRandomCategoryOnDB();
+		Category categoryA = categoryUtils.saveRandomCategoryOnDb();
+		Category categoryB = categoryUtils.saveRandomCategoryOnDb();
 		
 		categoryA.setParentCategory(categoryB);
 		categoryA = categoryRepository.save(categoryA);
@@ -191,7 +145,7 @@ public class CategoryControllerTest extends BaseTest {
 			.add("parentCategory", categoryA.getId());
 		
 		ResponseEntity<String> response = sendCategoryUpdateRequest(categoryB.getId(), form);
-		Category updatedCategory = (Category) apiUtils.getContentFromJsonRespose(response.getBody(), Category.class);
+		CategoryResponseDto updatedCategory = (CategoryResponseDto) apiUtils.getContentFromJsonRespose(response.getBody(), CategoryResponseDto.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(categoryA.getId());
@@ -215,7 +169,7 @@ public class CategoryControllerTest extends BaseTest {
 	
 	@Test(expected = NoSuchElementException.class)
 	public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryUtils.saveRandomCategoryOnDB();
+		Category category = categoryUtils.saveRandomCategoryOnDb();
 		
 		ResponseEntity<String> response = sendCategoryDeleteRequest(category.getId());
 		

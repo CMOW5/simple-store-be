@@ -39,7 +39,7 @@ public class ProductTestsUtils {
 	public Product saveRandomProductOnDB() {
 		return productRepository.save(generateRandomProduct());
 	}
-	
+		
 	/**
 	 * stores a random product into the database
 	 * @return the newly saved product
@@ -64,6 +64,42 @@ public class ProductTestsUtils {
 		}
 		
 		return products;
+	}
+	
+	public FormBuilder generateRandomProductCreateRequesForm() {
+		Product product = productFactory.generateRandomProduct();
+		int IMAGES_SIZE = 2;
+		
+		FormBuilder form = new FormBuilder();
+		form.add("name", product.getName())
+			.add("description", product.getDescription())
+			.add("price", product.getPrice())
+			.add("priceSale", product.getPriceSale())
+			.add("inSale", product.isInSale())
+			.add("active", product.isActive())
+			.add("stock", product.getStock())
+			.add("category", product.getCategory().getId())
+			.add("images", imageUtils.storeImagesOnDisk(IMAGES_SIZE));
+			
+		return form;
+	}
+	
+	public FormBuilder generateRandomProductUpdateRequesForm() {
+		Product product = productFactory.generateRandomProduct();
+		int IMAGES_SIZE = 2;
+		
+		FormBuilder form = new FormBuilder();
+		form.add("name", product.getName())
+			.add("description", product.getDescription())
+			.add("price", product.getPrice())
+			.add("priceSale", product.getPriceSale())
+			.add("inSale", product.isInSale())
+			.add("active", product.isActive())
+			.add("stock", product.getStock())
+			.add("category", product.getCategory().getId())
+			.add("newImages", imageUtils.storeImagesOnDisk(IMAGES_SIZE));
+			
+		return form;
 	}
 	
 	public ProductCreateForm generateRandomProductCreateForm() {

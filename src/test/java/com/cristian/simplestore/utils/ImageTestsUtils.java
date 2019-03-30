@@ -56,4 +56,8 @@ public class ImageTestsUtils {
 	public Resource storeImageOnDisk(String filename) {
 		return imageBuilder.storeImageOnDisk(filename);
 	}
+	
+	public List<Resource> storeImagesOnDisk(int size) {
+		return imageBuilder.storeImagesOnDisk(size);
+	}
 }

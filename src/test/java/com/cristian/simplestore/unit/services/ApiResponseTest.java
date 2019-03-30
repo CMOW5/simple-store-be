@@ -36,10 +36,9 @@ public class ApiResponseTest extends BaseTest {
 	public void testsTheResponseErrors() {
 		long ERRORS_SIZE = 4;
 		List<FieldError> errors = createErrors(4);
-		ApiResponse apiResponse = new ApiResponse();
 		
 		ResponseEntity<Map<String, Object>> response = 
-				(ResponseEntity<Map<String, Object>>) apiResponse.content("some content")
+				(ResponseEntity<Map<String, Object>>) new ApiResponse().content("some content")
 				.status(HttpStatus.BAD_REQUEST)
 				.errors(errors)
 				.build();

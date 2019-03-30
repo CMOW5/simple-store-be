@@ -15,15 +15,25 @@ public class FormBuilder {
 	
 	public <T> FormBuilder add(String key, T value) {
 		if (value instanceof List) {
-			form.addAll(key, (List<? extends Object>) value);
+			form.addAll(key, (List<?>) value);
 		} else {
-			form.add(key, value);
+			form.set(key, value);
 		}
 		return this;
+	}
+	
+	public Object get(String key) {
+		return form.getFirst(key);
+	}
+	
+	public List<Object> getAll(String key) {
+		return form.get(key);
 	}
 	
 	public MultiValueMap<String, Object> build() {
 		return this.form;
 	}
+
+	
 	
 }
