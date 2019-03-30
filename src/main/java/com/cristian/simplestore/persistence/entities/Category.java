@@ -7,7 +7,6 @@ import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,10 +39,7 @@ public class Category {
 	private List<Product> products = new ArrayList<>();
 	
 	@ManyToOne
-	@JoinColumn(
-			name = "image_id",
-			foreignKey = @ForeignKey(name = "IMAGE_ID_FK")
-	)
+	@JoinColumn(name = "image_id")
 	private Image image;
 	
 	public Category() {}

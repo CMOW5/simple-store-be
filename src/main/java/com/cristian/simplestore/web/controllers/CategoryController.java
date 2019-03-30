@@ -1,5 +1,6 @@
 package com.cristian.simplestore.web.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.web.dto.CategoryResponseDto;
 import com.cristian.simplestore.web.forms.CategoryCreateForm;
 import com.cristian.simplestore.web.forms.CategoryUpdateForm;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
@@ -35,7 +37,7 @@ public class CategoryController {
 	public ResponseEntity<?> findAllCategories() {
 		List<Category> categories = categoryService.findAll();
 		return response.status(HttpStatus.OK)
-					.content(categories)
+					.content(convertEntitiesToDto(categories))
 					.build();
 	}
 	
@@ -43,7 +45,7 @@ public class CategoryController {
 	public ResponseEntity<?> findCategoryById(@PathVariable long id) {
 		Category foundCategory = categoryService.findById(id);
 		return response.status(HttpStatus.OK)
-				.content(foundCategory)
+				.content(convertEntityToDto(foundCategory))
 				.build();
 	}
 	
@@ -52,7 +54,7 @@ public class CategoryController {
 			@Valid CategoryCreateForm form) {
 		Category createdCategory = categoryService.create(form);
 		return response.status(HttpStatus.CREATED)
-					.content(createdCategory)
+					.content(convertEntityToDto(createdCategory))
 					.build();
 	}
 	
@@ -61,7 +63,7 @@ public class CategoryController {
 			@Valid CategoryUpdateForm form) {
 		Category updatedCategory = categoryService.update(form);
 		return response.status(HttpStatus.OK)
-				.content(updatedCategory)
+				.content(convertEntityToDto(updatedCategory))
 				.build();
 	}
 	
@@ -79,5 +81,15 @@ public class CategoryController {
 		return response.status(HttpStatus.OK)
 				.content(categoriesCount)
 				.build();	
+	}
+	
+	private CategoryResponseDto convertEntityToDto(Category category) {
+		return new CategoryResponseDto(category);
+	}
+	
+	private List<CategoryResponseDto> convertEntitiesToDto(List<Category> categories) {
+		List<CategoryResponseDto> dtos = new ArrayList<>();
+		categories.forEach(category -> dtos.add(convertEntityToDto(category)));
+		return dtos;
 	}
 }

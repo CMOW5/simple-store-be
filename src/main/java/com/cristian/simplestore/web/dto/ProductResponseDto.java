@@ -1,11 +1,18 @@
-package com.cristian.simplestore.utils;
+package com.cristian.simplestore.web.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.Product;
 
-public class ProductResponseDTO {
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class ProductResponseDto {
 
 	private Long id;
 	
@@ -21,92 +28,37 @@ public class ProductResponseDTO {
 
 	private boolean active;
 
-	private Category category;
+	private ParentCategoryResponseDto category;
 
-	private List<Image> images;
+	private List<ImageResponseDto> images = new ArrayList<>();
 	
 	private Long stock;
 
-	public ProductResponseDTO() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public double getPriceSale() {
-		return priceSale;
-	}
-
-	public void setPriceSale(double priceSale) {
-		this.priceSale = priceSale;
-	}
-
-	public boolean isInSale() {
-		return inSale;
-	}
-
-	public void setInSale(boolean inSale) {
-		this.inSale = inSale;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
+	public ProductResponseDto(Product product) {
+		this.id = product.getId();
+		this.name = product.getName();
+		this.description = product.getDescription();
+		this.price = product.getPrice();
+		this.priceSale = product.getPriceSale();
+		this.inSale = product.isInSale();
+		this.active = product.isActive();
+		this.stock = product.getStock();
+		mapParentCategory(product.getCategory());
+		mapImages(product.getImages());
 	}
 	
-	public Long getStock() {
-		return stock;
+	private void mapImages(List<Image> images) {
+		if (images != null) {
+			for (Image image: images) {
+				this.images.add(new ImageResponseDto(image));
+			}
+		}
 	}
 
-	public void setStock(Long stock) {
-		this.stock = stock;
-	}
-
-	public List<Image> getImages() {
-		return images;
-	}
-
-	public void setImages(List<Image> images) {
-		this.images = images;
+	private void mapParentCategory(Category category) {
+		if (category != null) {
+			this.category = 
+					new ParentCategoryResponseDto(category.getId(), category.getName());
+		}
 	}
 }

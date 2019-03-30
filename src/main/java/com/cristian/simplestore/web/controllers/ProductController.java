@@ -1,5 +1,6 @@
 package com.cristian.simplestore.web.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.web.dto.ProductResponseDto;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
 import com.cristian.simplestore.web.forms.ProductUpdateForm;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
@@ -35,7 +37,7 @@ public class ProductController {
 	public ResponseEntity<?> findAllProducts() {
 		List<Product> products = productService.findAll();
 		return response.status(HttpStatus.OK)
-				.content(products)
+				.content(convertEntitiesToDto(products))
 				.build();
 	}
 
@@ -43,7 +45,7 @@ public class ProductController {
 	public ResponseEntity<?> findProductById(@PathVariable long id) {
 		Product product = productService.findById(id);
 		return response.status(HttpStatus.OK)
-				.content(product)
+				.content(convertEntityToDto(product))
 				.build();
 	}
 	
@@ -51,7 +53,7 @@ public class ProductController {
 	public ResponseEntity<?> create(@Valid ProductCreateForm form) {
 		Product createdProduct = productService.create(form);
 		return response.status(HttpStatus.CREATED)
-				.content(createdProduct)
+				.content(convertEntityToDto(createdProduct))
 				.build();
 	}
 
@@ -60,7 +62,7 @@ public class ProductController {
 			@Valid ProductUpdateForm form) {
 		Product updatedProduct = productService.update(form);
 		return response.status(HttpStatus.OK)
-				.content(updatedProduct)
+				.content(convertEntityToDto(updatedProduct))
 				.build();
 		
 	}
@@ -79,5 +81,15 @@ public class ProductController {
 		return response.status(HttpStatus.OK)
 				.content(productsCount)
 				.build();
+	}
+	
+	private ProductResponseDto convertEntityToDto(Product product) {
+		return new ProductResponseDto(product);
+	}
+	
+	private List<ProductResponseDto> convertEntitiesToDto(List<Product> products) {
+		List<ProductResponseDto> dtos = new ArrayList<>();
+		products.forEach(product -> dtos.add(convertEntityToDto(product)));
+		return dtos;
 	}
 }

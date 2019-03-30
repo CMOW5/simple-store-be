@@ -18,7 +18,7 @@ import com.cristian.simplestore.web.dto.CategoryResponseDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class TestCategoryDto extends BaseTest {
+public class TestCategoryResponseDto extends BaseTest {
 
 	@Autowired 
 	private CategoryTestsUtils categoryUtils;
@@ -54,7 +54,7 @@ public class TestCategoryDto extends BaseTest {
 		assertThat(category.getName()).isEqualTo(categoryDto.getName());
 		assertThat(category.getParentCategory().getId()).isEqualTo(categoryDto.getParentCategory().getId());
 		assertThat(category.getParentCategory().getName()).isEqualTo(categoryDto.getParentCategory().getName());
-		assertThat(category.getImage().getName()).isEqualTo(categoryDto.getImage().getName());	
+		assertThat(category.getImage().getId()).isEqualTo(categoryDto.getImage().getId());	
 	}
 	
 	
