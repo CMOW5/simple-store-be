@@ -13,11 +13,14 @@ import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.web.validators.annotations.ExistsDb;
 
+import lombok.Data;
+
 @ExistsDb(
 	table = "products",
 	columnName = "name",
 	columnValueField = "name"
 )
+@Data
 public class ProductCreateForm implements Form<Product> {
 		
 	@NotNull @Size(min = 2, max = 100) 
@@ -41,76 +44,13 @@ public class ProductCreateForm implements Form<Product> {
 	private List<MultipartFile> images = new ArrayList<MultipartFile>();
 
 	private Long stock;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public double getPriceSale() {
-		return priceSale;
-	}
-
-	public void setPriceSale(double priceSale) {
-		this.priceSale = priceSale;
-	}
-
-	public boolean isInSale() {
-		return inSale;
-	}
-
-	public void setInSale(boolean inSale) {
-		this.inSale = inSale;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
 	
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-	
-	public List<MultipartFile> getImages() {
-		return images;
-	}
-
 	public void setImages(List<MultipartFile> images) {
-		this.images = images;
-	}
-	public Long getStock() {
-		return stock;
-	}
-
-	public void setStock(Long stock) {
-		this.stock = stock;
+		if (images == null) {
+			this.images = new ArrayList<>();
+		} else {
+			this.images = images;
+		}
 	}
 
 	@Override
@@ -126,6 +66,4 @@ public class ProductCreateForm implements Form<Product> {
 		product.setStock(stock);
 		return product;
 	}
-	
-	
 }

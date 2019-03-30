@@ -27,7 +27,7 @@ public class FileSystemStorageService implements StorageService {
 
     @Autowired
     public FileSystemStorageService(StorageConfig properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
+        rootLocation = Paths.get(properties.getLocation());
     }
 
     @Override
@@ -44,7 +44,7 @@ public class FileSystemStorageService implements StorageService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
+                Files.copy(inputStream, rootLocation.resolve(filename),
                     StandardCopyOption.REPLACE_EXISTING);
             }
         }
@@ -57,9 +57,9 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public Stream<Path> loadAll() {
         try {
-            return Files.walk(this.rootLocation, 1)
-                .filter(path -> !path.equals(this.rootLocation))
-                .map(this.rootLocation::relativize);
+            return Files.walk(rootLocation, 1)
+                .filter(path -> !path.equals(rootLocation))
+                .map(rootLocation::relativize);
         }
         catch (IOException e) {
             throw new StorageException("Failed to read stored files", e);

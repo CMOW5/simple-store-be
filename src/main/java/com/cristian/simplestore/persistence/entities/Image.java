@@ -40,8 +40,8 @@ public class Image {
 	private List<ProductImage> owners = new ArrayList<>();
 	
 	public String getName() {
-		if (isValidUrl(this.name)) {
-			return this.name;
+		if (isValidUrl(name)) {
+			return name;
 		} else {
 			return StringUtils.getFilename(name);
 		}

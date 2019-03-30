@@ -62,7 +62,7 @@ public class ProductService {
 		product.setActive(form.isActive());
 		product.setCategory(form.getCategory());
 		product.setStock(form.getStock());
-		product = this.addImagesToProduct(product, form.getImages());
+		product = addImagesToProduct(product, form.getImages());
 		
 		return productRepository.save(product);
 	}
@@ -82,8 +82,8 @@ public class ProductService {
 			storedProduct.setActive(form.isActive());
 			storedProduct.setCategory(form.getCategory());
 			storedProduct.setStock(form.getStock());
-			storedProduct = this.addImagesToProduct(storedProduct, newImages);
-			storedProduct = this.deleteProductImages(storedProduct, imagesIdsToDelete);
+			storedProduct = addImagesToProduct(storedProduct, newImages);
+			storedProduct = deleteProductImages(storedProduct, imagesIdsToDelete);
 			
 			return storedProduct;
 		} catch (NoSuchElementException exception) {
@@ -92,7 +92,7 @@ public class ProductService {
 	}
 	
 	public Product addImagesToProduct(Product product, List<MultipartFile> newImages) {
-		List<Image> images = this.imageService.saveAll(newImages);
+		List<Image> images = imageService.saveAll(newImages);
 		product.addImages(images);
 		return product;
 	}
@@ -100,7 +100,7 @@ public class ProductService {
 	public Product deleteProductImages(Product product, List<Long> imagesIdsToDelete) {
 		List<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
 		product.removeImages(imagesToDelete);
-		this.imageService.deleteAll(imagesToDelete);
+		imageService.deleteAll(imagesToDelete);
 		return product;
 	}
 	
@@ -118,7 +118,7 @@ public class ProductService {
 	}
 	
 	public long count() {
-		 return this.productRepository.count();
+		 return productRepository.count();
 	}
 
 }

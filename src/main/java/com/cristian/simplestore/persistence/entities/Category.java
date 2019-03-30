@@ -51,12 +51,12 @@ public class Category {
 	}
 	
 	public void addProduct(Product product) {
-		this.products.add(product);
+		products.add(product);
 		product.setCategory(this);
 	}
 	
 	public void deleteImage() {
-		this.image = null;
+		image = null;
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class Category {
         Category currentCategory = category;
         
         while(currentCategory.getParentCategory() != null) {
-            if (currentCategory.getParentCategory().getId() == this.id) {
+            if (currentCategory.getParentCategory().getId() == id) {
                 return true;
             }
             currentCategory = currentCategory.getParentCategory();

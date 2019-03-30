@@ -28,7 +28,7 @@ public class ImageStorageService implements StorageService {
 
     @Autowired
     public ImageStorageService(StorageConfig properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
+        rootLocation = Paths.get(properties.getLocation());
     }
     
     @Override
@@ -50,7 +50,7 @@ public class ImageStorageService implements StorageService {
      */
     public String store(MultipartFile file, String filename) {        
         try {
-        	Path fullPath = this.rootLocation.resolve(filename);
+        	Path fullPath = rootLocation.resolve(filename);
         	
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + filename);
@@ -62,7 +62,7 @@ public class ImageStorageService implements StorageService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
+                Files.copy(inputStream, rootLocation.resolve(filename),
                     StandardCopyOption.REPLACE_EXISTING);
             }
             
@@ -76,9 +76,9 @@ public class ImageStorageService implements StorageService {
     @Override
     public Stream<Path> loadAll() {
         try {
-            return Files.walk(this.rootLocation, 1)
-                .filter(path -> !path.equals(this.rootLocation))
-                .map(this.rootLocation::relativize);
+            return Files.walk(rootLocation, 1)
+                .filter(path -> !path.equals(rootLocation))
+                .map(rootLocation::relativize);
         }
         catch (IOException e) {
             throw new StorageException("Failed to read stored files", e);
@@ -111,7 +111,7 @@ public class ImageStorageService implements StorageService {
     }
     
     public void delete(String filename) {
-    	Path fileToDeletePath = Paths.get(this.rootLocation.toString() + "/" + filename);
+    	Path fileToDeletePath = Paths.get(rootLocation.toString() + "/" + filename);
         try {
 			Files.delete(fileToDeletePath);
 		} catch (IOException e) {
