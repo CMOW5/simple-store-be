@@ -99,7 +99,7 @@ public class Product {
 	
 	public void removeImages(List<Image> images) {
 		for (Image image: images) {
-			this.removeImage(image);
+			removeImage(image);
 		}
 	}
 	

@@ -28,7 +28,7 @@ public class CategoryService {
 
 	public List<Category> findAll() {
 		List<Category> foundCategories = new ArrayList<Category>();
-		this.categoryRepository.findAll().forEach(foundCategories::add);
+		categoryRepository.findAll().forEach(foundCategories::add);
 		return foundCategories;
 	}
 
@@ -42,35 +42,35 @@ public class CategoryService {
 	}
 
 	public Category create(Category category) {
-		return this.categoryRepository.save(category);
+		return categoryRepository.save(category);
 	}
 	
 	public Category create(CategoryCreateForm form) {
 		Category category = new Category();
 		category.setName(form.getName());
 		category.setParentCategory(form.getParentCategory());
-		category = this.addImageToCategory(category, form.getImage());
+		category = addImageToCategory(category, form.getImage());
 		
 		return categoryRepository.save(category);
 	}
 
 	public Category update(Long id, Category category) {
 		category.setId(id);
-		return this.categoryRepository.save(category);
+		return categoryRepository.save(category);
 	}
 	
 	public Category update(CategoryUpdateForm form) {
 		try {
-			Category storedCategory = this.categoryRepository.findById(form.getId()).get();
+			Category storedCategory = categoryRepository.findById(form.getId()).get();
 			String newName = form.getName();
 			Category newParentCategory = form.getParentCategory();
 			MultipartFile newImageFile = form.getNewImage();
 			Long imageIdToDelete = form.getImageIdToDelete();
 			
 			storedCategory.setName(newName);
-			storedCategory = this.updateParentCategory(storedCategory, newParentCategory);
-			storedCategory = this.updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
-			return this.categoryRepository.save(storedCategory);
+			storedCategory = updateParentCategory(storedCategory, newParentCategory);
+			storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
+			return categoryRepository.save(storedCategory);
 		} catch (NoSuchElementException e) {
 			throw new EntityNotFoundException("The category with the given id was not found");
 		}
@@ -78,7 +78,7 @@ public class CategoryService {
 
 	public void deleteById(Long id) {
 		try {
-			this.categoryRepository.deleteById(id);
+			categoryRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException exception) {
 			throw new EntityNotFoundException("The category with the given id was not found");
 		}
@@ -86,12 +86,12 @@ public class CategoryService {
 	}
 
 	public long count() {
-		return this.categoryRepository.count();
+		return categoryRepository.count();
 	}
 	
 	private Category addImageToCategory(Category category, MultipartFile imageFile) {
 		if (imageFile != null) {
-			Image image = this.imageService.save(imageFile);
+			Image image = imageService.save(imageFile);
 			category.setImage(image);
 		}
 		return category;
@@ -109,7 +109,7 @@ public class CategoryService {
         // the result will be: null -> C -> A -> B
 		if (categoryToUpdate.hasSubcategory(newParentCategory)) {
 			newParentCategory.setParentCategory(categoryToUpdate.getParentCategory());
-			this.categoryRepository.save(newParentCategory);
+			categoryRepository.save(newParentCategory);
 		}
 		
 		categoryToUpdate.setParentCategory(newParentCategory);
@@ -119,19 +119,19 @@ public class CategoryService {
 	
 	private Category updateCategoryImage(Category categoryToUpdate, MultipartFile newImageFile, Long imageIdToDelete) {
 		if (newImageFile != null) {
-			Image newImage = this.imageService.save(newImageFile);
+			Image newImage = imageService.save(newImageFile);
 			Image currentImage = categoryToUpdate.getImage();
 			categoryToUpdate.setImage(newImage);
 			
 			// TODO: this step is necessary because the image has a constraint with the
 			// current category, so we need to update the category relationship with the 
 			// current image first, and then we can safely delete the current image
-			this.categoryRepository.save(categoryToUpdate);
-			this.imageService.delete(currentImage);
+			categoryRepository.save(categoryToUpdate);
+			imageService.delete(currentImage);
 		} else if (imageIdToDelete != null) { // TODO: verify the imageId
 			categoryToUpdate.deleteImage();
-			this.categoryRepository.save(categoryToUpdate);
-			this.imageService.deleteById(imageIdToDelete);
+			categoryRepository.save(categoryToUpdate);
+			imageService.deleteById(imageIdToDelete);
 		}
 		
 		return categoryToUpdate;

@@ -31,7 +31,7 @@ public class CategorySeeder {
 		for (int i = 0; i < MAX_CATEGORIES; i++) {
 			try {
 				Category category = createRandomCategoryOnDB();
-				this.createRandomCategoriesWithParentOnDB(category, 4);
+				createRandomCategoriesWithParentOnDB(category, 4);
 			} catch (DataIntegrityViolationException e) {
 				continue;
 			}
@@ -50,13 +50,13 @@ public class CategorySeeder {
 	private void createRandomCategoriesWithParentOnDB(Category parentCategory, long categoriesSize) {
 		for (int i = 0; i < categoriesSize; i++) {
 			Category category1 = new Category();
-			category1.setName(this.faker.commerce().department());
+			category1.setName(faker.commerce().department());
 			category1.setParentCategory(parentCategory);
 			category1.setImage(generateRandomImageOnDB());
 			categoryRepository.save(category1);
 			
 			Category category2 = new Category();
-			category2.setName(this.faker.commerce().department());
+			category2.setName(faker.commerce().department());
 			category2.setParentCategory(category1);
 			category2.setImage(generateRandomImageOnDB());
 			categoryRepository.save(category2);
@@ -65,8 +65,8 @@ public class CategorySeeder {
 	
 	private Image generateRandomImageOnDB() {
 		String baseUrl = "https://picsum.photos/";
-		int width = this.faker.number().numberBetween(200, 800);
-		int height = this.faker.number().numberBetween(200, 800);
+		int width = faker.number().numberBetween(200, 800);
+		int height = faker.number().numberBetween(200, 800);
 		
 		String imageName = baseUrl + width + "/" + height;
 		

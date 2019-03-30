@@ -30,14 +30,14 @@ public class ImageService {
 	
 	public Image findById(Long id) {
 		try {
-			return this.imageRepository.findById(id).get();
+			return imageRepository.findById(id).get();
 		} catch (NoSuchElementException exception) {
 			throw new EntityNotFoundException("The image with the given id was not found");
 		}
 	}
 	
 	public List<Image> findAllById(List<Long> imagesIds) {
-		Iterable<Image> storedImages = this.imageRepository.findAllById(imagesIds);
+		Iterable<Image> storedImages = imageRepository.findAllById(imagesIds);
 		
 		List<Image> images = new ArrayList<>();
 		storedImages.forEach(images::add);
@@ -50,11 +50,11 @@ public class ImageService {
 		String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
 		Image image = new Image();
 		image.setName(imageNameWithPath);
-		return this.imageRepository.save(image);
+		return imageRepository.save(image);
 	}
 	
 	public Image save(Image image) {
-		return this.imageRepository.save(image);
+		return imageRepository.save(image);
 	}
 	
 	public List<Image> saveAll(List<MultipartFile> imagesFiles) {
@@ -69,7 +69,7 @@ public class ImageService {
 	
 	public void delete(Image image) {
 		try {
-			this.imageRepository.delete(image);
+			imageRepository.delete(image);
 		} catch (EmptyResultDataAccessException exception) {
 			throw new EntityNotFoundException("The image with the given id was not found");
 		} catch (IllegalArgumentException exception) {
@@ -79,19 +79,19 @@ public class ImageService {
 	
 	public void deleteById(Long id) {
 		try {
-			this.imageRepository.deleteById(id);
+			imageRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException exception) {
 			throw new EntityNotFoundException("The image with the given id was not found");
 		}
 	}
 	
 	public void deleteAllById(Iterable<Long> imagesIdsToDelete) {
-		Iterable<Image> imagesToDelete = this.imageRepository.findAllById(imagesIdsToDelete);
-		this.imageRepository.deleteAll(imagesToDelete);
+		Iterable<Image> imagesToDelete = imageRepository.findAllById(imagesIdsToDelete);
+		imageRepository.deleteAll(imagesToDelete);
 	}
 		
 	public void deleteAll(Iterable<Image> imagesToDelete) {
-		this.imageRepository.deleteAll(imagesToDelete);
+		imageRepository.deleteAll(imagesToDelete);
 	}
 	
 	private String generateImageName(MultipartFile file) {

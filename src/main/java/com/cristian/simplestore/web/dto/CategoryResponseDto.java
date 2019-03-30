@@ -21,8 +21,8 @@ public class CategoryResponseDto implements EntityDto<Category> {
 	private ImageResponseDto image;
 
 	public CategoryResponseDto(Category category) {
-		this.id = category.getId();
-		this.name = category.getName();
+		id = category.getId();
+		name = category.getName();
 		mapImage(category.getImage());
 		mapParentCategory(category.getParentCategory());
 	}
