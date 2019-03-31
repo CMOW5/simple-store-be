@@ -73,27 +73,6 @@ public class CategoryService {
     }
   }
 
-  public void deleteById(Long id) {
-    try {
-      categoryRepository.deleteById(id);
-    } catch (EmptyResultDataAccessException exception) {
-      throw new EntityNotFoundException("The category with the given id was not found");
-    }
-
-  }
-
-  public long count() {
-    return categoryRepository.count();
-  }
-
-  private Category addImageToCategory(Category category, MultipartFile imageFile) {
-    if (imageFile != null) {
-      Image image = imageService.save(imageFile);
-      category.setImage(image);
-    }
-    return category;
-  }
-
   private Category updateParentCategory(Category categoryToUpdate, Category newParentCategory) {
     // TODO: should i throw an exception here??
     if (isTheSameCategory(categoryToUpdate, newParentCategory)) {
@@ -134,6 +113,29 @@ public class CategoryService {
 
     return categoryToUpdate;
   }
+
+  public void deleteById(Long id) {
+    try {
+      categoryRepository.deleteById(id);
+    } catch (EmptyResultDataAccessException exception) {
+      throw new EntityNotFoundException("The category with the given id was not found");
+    }
+
+  }
+
+  public long count() {
+    return categoryRepository.count();
+  }
+
+  private Category addImageToCategory(Category category, MultipartFile imageFile) {
+    if (imageFile != null) {
+      Image image = imageService.save(imageFile);
+      category.setImage(image);
+    }
+    return category;
+  }
+
+
 
   // TODO: replace this with a hasCode and isEquals impl
   private boolean isTheSameCategory(Category category1, Category category2) {
