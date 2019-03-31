@@ -61,10 +61,9 @@ public class CategoryServiceTest extends BaseTest {
   }
 
   @Test
-  // @Transactional(TxType.NOT_SUPPORTED)
   public void testItupdatesACategoryWithForm() {
-    Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb(); // THIS IS IN SYNC WITH THE
-                                                                        // UPDATED CATEGORY
+    Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb();
+    Long originalImageId = categoryToUpdate.getImage().getId();
     CategoryUpdateForm newCategoryDataForm =
         categoryUtils.generateRandomCategoryUpdateForm(categoryToUpdate.getId());
 
@@ -73,8 +72,7 @@ public class CategoryServiceTest extends BaseTest {
     assertThatTwoCategoriesAreEqual(updatedCategory, newCategoryDataForm.getModel());
     assertThat(updatedCategory.getId()).isEqualTo(newCategoryDataForm.getId());
     assertThat(updatedCategory.getImage()).isNotNull();
-    assertThat(updatedCategory.getImage().getId())
-        .isNotEqualTo(categoryToUpdate.getImage().getId());
+    assertThat(updatedCategory.getImage().getId()).isNotEqualTo(originalImageId);
   }
 
   @Test
