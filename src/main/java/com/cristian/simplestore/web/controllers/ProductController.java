@@ -2,9 +2,7 @@ package com.cristian.simplestore.web.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.web.dto.ProductResponseDto;
@@ -28,68 +25,55 @@ import com.cristian.simplestore.web.utils.response.ApiResponse;
 @RequestMapping("/api/admin/products")
 public class ProductController {
 
-	@Autowired
-	private ProductService productService;
+  @Autowired
+  private ProductService productService;
 
-	private ApiResponse response = new ApiResponse();
+  private ApiResponse response = new ApiResponse();
 
-	@GetMapping
-	public ResponseEntity<?> findAllProducts() {
-		List<Product> products = productService.findAll();
-		return response.status(HttpStatus.OK)
-				.content(convertEntitiesToDto(products))
-				.build();
-	}
+  @GetMapping
+  public ResponseEntity<?> findAllProducts() {
+    List<Product> products = productService.findAll();
+    return response.status(HttpStatus.OK).content(convertEntitiesToDto(products)).build();
+  }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<?> findProductById(@PathVariable long id) {
-		Product product = productService.findById(id);
-		return response.status(HttpStatus.OK)
-				.content(convertEntityToDto(product))
-				.build();
-	}
-	
-	@PostMapping
-	public ResponseEntity<?> create(@Valid ProductCreateForm form) {
-		Product createdProduct = productService.create(form);
-		return response.status(HttpStatus.CREATED)
-				.content(convertEntityToDto(createdProduct))
-				.build();
-	}
+  @GetMapping("/{id}")
+  public ResponseEntity<?> findProductById(@PathVariable long id) {
+    Product product = productService.findById(id);
+    return response.status(HttpStatus.OK).content(convertEntityToDto(product)).build();
+  }
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable long id, 
-			@Valid ProductUpdateForm form) {
-		Product updatedProduct = productService.update(form);
-		return response.status(HttpStatus.OK)
-				.content(convertEntityToDto(updatedProduct))
-				.build();
-		
-	}
+  @PostMapping
+  public ResponseEntity<?> create(@Valid ProductCreateForm form) {
+    Product createdProduct = productService.create(form);
+    return response.status(HttpStatus.CREATED).content(convertEntityToDto(createdProduct)).build();
+  }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable long id) {
-		productService.deleteById(id);
-		return response.status(HttpStatus.NO_CONTENT)
-				.content(null)
-				.build();
-	}
+  @PutMapping("/{id}")
+  public ResponseEntity<?> update(@PathVariable long id, @Valid ProductUpdateForm form) {
+    Product updatedProduct = productService.update(form);
+    return response.status(HttpStatus.OK).content(convertEntityToDto(updatedProduct)).build();
 
-	@GetMapping("/count")
-	public ResponseEntity<?> count() {
-		long productsCount = productService.count();
-		return response.status(HttpStatus.OK)
-				.content(productsCount)
-				.build();
-	}
-	
-	private ProductResponseDto convertEntityToDto(Product product) {
-		return new ProductResponseDto(product);
-	}
-	
-	private List<ProductResponseDto> convertEntitiesToDto(List<Product> products) {
-		List<ProductResponseDto> dtos = new ArrayList<>();
-		products.forEach(product -> dtos.add(convertEntityToDto(product)));
-		return dtos;
-	}
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@PathVariable long id) {
+    productService.deleteById(id);
+    return response.status(HttpStatus.NO_CONTENT).content(null).build();
+  }
+
+  @GetMapping("/count")
+  public ResponseEntity<?> count() {
+    long productsCount = productService.count();
+    return response.status(HttpStatus.OK).content(productsCount).build();
+  }
+
+  private ProductResponseDto convertEntityToDto(Product product) {
+    return new ProductResponseDto(product);
+  }
+
+  private List<ProductResponseDto> convertEntitiesToDto(List<Product> products) {
+    List<ProductResponseDto> dtos = new ArrayList<>();
+    products.forEach(product -> dtos.add(convertEntityToDto(product)));
+    return dtos;
+  }
 }
