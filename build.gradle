@@ -43,5 +43,5 @@ dependencies {
 	
 	// test dependencies
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	implementation group: 'com.github.javafaker', name: 'javafaker', version: '0.16'
+	implementation('com.github.javafaker:javafaker:0.16')
 }
