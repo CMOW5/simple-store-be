@@ -1,99 +1,25 @@
 package com.cristian.simplestore.business.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.respositories.ImageRepository;
 
+public interface ImageService {
+  Image findById(Long id);
 
-@Service
-public class ImageService {
+  List<Image> findAllById(List<Long> imagesIds);
 
-  @Autowired
-  private ImageRepository imageRepository;
+  Image save(MultipartFile file);
 
-  @Autowired
-  private ImageStorageService imageStorageService;
+  Image save(Image image);
 
-  public Image findById(Long id) {
-    try {
-      return imageRepository.findById(id).get();
-    } catch (NoSuchElementException exception) {
-      throw new EntityNotFoundException("The image with the given id was not found");
-    }
-  }
+  List<Image> saveAll(List<MultipartFile> imagesFiles);
 
-  public List<Image> findAllById(List<Long> imagesIds) {
-    Iterable<Image> storedImages = imageRepository.findAllById(imagesIds);
+  void delete(Image image);
 
-    List<Image> images = new ArrayList<>();
-    storedImages.forEach(images::add);
+  void deleteById(Long id);
 
-    return images;
-  }
+  void deleteAllById(Iterable<Long> imagesIdsToDelete);
 
-  @Transactional
-  public Image save(MultipartFile file) {
-    String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
-    Image image = new Image();
-    image.setName(imageNameWithPath);
-    return imageRepository.save(image);
-  }
-
-  public Image save(Image image) {
-    return imageRepository.save(image);
-  }
-
-  public List<Image> saveAll(List<MultipartFile> imagesFiles) {
-    List<Image> savedImages = new ArrayList<Image>();
-
-    for (MultipartFile imageFile : imagesFiles) {
-      Image image = save(imageFile);
-      savedImages.add(image);
-    }
-    return savedImages;
-  }
-
-  public void delete(Image image) {
-    try {
-      imageRepository.delete(image);
-    } catch (EmptyResultDataAccessException exception) {
-      throw new EntityNotFoundException("The image with the given id was not found");
-    } catch (IllegalArgumentException exception) {
-      // return
-    }
-  }
-
-  public void deleteById(Long id) {
-    try {
-      imageRepository.deleteById(id);
-    } catch (EmptyResultDataAccessException exception) {
-      throw new EntityNotFoundException("The image with the given id was not found");
-    }
-  }
-
-  public void deleteAllById(Iterable<Long> imagesIdsToDelete) {
-    Iterable<Image> imagesToDelete = imageRepository.findAllById(imagesIdsToDelete);
-    imageRepository.deleteAll(imagesToDelete);
-  }
-
-  public void deleteAll(Iterable<Image> imagesToDelete) {
-    imageRepository.deleteAll(imagesToDelete);
-  }
-
-  private String generateImageName(MultipartFile file) {
-    String fileName =
-        UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-    return fileName;
-  }
+  void deleteAll(Iterable<Image> imagesToDelete);
 }

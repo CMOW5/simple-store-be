@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.BaseTest;
-import com.cristian.simplestore.business.services.ImageService;
+import com.cristian.simplestore.business.services.ImageServiceImpl;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.utils.ImageTestsUtils;
 
@@ -22,7 +22,7 @@ import com.cristian.simplestore.utils.ImageTestsUtils;
 public class ImageServiceTest extends BaseTest {
 
   @Autowired
-  ImageService imageService;
+  ImageServiceImpl imageService;
 
   @Autowired
   ImageTestsUtils imageUtils;
