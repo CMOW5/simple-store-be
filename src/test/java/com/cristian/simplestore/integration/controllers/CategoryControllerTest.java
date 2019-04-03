@@ -113,8 +113,7 @@ public class CategoryControllerTest extends BaseTest {
         .getContentFromJsonRespose(response.getBody(), CategoryResponseDto.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    assertThat(createdCategory.getName()).isEqualTo(form.get("name"));
-    assertThat(createdCategory.getParentCategory().getId()).isEqualTo(form.get("parentCategory"));
+    assertThatDtoisEqualToForm(createdCategory, form);
     assertThat(createdCategory.getImage()).isNotNull();
   }
 
@@ -129,8 +128,8 @@ public class CategoryControllerTest extends BaseTest {
         .getContentFromJsonRespose(response.getBody(), CategoryResponseDto.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(updatedCategory.getName()).isEqualTo(form.get("name"));
-    assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(form.get("parentCategory"));
+
+    assertThatDtoisEqualToForm(updatedCategory, form);
     assertThat(updatedCategory.getImage().getId())
         .isNotEqualTo(categoryToUpdate.getImage().getId());
   }
@@ -156,7 +155,8 @@ public class CategoryControllerTest extends BaseTest {
         .getContentFromJsonRespose(response.getBody(), CategoryResponseDto.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(updatedCategory.getParentCategory().getId()).isEqualTo(categoryA.getId());
+    assertThat(((Integer) updatedCategory.getParentCategory().get("id")).longValue())
+        .isEqualTo(categoryA.getId());
 
     categoryA = categoryRepository.findById(categoryA.getId()).get();
     assertThat(categoryA.getParentCategory()).isNull();
@@ -238,5 +238,11 @@ public class CategoryControllerTest extends BaseTest {
     String url = "/api/admin/categories/" + categoryId;
     ResponseEntity<String> response = apiUtils.sendRequest(url, HttpMethod.DELETE, null, null);
     return response;
+  }
+
+  private void assertThatDtoisEqualToForm(CategoryResponseDto categoryDto, FormBuilder form) {
+    assertThat(categoryDto.getName()).isEqualTo(form.get("name"));
+    assertThat(((Integer) categoryDto.getParentCategory().get("id")).longValue())
+        .isEqualTo(form.get("parentCategory"));
   }
 }

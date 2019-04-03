@@ -33,9 +33,9 @@ public class TestCategoryResponseDto extends BaseTest {
     assertThat(category.getId()).isEqualTo(categoryDto.getId());
     assertThat(category.getName()).isEqualTo(categoryDto.getName());
     assertThat(category.getParentCategory().getId())
-        .isEqualTo(categoryDto.getParentCategory().getId());
+        .isEqualTo(categoryDto.getParentCategory().get("id"));
     assertThat(category.getParentCategory().getName())
-        .isEqualTo(categoryDto.getParentCategory().getName());
+        .isEqualTo(categoryDto.getParentCategory().get("name"));
     assertThat(category.getImage().getId()).isEqualTo(categoryDto.getImage().getId());
   }
 

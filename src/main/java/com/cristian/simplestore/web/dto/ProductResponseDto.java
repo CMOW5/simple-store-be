@@ -54,8 +54,6 @@ public class ProductResponseDto {
   }
 
   private void mapParentCategory(Category category) {
-    if (category != null) {
-      this.category = new ParentCategoryResponseDto(category.getId(), category.getName());
-    }
+    this.category = ParentCategoryResponseDto.build(category);
   }
 }

@@ -14,4 +14,12 @@ public class ImageResponseDto {
     id = image.getId();
     url = image.getUrl();
   }
+
+  public static ImageResponseDto build(Image image) {
+    if (image != null) {
+      return new ImageResponseDto(image);
+    } else {
+      return null;
+    }
+  }
 }
