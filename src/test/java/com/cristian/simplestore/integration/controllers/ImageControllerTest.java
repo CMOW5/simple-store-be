@@ -19,7 +19,7 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ImageService;
 import com.cristian.simplestore.business.services.storage.StorageConfig;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.respositories.ImageRepository;
+import com.cristian.simplestore.persistence.repositories.ImageRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.ImageBuilder;
 

@@ -23,7 +23,7 @@ import org.springframework.util.MultiValueMap;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.persistence.respositories.ProductRepository;
+import com.cristian.simplestore.persistence.repositories.ProductRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.FormBuilder;

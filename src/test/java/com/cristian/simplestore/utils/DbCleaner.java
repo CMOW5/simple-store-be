@@ -2,9 +2,9 @@ package com.cristian.simplestore.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.cristian.simplestore.persistence.respositories.CategoryRepository;
-import com.cristian.simplestore.persistence.respositories.ImageRepository;
-import com.cristian.simplestore.persistence.respositories.ProductRepository;
+import com.cristian.simplestore.persistence.repositories.CategoryRepository;
+import com.cristian.simplestore.persistence.repositories.ImageRepository;
+import com.cristian.simplestore.persistence.repositories.ProductRepository;
 
 @Component
 public class DbCleaner {

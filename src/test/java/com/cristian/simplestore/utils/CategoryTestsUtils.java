@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.respositories.CategoryRepository;
+import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.web.forms.CategoryCreateForm;
 import com.cristian.simplestore.web.forms.CategoryUpdateForm;
 import com.github.javafaker.Faker;

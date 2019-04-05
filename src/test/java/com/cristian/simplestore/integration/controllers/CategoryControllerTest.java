@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.MultiValueMap;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.respositories.CategoryRepository;
+import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
 import com.cristian.simplestore.utils.DbCleaner;

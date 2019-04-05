@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.persistence.respositories.ProductRepository;
+import com.cristian.simplestore.persistence.repositories.ProductRepository;
 import com.cristian.simplestore.web.forms.ProductCreateForm;
 import com.cristian.simplestore.web.forms.ProductUpdateForm;
 
