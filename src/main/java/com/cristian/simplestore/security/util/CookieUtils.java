@@ -1,4 +1,4 @@
-package com.cristian.simplestore.util;
+package com.cristian.simplestore.security.util;
 
 import org.springframework.util.SerializationUtils;
 import javax.servlet.http.Cookie;

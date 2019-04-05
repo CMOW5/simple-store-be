@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.cristian.simplestore.util.CookieUtils;
+import com.cristian.simplestore.security.util.CookieUtils;
 
 /**
  * If the OAuth2 callback results in an error, Spring security will invoke the

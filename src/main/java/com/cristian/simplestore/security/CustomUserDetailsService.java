@@ -1,13 +1,13 @@
 package com.cristian.simplestore.security;
 
 
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.cristian.simplestore.exception.ResourceNotFoundException;
 import com.cristian.simplestore.persistence.entities.User;
 import com.cristian.simplestore.persistence.repositories.UserRepository;
 
@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
   @Transactional
   public UserDetails loadUserById(Long id) {
     User user = userRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+        .orElseThrow(() -> new EntityNotFoundException("Could not find the User with id" + id));
 
     return UserPrincipal.create(user);
   }

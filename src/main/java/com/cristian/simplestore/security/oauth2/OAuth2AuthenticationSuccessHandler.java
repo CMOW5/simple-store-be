@@ -13,10 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.cristian.simplestore.config.AppProperties;
-import com.cristian.simplestore.exception.BadRequestException;
+import com.cristian.simplestore.config.properties.AppProperties;
 import com.cristian.simplestore.security.TokenProvider;
-import com.cristian.simplestore.util.CookieUtils;
+import com.cristian.simplestore.security.util.CookieUtils;
+import com.cristian.simplestore.web.exceptions.BadRequestException;
 
 /**
  * when the oAuth2AuthenticationSuccessHandler is invoked. It creates a JWT authentication token for

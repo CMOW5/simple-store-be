@@ -1,7 +1,7 @@
 package com.cristian.simplestore.security.oauth2.user;
 
-import com.cristian.simplestore.exception.OAuth2AuthenticationProcessingException;
 import com.cristian.simplestore.security.oauth2.AuthProvider;
+import com.cristian.simplestore.security.oauth2.exceptions.OAuth2AuthenticationProcessingException;
 import java.util.Map;
 
 public class OAuth2UserInfoFactory {
