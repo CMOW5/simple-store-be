@@ -1,4 +1,4 @@
-package com.cristian.simplestore.config;
+package com.cristian.simplestore.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
