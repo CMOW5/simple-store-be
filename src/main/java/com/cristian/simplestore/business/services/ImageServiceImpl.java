@@ -2,7 +2,6 @@ package com.cristian.simplestore.business.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -26,11 +25,8 @@ public class ImageServiceImpl implements ImageService {
   private ImageStorageService imageStorageService;
 
   public Image findById(Long id) {
-    try {
-      return imageRepository.findById(id).get();
-    } catch (NoSuchElementException exception) {
-      throw new EntityNotFoundException("The image with the given id was not found");
-    }
+    return imageRepository.findById(id).orElseThrow(
+        () -> new EntityNotFoundException("The image with the given id was not found"));
   }
 
   public List<Image> findAllById(List<Long> imagesIds) {

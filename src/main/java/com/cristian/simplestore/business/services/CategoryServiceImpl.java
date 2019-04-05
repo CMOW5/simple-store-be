@@ -2,7 +2,6 @@ package com.cristian.simplestore.business.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +30,9 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   public Category findById(Long id) {
-    try {
-      Category foundCategory = categoryRepository.findById(id).get();
-      return foundCategory;
-    } catch (NoSuchElementException e) {
-      throw new EntityNotFoundException("The category with the given id was not found");
-    }
+    Category foundCategory = categoryRepository.findById(id).orElseThrow(
+        () -> new EntityNotFoundException("The category with the given id was not found"));
+    return foundCategory;
   }
 
   public Category create(Category category) {
@@ -60,21 +56,18 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Transactional
   public Category update(CategoryUpdateRequest form) {
-    try {
-      Category storedCategory = categoryRepository.findById(form.getId()).get();
-      String newName = form.getName();
-      Category newParentCategory = form.getParentCategory();
-      MultipartFile newImageFile = form.getNewImage();
-      Long imageIdToDelete = form.getImageIdToDelete();
+    Category storedCategory = categoryRepository.findById(form.getId()).orElseThrow(
+        () -> new EntityNotFoundException("The category with the given id was not found"));
+    String newName = form.getName();
+    Category newParentCategory = form.getParentCategory();
+    MultipartFile newImageFile = form.getNewImage();
+    Long imageIdToDelete = form.getImageIdToDelete();
 
-      storedCategory.setName(newName);
-      storedCategory = updateParentCategory(storedCategory, newParentCategory);
-      storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
+    storedCategory.setName(newName);
+    storedCategory = updateParentCategory(storedCategory, newParentCategory);
+    storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
 
-      return storedCategory;
-    } catch (NoSuchElementException e) {
-      throw new EntityNotFoundException("The category with the given id was not found");
-    }
+    return storedCategory;
   }
 
   private Category updateParentCategory(Category categoryToUpdate, Category newParentCategory) {
