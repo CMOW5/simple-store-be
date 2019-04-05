@@ -1,4 +1,4 @@
-package com.cristian.simplestore.web.forms;
+package com.cristian.simplestore.web.dto.request.product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +8,13 @@ import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.web.dto.request.Request;
 import com.cristian.simplestore.web.validators.annotations.ExistsDb;
 import lombok.Data;
 
 @ExistsDb(table = "products", columnName = "name", columnValueField = "name")
 @Data
-public class ProductCreateForm implements Form<Product> {
+public class ProductCreateRequest implements Request<Product> {
 
   @NotNull
   @Size(min = 2, max = 100)

@@ -1,4 +1,4 @@
-package com.cristian.simplestore.web.dto;
+package com.cristian.simplestore.web.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;

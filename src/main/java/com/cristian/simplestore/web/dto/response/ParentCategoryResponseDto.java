@@ -1,4 +1,4 @@
-package com.cristian.simplestore.web.dto;
+package com.cristian.simplestore.web.dto.response;
 
 import com.cristian.simplestore.persistence.entities.Category;
 import lombok.AllArgsConstructor;

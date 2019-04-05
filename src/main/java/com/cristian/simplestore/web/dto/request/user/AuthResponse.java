@@ -1,4 +1,4 @@
-package com.cristian.simplestore.payload;
+package com.cristian.simplestore.web.dto.request.user;
 
 public class AuthResponse {
     private String accessToken;

@@ -1,4 +1,4 @@
-package com.cristian.simplestore.web.forms;
+package com.cristian.simplestore.web.dto.request;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -7,7 +7,7 @@ import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.validators.annotations.ExistsDb;
 
 @ExistsDb(table = "categories", columnName = "name", columnValueField = "name")
-public class TestForm implements Form<Category> {
+public class TestForm implements Request<Category> {
 
   @NotNull
   @Size(min = 2, max = 200)
