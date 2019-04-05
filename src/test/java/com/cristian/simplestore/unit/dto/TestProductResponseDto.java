@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.utils.ProductTestsUtils;
-import com.cristian.simplestore.web.dto.ProductResponseDto;
+import com.cristian.simplestore.web.dto.response.ProductResponseDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

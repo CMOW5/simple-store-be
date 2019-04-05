@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ImageService;
-import com.cristian.simplestore.business.services.storage.StorageConfig;
+import com.cristian.simplestore.config.properties.StorageConfig;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.repositories.ImageRepository;
 import com.cristian.simplestore.utils.ApiRequestUtils;

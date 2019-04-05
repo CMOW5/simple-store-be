@@ -20,7 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.business.services.storage.StorageConfig;
+import com.cristian.simplestore.config.properties.StorageConfig;
 
 @Component
 public class ImageBuilder {

@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
-import com.cristian.simplestore.business.services.storage.StorageConfig;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
+import com.cristian.simplestore.config.properties.StorageConfig;
 import com.cristian.simplestore.utils.ImageTestsUtils;
 
 @RunWith(SpringRunner.class)

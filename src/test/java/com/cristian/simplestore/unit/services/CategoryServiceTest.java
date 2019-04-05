@@ -14,8 +14,8 @@ import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
-import com.cristian.simplestore.web.forms.CategoryCreateForm;
-import com.cristian.simplestore.web.forms.CategoryUpdateForm;
+import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
+import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -52,7 +52,7 @@ public class CategoryServiceTest extends BaseTest {
 
   @Test
   public void testItcreatesACategoryWithForm() {
-    CategoryCreateForm form = categoryUtils.generateRandomCategoryCreateForm();
+    CategoryCreateRequest form = categoryUtils.generateRandomCategoryCreateForm();
 
     Category createdCategory = categoryService.create(form);
 
@@ -64,7 +64,7 @@ public class CategoryServiceTest extends BaseTest {
   public void testItupdatesACategoryWithForm() {
     Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb();
     Long originalImageId = categoryToUpdate.getImage().getId();
-    CategoryUpdateForm newCategoryDataForm =
+    CategoryUpdateRequest newCategoryDataForm =
         categoryUtils.generateRandomCategoryUpdateForm(categoryToUpdate.getId());
 
     Category updatedCategory = categoryService.update(newCategoryDataForm);
@@ -80,7 +80,7 @@ public class CategoryServiceTest extends BaseTest {
     Category categoryA = categoryUtils.saveRandomCategoryOnDb();
     Category categoryB = categoryUtils.saveRandomCategoryOnDb();
 
-    CategoryUpdateForm categoryBform =
+    CategoryUpdateRequest categoryBform =
         categoryUtils.generateRandomCategoryUpdateForm(categoryB.getId());
 
     // here we manually create a circular reference
@@ -101,7 +101,7 @@ public class CategoryServiceTest extends BaseTest {
   @Test
   public void testItDeletesACategoryImage() {
     Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb();
-    CategoryUpdateForm newCategoryData =
+    CategoryUpdateRequest newCategoryData =
         categoryUtils.generateRandomCategoryUpdateForm(categoryToUpdate.getId());
     newCategoryData.setImageIdToDelete(categoryToUpdate.getImage().getId());
     newCategoryData.setNewImage(null);

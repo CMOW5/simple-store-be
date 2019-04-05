@@ -18,8 +18,8 @@ import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.utils.ProductTestsUtils;
-import com.cristian.simplestore.web.forms.ProductCreateForm;
-import com.cristian.simplestore.web.forms.ProductUpdateForm;
+import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
+import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -68,7 +68,7 @@ public class ProductServiceTest extends BaseTest {
 
   @Test
   public void testItCreatesAProductWithForm() {
-    ProductCreateForm productForm = productUtils.generateRandomProductCreateForm();
+    ProductCreateRequest productForm = productUtils.generateRandomProductCreateForm();
 
     Product expectedProduct = productService.create(productForm);
 
@@ -80,7 +80,7 @@ public class ProductServiceTest extends BaseTest {
   @Test
   public void testItUpdatesAProductWithForm() {
     Product productToUpdate = productUtils.saveRandomProductOnDB();
-    ProductUpdateForm newProductData =
+    ProductUpdateRequest newProductData =
         productUtils.generateRandomProductUpdateForm(productToUpdate.getId());
 
     Product expectedProduct = productService.update(newProductData);
@@ -93,7 +93,7 @@ public class ProductServiceTest extends BaseTest {
   @Test
   public void testItDeletesAProductImages() {
     Product productToUpdate = productUtils.saveRandomProductOnDBWithImages();
-    ProductUpdateForm newProductData =
+    ProductUpdateRequest newProductData =
         productUtils.generateRandomProductUpdateForm(productToUpdate.getId());
     newProductData.setNewImages(null);
     newProductData.setImagesIdsToDelete(getIdsFromImages(productToUpdate.getImages()));
@@ -107,7 +107,7 @@ public class ProductServiceTest extends BaseTest {
   @Test(expected = EntityNotFoundException.class)
   public void testItDoesNotUpdateAProductWithForm() {
     long nonExistentProductId = 1;
-    ProductUpdateForm newProductData =
+    ProductUpdateRequest newProductData =
         productUtils.generateRandomProductUpdateForm(nonExistentProductId);
 
     productService.update(newProductData);

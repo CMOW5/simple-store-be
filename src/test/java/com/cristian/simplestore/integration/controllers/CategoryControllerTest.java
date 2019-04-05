@@ -26,7 +26,7 @@ import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
 import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.FormBuilder;
-import com.cristian.simplestore.web.dto.CategoryResponseDto;
+import com.cristian.simplestore.web.dto.response.CategoryResponseDto;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 

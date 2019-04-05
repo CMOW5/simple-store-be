@@ -3,8 +3,8 @@ package com.cristian.simplestore.utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.web.forms.ProductCreateForm;
-import com.cristian.simplestore.web.forms.ProductUpdateForm;
+import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
+import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 import com.github.javafaker.Faker;
 
 @Component
@@ -35,8 +35,8 @@ public class ProductFactory {
     return product;
   }
 
-  public ProductCreateForm generateRandomProductCreateForm() {
-    ProductCreateForm form = new ProductCreateForm();
+  public ProductCreateRequest generateRandomProductCreateForm() {
+    ProductCreateRequest form = new ProductCreateRequest();
 
     form.setName(generateRandomName());
     form.setDescription(generateRandomDescription());
@@ -51,8 +51,8 @@ public class ProductFactory {
     return form;
   }
 
-  public ProductUpdateForm generateRandomProductUpdateForm(Long id) {
-    ProductUpdateForm form = new ProductUpdateForm();
+  public ProductUpdateRequest generateRandomProductUpdateForm(Long id) {
+    ProductUpdateRequest form = new ProductUpdateRequest();
 
     form.setId(id);
     form.setName(generateRandomName());

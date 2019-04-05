@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
-import com.cristian.simplestore.web.dto.CategoryResponseDto;
+import com.cristian.simplestore.web.dto.response.CategoryResponseDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

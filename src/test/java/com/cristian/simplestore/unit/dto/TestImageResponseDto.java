@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.utils.ImageTestsUtils;
-import com.cristian.simplestore.web.dto.ImageResponseDto;
+import com.cristian.simplestore.web.dto.response.ImageResponseDto;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

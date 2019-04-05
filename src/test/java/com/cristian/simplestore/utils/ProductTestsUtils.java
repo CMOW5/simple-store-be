@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;
-import com.cristian.simplestore.web.forms.ProductCreateForm;
-import com.cristian.simplestore.web.forms.ProductUpdateForm;
+import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
+import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 
 @Component
 public class ProductTestsUtils {
@@ -96,11 +96,11 @@ public class ProductTestsUtils {
     return form;
   }
 
-  public ProductCreateForm generateRandomProductCreateForm() {
+  public ProductCreateRequest generateRandomProductCreateForm() {
     return productFactory.generateRandomProductCreateForm();
   }
 
-  public ProductUpdateForm generateRandomProductUpdateForm(Long id) {
+  public ProductUpdateRequest generateRandomProductUpdateForm(Long id) {
     return productFactory.generateRandomProductUpdateForm(id);
   }
 }
