@@ -26,6 +26,6 @@ public class DisableSecurity extends WebSecurityConfigurerAdapter {
             .disable()
         .authorizeRequests()
             .antMatchers("/**").permitAll().anyRequest().permitAll();
-   // @formatter:on
+      // @formatter:on
     }
 }
