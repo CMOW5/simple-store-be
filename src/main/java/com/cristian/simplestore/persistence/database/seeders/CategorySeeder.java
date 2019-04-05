@@ -5,8 +5,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.respositories.CategoryRepository;
-import com.cristian.simplestore.persistence.respositories.ImageRepository;
+import com.cristian.simplestore.persistence.repositories.CategoryRepository;
+import com.cristian.simplestore.persistence.repositories.ImageRepository;
 import com.github.javafaker.Faker;
 
 @Service
