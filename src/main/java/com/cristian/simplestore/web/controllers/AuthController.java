@@ -1,15 +1,16 @@
 package com.cristian.simplestore.web.controllers;
 
-import com.cristian.simplestore.exception.BadRequestException;
 import com.cristian.simplestore.security.oauth2.AuthProvider;
+import com.cristian.simplestore.web.dto.request.user.AuthResponse;
+import com.cristian.simplestore.web.dto.request.user.LoginRequest;
+import com.cristian.simplestore.web.dto.request.user.SignUpRequest;
+import com.cristian.simplestore.web.exceptions.BadRequestException;
+import com.cristian.simplestore.web.utils.response.ApiResponse;
 import com.cristian.simplestore.persistence.entities.User;
-import com.cristian.simplestore.payload.ApiResponse;
-import com.cristian.simplestore.payload.AuthResponse;
-import com.cristian.simplestore.payload.LoginRequest;
-import com.cristian.simplestore.payload.SignUpRequest;
 import com.cristian.simplestore.persistence.repositories.UserRepository;
 import com.cristian.simplestore.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,8 +23,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
-@RestController
-@RequestMapping("/auth")
+// @RestController
+// @RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -37,6 +38,8 @@ public class AuthController {
 
     @Autowired
     private TokenProvider tokenProvider;
+    
+    private ApiResponse response = new ApiResponse();
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -51,7 +54,8 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = tokenProvider.createToken(authentication);
-        return ResponseEntity.ok(new AuthResponse(token));
+        
+        return response.status(HttpStatus.OK).content(new AuthResponse(token)).build();
     }
 
     @PostMapping("/signup")
@@ -75,8 +79,11 @@ public class AuthController {
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getId()).toUri();
 
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully@"));
+        
+        return response.status(HttpStatus.CREATED).content("User registered successfully@").build();
+        
+//        return ResponseEntity.created(location)
+//                .body(new ApiResponse(true, "User registered successfully@"));
     }
 
 }
