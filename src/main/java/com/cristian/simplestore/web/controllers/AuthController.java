@@ -20,72 +20,68 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import javax.validation.Valid;
 import java.net.URI;
 
-@Profile("!test")
+@Profile("!test") // TODO: fix this: AuthenticationManager authenticationManager is not wired
+                  // correctly in test profile
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+  @Autowired
+  private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private TokenProvider tokenProvider;
-    
-    private ApiResponse response = new ApiResponse();
+  @Autowired
+  private TokenProvider tokenProvider;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+  private ApiResponse response = new ApiResponse();
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+  @PostMapping("/login")
+  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+    Authentication authentication =
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            loginRequest.getEmail(), loginRequest.getPassword()));
 
-        String token = tokenProvider.createToken(authentication);
-        
-        return response.status(HttpStatus.OK).content(new AuthResponse(token)).build();
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    String token = tokenProvider.createToken(authentication);
+
+    return response.status(HttpStatus.OK).content(new AuthResponse(token)).build();
+  }
+
+  @PostMapping("/signup")
+  public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+      throw new BadRequestException("Email address already in use.");
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BadRequestException("Email address already in use.");
-        }
+    // Creating user's account
+    User user = new User();
+    user.setName(signUpRequest.getName());
+    user.setEmail(signUpRequest.getEmail());
+    user.setPassword(signUpRequest.getPassword());
+    user.setProvider(AuthProvider.local);
 
-        // Creating user's account
-        User user = new User();
-        user.setName(signUpRequest.getName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    User result = userRepository.save(user);
 
-        User result = userRepository.save(user);
+    URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/me")
+        .buildAndExpand(result.getId()).toUri();
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(result.getId()).toUri();
 
-        
-        return response.status(HttpStatus.CREATED).content("User registered successfully@").build();
-        
-//        return ResponseEntity.created(location)
-//                .body(new ApiResponse(true, "User registered successfully@"));
-    }
+    return response.status(HttpStatus.CREATED).content("User registered successfully@").build();
+
+    // return ResponseEntity.created(location)
+    // .body(new ApiResponse(true, "User registered successfully@"));
+  }
 
 }
