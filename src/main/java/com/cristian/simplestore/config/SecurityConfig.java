@@ -41,8 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
-  @Autowired
-  private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+//  @Autowired
+//  private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
   @Bean
   public TokenAuthenticationFilter tokenAuthenticationFilter() {
@@ -85,7 +85,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
 
   @Bean(BeanIds.AUTHENTICATION_MANAGER)
   @Override
