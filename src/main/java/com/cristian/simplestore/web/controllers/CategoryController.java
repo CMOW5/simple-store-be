@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.web.dto.CategoryResponseDto;
-import com.cristian.simplestore.web.forms.CategoryCreateForm;
-import com.cristian.simplestore.web.forms.CategoryUpdateForm;
+import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
+import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
+import com.cristian.simplestore.web.dto.response.CategoryResponseDto;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
@@ -43,13 +43,13 @@ public class CategoryController {
   }
 
   @PostMapping
-  public ResponseEntity<?> create(@Valid CategoryCreateForm form) {
+  public ResponseEntity<?> create(@Valid CategoryCreateRequest form) {
     Category createdCategory = categoryService.create(form);
     return response.status(HttpStatus.CREATED).content(convertEntityToDto(createdCategory)).build();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@Valid CategoryUpdateForm form) {
+  public ResponseEntity<?> update(@Valid CategoryUpdateRequest form) {
     Category updatedCategory = categoryService.update(form);
     return response.status(HttpStatus.OK).content(convertEntityToDto(updatedCategory)).build();
   }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.ImageService;
-import com.cristian.simplestore.web.forms.TestForm;
+import com.cristian.simplestore.web.dto.request.TestForm;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 

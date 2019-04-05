@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.web.dto.ProductResponseDto;
-import com.cristian.simplestore.web.forms.ProductCreateForm;
-import com.cristian.simplestore.web.forms.ProductUpdateForm;
+import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
+import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
+import com.cristian.simplestore.web.dto.response.ProductResponseDto;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
@@ -43,13 +43,13 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<?> create(@Valid ProductCreateForm form) {
+  public ResponseEntity<?> create(@Valid ProductCreateRequest form) {
     Product createdProduct = productService.create(form);
     return response.status(HttpStatus.CREATED).content(convertEntityToDto(createdProduct)).build();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@PathVariable long id, @Valid ProductUpdateForm form) {
+  public ResponseEntity<?> update(@PathVariable long id, @Valid ProductUpdateRequest form) {
     Product updatedProduct = productService.update(form);
     return response.status(HttpStatus.OK).content(convertEntityToDto(updatedProduct)).build();
 
