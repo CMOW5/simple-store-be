@@ -2,8 +2,8 @@ package com.cristian.simplestore.business.services;
 
 import java.util.List;
 import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.web.forms.CategoryCreateForm;
-import com.cristian.simplestore.web.forms.CategoryUpdateForm;
+import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
+import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 
 public interface CategoryService {
 
@@ -13,11 +13,11 @@ public interface CategoryService {
 
   Category create(Category category);
 
-  Category create(CategoryCreateForm form);
+  Category create(CategoryCreateRequest form);
 
   Category update(Long id, Category category);
 
-  Category update(CategoryUpdateForm form);
+  Category update(CategoryUpdateRequest form);
 
   void deleteById(Long id);
 

@@ -2,8 +2,8 @@ package com.cristian.simplestore.business.services;
 
 import java.util.List;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.web.forms.ProductCreateForm;
-import com.cristian.simplestore.web.forms.ProductUpdateForm;
+import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
+import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 
 public interface ProductService {
 
@@ -13,9 +13,9 @@ public interface ProductService {
 
   Product create(Product product);
 
-  Product create(ProductCreateForm form);
+  Product create(ProductCreateRequest form);
 
-  Product update(ProductUpdateForm form);
+  Product update(ProductUpdateRequest form);
 
   void deleteById(Long id);
 

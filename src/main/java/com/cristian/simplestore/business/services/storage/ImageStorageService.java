@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageException;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
+import com.cristian.simplestore.config.properties.StorageConfig;
 
 
 @Service

@@ -14,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;
-import com.cristian.simplestore.web.forms.ProductCreateForm;
-import com.cristian.simplestore.web.forms.ProductUpdateForm;
+import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
+import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 
 
 @Service
@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Transactional
-  public Product create(ProductCreateForm form) {
+  public Product create(ProductCreateRequest form) {
     Product product = new Product();
 
     product.setName(form.getName());
@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Transactional
-  public Product update(ProductUpdateForm form) {
+  public Product update(ProductUpdateRequest form) {
     try {
       Product storedProduct = productRepository.findById(form.getId()).get();
       List<Long> imagesIdsToDelete = form.getImagesIdsToDelete();

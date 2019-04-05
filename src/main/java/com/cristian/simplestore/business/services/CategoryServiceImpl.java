@@ -12,8 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
-import com.cristian.simplestore.web.forms.CategoryCreateForm;
-import com.cristian.simplestore.web.forms.CategoryUpdateForm;
+import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
+import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Transactional
-  public Category create(CategoryCreateForm form) {
+  public Category create(CategoryCreateRequest form) {
     Category category = new Category();
     category.setName(form.getName());
     category.setParentCategory(form.getParentCategory());
@@ -59,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Transactional
-  public Category update(CategoryUpdateForm form) {
+  public Category update(CategoryUpdateRequest form) {
     try {
       Category storedCategory = categoryRepository.findById(form.getId()).get();
       String newName = form.getName();
