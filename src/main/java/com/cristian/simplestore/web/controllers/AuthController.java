@@ -54,7 +54,10 @@ public class AuthController {
 
     String token = tokenProvider.createToken(authentication);
 
-    return response.status(HttpStatus.OK).content(new AuthResponse(token)).build();
+    return response.status(HttpStatus.OK)
+            .content(new AuthResponse(token))
+            .addHeader("Authorization", "Bearer " + token)
+            .build();
   }
 
   @PostMapping("/signup")
