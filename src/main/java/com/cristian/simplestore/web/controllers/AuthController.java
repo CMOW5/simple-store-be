@@ -1,14 +1,17 @@
 package com.cristian.simplestore.web.controllers;
 
 import com.cristian.simplestore.security.oauth2.AuthProvider;
-import com.cristian.simplestore.web.dto.request.user.AuthResponse;
 import com.cristian.simplestore.web.dto.request.user.LoginRequest;
 import com.cristian.simplestore.web.dto.request.user.SignUpRequest;
+import com.cristian.simplestore.web.dto.response.AuthResponse;
+import com.cristian.simplestore.web.dto.response.user.UserResponseDto;
 import com.cristian.simplestore.web.exceptions.BadRequestException;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 import com.cristian.simplestore.persistence.entities.User;
 import com.cristian.simplestore.persistence.repositories.UserRepository;
+import com.cristian.simplestore.security.CurrentUser;
 import com.cristian.simplestore.security.TokenProvider;
+import com.cristian.simplestore.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,7 @@ import java.net.URI;
 @Profile("!test") // TODO: fix this: AuthenticationManager authenticationManager is not wired
                   // correctly in test profile
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
   @Autowired
@@ -41,8 +44,6 @@ public class AuthController {
   @Autowired
   private TokenProvider tokenProvider;
 
-  private ApiResponse response = new ApiResponse();
-
   @PostMapping("/login")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -52,12 +53,13 @@ public class AuthController {
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
+    User user =
+        userRepository.findById(((UserPrincipal) authentication.getPrincipal()).getId()).get();
+
     String token = tokenProvider.createToken(authentication);
 
-    return response.status(HttpStatus.OK)
-            .content(new AuthResponse(token))
-            .addHeader("Authorization", "Bearer " + token)
-            .build();
+    return new ApiResponse().status(HttpStatus.OK).content(new AuthResponse(token, user))
+        .addHeader("Authorization", "Bearer " + token).build();
   }
 
   @PostMapping("/signup")
@@ -81,10 +83,18 @@ public class AuthController {
         .buildAndExpand(result.getId()).toUri();
 
 
-    return response.status(HttpStatus.CREATED).content("User registered successfully@").build();
+    return new ApiResponse().status(HttpStatus.CREATED).content("User registered successfully@")
+        .build();
 
     // return ResponseEntity.created(location)
     // .body(new ApiResponse(true, "User registered successfully@"));
   }
+  
+  @PostMapping("/logout")
+  public ResponseEntity<?> logoutUser(@CurrentUser UserPrincipal userPrincipal) {
+   // TODO: ban the token
+    return new ApiResponse().status(HttpStatus.OK).content("logged out").build();
+  }
+
 
 }
