@@ -1,19 +1,24 @@
-package com.cristian.simplestore.web.dto.request.user;
+package com.cristian.simplestore.web.dto.response;
+
+import com.cristian.simplestore.persistence.entities.User;
+import com.cristian.simplestore.web.dto.response.user.UserResponseDto;
 
 public class AuthResponse {
-    private String accessToken;
+    private String token;
     private String tokenType = "Bearer";
+    private UserResponseDto user;
 
-    public AuthResponse(String accessToken) {
-        this.accessToken = accessToken;
+    public AuthResponse(String token, User user) {
+        this.token = token;
+        this.user = UserResponseDto.build(user);
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getToken() {
+        return token;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setToken(String accessToken) {
+        this.token = accessToken;
     }
 
     public String getTokenType() {
@@ -22,5 +27,13 @@ public class AuthResponse {
 
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
+    }
+
+    public UserResponseDto getUser() {
+      return user;
+    }
+
+    public void setUser(UserResponseDto user) {
+      this.user = user;
     }
 }
