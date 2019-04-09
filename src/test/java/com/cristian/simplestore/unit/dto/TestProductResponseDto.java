@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.utils.ProductTestsUtils;
-import com.cristian.simplestore.web.dto.response.ProductResponseDto;
+import com.cristian.simplestore.web.dto.response.ProductResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,12 +23,12 @@ public class TestProductResponseDto extends BaseTest {
   @Test
   public void convertEntityToDto() {
     Product product = productUtils.saveRandomProductOnDBWithImages();
-    ProductResponseDto productDto = new ProductResponseDto(product);
+    ProductResponse productDto = new ProductResponse(product);
 
     assertThatImageAndDtoDataAreEqual(product, productDto);
   }
 
-  private void assertThatImageAndDtoDataAreEqual(Product product, ProductResponseDto productDto) {
+  private void assertThatImageAndDtoDataAreEqual(Product product, ProductResponse productDto) {
     assertThat(product.getId()).isEqualTo(productDto.getId());
     assertThat(product.getName()).isEqualTo(productDto.getName());
     assertThat(product.getDescription()).isEqualTo(productDto.getDescription());

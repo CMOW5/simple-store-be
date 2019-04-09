@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.utils.CategoryTestsUtils;
-import com.cristian.simplestore.web.dto.response.CategoryResponseDto;
+import com.cristian.simplestore.web.dto.response.CategoryResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,13 +23,13 @@ public class TestCategoryResponseDto extends BaseTest {
   @Test
   public void convertEntityToDto() {
     Category category = categoryUtils.saveRandomCategoryOnDbWithParent();
-    CategoryResponseDto categoryDto = new CategoryResponseDto(category);
+    CategoryResponse categoryDto = new CategoryResponse(category);
 
     assertThatCategoryAndDtoDataAreEqual(category, categoryDto);
   }
 
   private void assertThatCategoryAndDtoDataAreEqual(Category category,
-      CategoryResponseDto categoryDto) {
+      CategoryResponse categoryDto) {
     assertThat(category.getId()).isEqualTo(categoryDto.getId());
     assertThat(category.getName()).isEqualTo(categoryDto.getName());
     assertThat(category.getParentCategory().getId())

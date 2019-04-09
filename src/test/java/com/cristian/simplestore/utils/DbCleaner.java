@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.persistence.repositories.ImageRepository;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;
+import com.cristian.simplestore.persistence.repositories.UserRepository;
 
 @Component
 public class DbCleaner {
@@ -17,6 +18,9 @@ public class DbCleaner {
 
   @Autowired
   ImageRepository imageRepository;
+  
+  @Autowired 
+  UserRepository userRepository;
 
   public void cleanAllTables() {
     categoryRepository.deleteAll();
@@ -34,5 +38,9 @@ public class DbCleaner {
 
   public void cleanImagesTable() {
     imageRepository.deleteAll();
+  }
+
+  public void cleanUsersTable() {
+    userRepository.deleteAll();
   }
 }

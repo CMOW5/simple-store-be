@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.utils.ImageTestsUtils;
-import com.cristian.simplestore.web.dto.response.ImageResponseDto;
+import com.cristian.simplestore.web.dto.response.ImageResponse;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,12 +23,12 @@ public class TestImageResponseDto extends BaseTest {
   @Test
   public void convertEntityToDto() {
     Image image = imageUtils.saveRandomImageOnDb();
-    ImageResponseDto imageDto = new ImageResponseDto(image);
+    ImageResponse imageDto = new ImageResponse(image);
 
     assertThatImageAndDtoDataAreEqual(image, imageDto);
   }
 
-  private void assertThatImageAndDtoDataAreEqual(Image image, ImageResponseDto imageDto) {
+  private void assertThatImageAndDtoDataAreEqual(Image image, ImageResponse imageDto) {
     assertThat(image.getId()).isEqualTo(imageDto.getId());
     assertThat(image.getUrl()).isEqualTo(imageDto.getUrl());
   }
