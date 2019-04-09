@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserResponseDto {
+public class UserResponse {
   
   private Long id;
 
@@ -16,16 +16,16 @@ public class UserResponseDto {
 
   private String imageUrl;
   
-  public UserResponseDto(User user) {
+  public UserResponse(User user) {
     this.id = user.getId();
     this.name = user.getName();
     this.email = user.getEmail();
     this.imageUrl = user.getImageUrl();
   }
   
-  public static UserResponseDto build(User user) {
+  public static UserResponse build(User user) {
     if (user != null) {
-      return new UserResponseDto(user);
+      return new UserResponse(user);
     } else {
       return null;
     }

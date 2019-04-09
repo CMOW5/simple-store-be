@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CategoryResponseDto implements EntityDto<Category> {
+public class CategoryResponse implements ResponseEntityDto<Category> {
 
   private Long id;
 
@@ -19,12 +19,12 @@ public class CategoryResponseDto implements EntityDto<Category> {
 
   private Map<String, Object> parentCategory;
 
-  private ImageResponseDto image;
+  private ImageResponse image;
 
   @JsonIgnore
   private Category parentCategoryObject;
 
-  public CategoryResponseDto(Category category) {
+  public CategoryResponse(Category category) {
     id = category.getId();
     name = category.getName();
     mapImage(category.getImage());
@@ -41,7 +41,7 @@ public class CategoryResponseDto implements EntityDto<Category> {
   }
 
   private void mapImage(Image image) {
-    this.image = ImageResponseDto.build(image);
+    this.image = ImageResponse.build(image);
   }
 
   @Override
@@ -52,7 +52,7 @@ public class CategoryResponseDto implements EntityDto<Category> {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CategoryResponseDto categoryDto = (CategoryResponseDto) o;
+    CategoryResponse categoryDto = (CategoryResponse) o;
     return Objects.equals(name, categoryDto.name) && Objects.equals(id, categoryDto.id);
   }
 

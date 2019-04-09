@@ -1,39 +1,19 @@
 package com.cristian.simplestore.web.dto.response;
 
 import com.cristian.simplestore.persistence.entities.User;
-import com.cristian.simplestore.web.dto.response.user.UserResponseDto;
+import com.cristian.simplestore.web.dto.response.user.UserResponse;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public class AuthResponse {
+@Data
+@NoArgsConstructor
+public class LoginResponse {
     private String token;
     private String tokenType = "Bearer";
-    private UserResponseDto user;
+    private UserResponse user;
 
-    public AuthResponse(String token, User user) {
+    public LoginResponse(String token, User user) {
         this.token = token;
-        this.user = UserResponseDto.build(user);
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String accessToken) {
-        this.token = accessToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public UserResponseDto getUser() {
-      return user;
-    }
-
-    public void setUser(UserResponseDto user) {
-      this.user = user;
+        this.user = UserResponse.build(user);
     }
 }

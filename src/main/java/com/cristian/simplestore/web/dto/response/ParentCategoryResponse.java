@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParentCategoryResponseDto {
+public class ParentCategoryResponse {
   private Long id;
   private String name;
 
-  public static ParentCategoryResponseDto build(Category category) {
+  public static ParentCategoryResponse build(Category category) {
     if (category != null) {
-      return new ParentCategoryResponseDto(category.getId(), category.getName());
+      return new ParentCategoryResponse(category.getId(), category.getName());
     } else {
       return null;
     }

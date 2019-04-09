@@ -6,18 +6,18 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ImageResponseDto {
+public class ImageResponse {
   private Long id;
   private String url;
 
-  public ImageResponseDto(Image image) {
+  public ImageResponse(Image image) {
     id = image.getId();
     url = image.getUrl();
   }
 
-  public static ImageResponseDto build(Image image) {
+  public static ImageResponse build(Image image) {
     if (image != null) {
-      return new ImageResponseDto(image);
+      return new ImageResponse(image);
     } else {
       return null;
     }

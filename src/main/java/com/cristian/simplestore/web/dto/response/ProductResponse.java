@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ProductResponseDto {
+public class ProductResponse {
 
   private Long id;
 
@@ -26,13 +26,13 @@ public class ProductResponseDto {
 
   private boolean active;
 
-  private ParentCategoryResponseDto category;
+  private ParentCategoryResponse category;
 
-  private List<ImageResponseDto> images = new ArrayList<>();
+  private List<ImageResponse> images = new ArrayList<>();
 
   private Long stock;
 
-  public ProductResponseDto(Product product) {
+  public ProductResponse(Product product) {
     this.id = product.getId();
     this.name = product.getName();
     this.description = product.getDescription();
@@ -48,12 +48,12 @@ public class ProductResponseDto {
   private void mapImages(List<Image> images) {
     if (images != null) {
       for (Image image : images) {
-        this.images.add(new ImageResponseDto(image));
+        this.images.add(new ImageResponse(image));
       }
     }
   }
 
   private void mapParentCategory(Category category) {
-    this.category = ParentCategoryResponseDto.build(category);
+    this.category = ParentCategoryResponse.build(category);
   }
 }
