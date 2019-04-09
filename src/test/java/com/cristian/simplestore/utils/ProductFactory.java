@@ -69,7 +69,7 @@ public class ProductFactory {
   }
 
   private String generateRandomName() {
-    return faker.name().firstName();
+    return faker.name().name();
   }
 
   private String generateRandomDescription() {

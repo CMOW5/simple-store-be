@@ -96,7 +96,7 @@ public class CategoryTestsUtils {
    * @return the newly created category
    */
   public Category saveRandomCategoryOnDb() {
-    String name = faker.name().firstName();
+    String name = generateRandomName();
     Image image = imageUtils.saveRandomImageOnDb();
 
     Category category = new Category();
@@ -135,6 +135,6 @@ public class CategoryTestsUtils {
   }
 
   private String generateRandomName() {
-    return faker.name().firstName();
+    return faker.name().name();
   }
 }
