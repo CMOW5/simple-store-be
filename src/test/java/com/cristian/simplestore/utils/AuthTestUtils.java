@@ -49,6 +49,15 @@ public class AuthTestUtils {
     form.put("password", signUpRequest.getPassword());
     return form;
   }
+  
+  public MultiPartFormBuilder generateSignUpRequestForm2() {
+    SignUpRequest signUpRequest = generateSignUpRequest();
+    MultiPartFormBuilder form = new MultiPartFormBuilder();
+    form.add("name", signUpRequest.getName());
+    form.add("email", signUpRequest.getEmail());
+    form.add("password", signUpRequest.getPassword());
+    return form;
+  }
 
   public HashMap<String, Object> generateWrongSignUpRequestForm() {
     HashMap<String, Object> form = new HashMap<String, Object>();

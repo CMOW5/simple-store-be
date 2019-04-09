@@ -68,23 +68,23 @@ public class CategoryTestsUtils {
     return form;
   }
 
-  public FormBuilder generateRandomCategoryCreateRequesForm() {
+  public MultiPartFormBuilder generateRandomCategoryCreateRequesForm() {
     String name = generateRandomName();
     Category parentCategory = saveRandomCategoryOnDb();
     Resource image = imageUtils.storeImageOnDisk();
 
-    FormBuilder form = new FormBuilder();
+    MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", name).add("parentCategory", parentCategory.getId()).add("image", image);
 
     return form;
   }
 
-  public FormBuilder generateRandomCategoryUpdateRequesForm() {
+  public MultiPartFormBuilder generateRandomCategoryUpdateRequesForm() {
     String name = generateRandomName();
     Category parentCategory = saveRandomCategoryOnDb();
     Resource image = imageUtils.storeImageOnDisk();
 
-    FormBuilder form = new FormBuilder();
+    MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", name).add("parentCategory", parentCategory.getId()).add("newImage", image);
 
     return form;

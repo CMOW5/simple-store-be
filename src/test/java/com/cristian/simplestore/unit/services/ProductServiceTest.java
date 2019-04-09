@@ -81,7 +81,7 @@ public class ProductServiceTest extends BaseTest {
   public void testItUpdatesAProductWithForm() {
     Product productToUpdate = productUtils.saveRandomProductOnDB();
     ProductUpdateRequest newProductData =
-        productUtils.generateRandomProductUpdateForm(productToUpdate.getId());
+        productUtils.generateRandomProductUpdateRequest(productToUpdate.getId());
 
     Product expectedProduct = productService.update(newProductData);
 
@@ -94,7 +94,7 @@ public class ProductServiceTest extends BaseTest {
   public void testItDeletesAProductImages() {
     Product productToUpdate = productUtils.saveRandomProductOnDBWithImages();
     ProductUpdateRequest newProductData =
-        productUtils.generateRandomProductUpdateForm(productToUpdate.getId());
+        productUtils.generateRandomProductUpdateRequest(productToUpdate.getId());
     newProductData.setNewImages(null);
     newProductData.setImagesIdsToDelete(getIdsFromImages(productToUpdate.getImages()));
 
@@ -108,7 +108,7 @@ public class ProductServiceTest extends BaseTest {
   public void testItDoesNotUpdateAProductWithForm() {
     long nonExistentProductId = 1;
     ProductUpdateRequest newProductData =
-        productUtils.generateRandomProductUpdateForm(nonExistentProductId);
+        productUtils.generateRandomProductUpdateRequest(nonExistentProductId);
 
     productService.update(newProductData);
   }

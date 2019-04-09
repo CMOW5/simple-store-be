@@ -23,10 +23,10 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;
-import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.DbCleaner;
-import com.cristian.simplestore.utils.FormBuilder;
+import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.ProductTestsUtils;
+import com.cristian.simplestore.utils.RequestBuilder;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -43,9 +43,9 @@ public class ProductControllerTest extends BaseTest {
 
   @Autowired
   DbCleaner dbCleaner;
-  
+
   @Autowired
-  private ApiRequestUtils apiUtils;
+  private RequestBuilder requestBuilder;
 
   @Before
   public void setUp() {
@@ -71,7 +71,7 @@ public class ProductControllerTest extends BaseTest {
     ResponseEntity<String> response = sendFindAllProductsRequest();
 
     List<?> foundProducts =
-        (List<?>) this.apiUtils.getContentFromJsonRespose(response.getBody(), List.class);
+        (List<?>) RequestBuilder.getContentFromJsonRespose(response.getBody(), List.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(foundProducts.size()).isEqualTo(products.size());
@@ -84,17 +84,11 @@ public class ProductControllerTest extends BaseTest {
 
     ResponseEntity<String> response = sendFindProductByIdRequest(product.getId());
 
-    ProductResponse foundProduct = (ProductResponse) apiUtils
+    ProductResponse foundProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(foundProduct.getName()).isEqualTo(product.getName());
-    assertThat(foundProduct.getDescription()).isEqualTo(product.getDescription());
-    assertThat(foundProduct.getPrice()).isEqualTo(product.getPrice());
-    assertThat(foundProduct.getPriceSale()).isEqualTo(product.getPriceSale());
-    assertThat(foundProduct.isInSale()).isEqualTo(product.isInSale());
-    assertThat(foundProduct.isActive()).isEqualTo(product.isActive());
-    assertThat(foundProduct.getStock()).isEqualTo(product.getStock());
+    assertThatProductResponseIsEqualToProduct(foundProduct, product);
   }
 
   @Test
@@ -108,45 +102,31 @@ public class ProductControllerTest extends BaseTest {
 
   @Test
   public void testItCreatesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    FormBuilder form = productsUtils.generateRandomProductCreateRequesForm();
+    MultiPartFormBuilder form = productsUtils.generateRandomProductCreateRequestForm();
 
     ResponseEntity<String> response = sendProductCreateRequest(form);
 
-    ProductResponse createdProduct = (ProductResponse) apiUtils
+    ProductResponse createdProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-    assertThat(createdProduct.getName()).isEqualTo(form.get("name"));
-    assertThat(createdProduct.getDescription()).isEqualTo(form.get("description"));
-    assertThat(createdProduct.getPrice()).isEqualTo(form.get("price"));
-    assertThat(createdProduct.getPriceSale()).isEqualTo(form.get("priceSale"));
-    assertThat(createdProduct.isInSale()).isEqualTo(form.get("inSale"));
-    assertThat(createdProduct.isActive()).isEqualTo(form.get("active"));
-    assertThat(createdProduct.getStock()).isEqualTo(form.get("stock"));
-    assertThat(createdProduct.getCategory().getId()).isEqualTo(form.get("category"));
+    assertThatProductResponseIsEqualToProduct(createdProduct, form);
     assertThat(createdProduct.getImages().size())
         .isEqualTo(((List<?>) form.getAll("images")).size());
   }
-  
+
   @Test
   public void testItUpdatesAProduct() throws JsonParseException, JsonMappingException, IOException {
     Product productToUpdate = productsUtils.saveRandomProductOnDB();
-    FormBuilder form = productsUtils.generateRandomProductUpdateRequesForm();
+    MultiPartFormBuilder form = productsUtils.generateRandomProductUpdateRequestForm();
 
     ResponseEntity<String> response = sendProductUpdateRequest(productToUpdate.getId(), form);
 
-    ProductResponse updatedProduct = (ProductResponse) this.apiUtils
+    ProductResponse updatedProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(updatedProduct.getName()).isEqualTo(form.get("name"));
-    assertThat(updatedProduct.getDescription()).isEqualTo(form.get("description"));
-    assertThat(updatedProduct.getPrice()).isEqualTo(form.get("price"));
-    assertThat(updatedProduct.getPriceSale()).isEqualTo(form.get("priceSale"));
-    assertThat(updatedProduct.isInSale()).isEqualTo(form.get("inSale"));
-    assertThat(updatedProduct.isActive()).isEqualTo(form.get("active"));
-    assertThat(updatedProduct.getStock()).isEqualTo(form.get("stock"));
-    assertThat(updatedProduct.getCategory().getId()).isEqualTo(form.get("category"));
+    assertThatProductResponseIsEqualToProduct(updatedProduct, form);
     assertThat(updatedProduct.getImages().size()).isEqualTo(
         ((List<?>) form.getAll("newImages")).size() + productToUpdate.getImages().size());
   }
@@ -155,22 +135,15 @@ public class ProductControllerTest extends BaseTest {
   public void testItUpdatesAProductImages()
       throws JsonParseException, JsonMappingException, IOException {
     Product product = productsUtils.saveRandomProductOnDBWithImages();
-    FormBuilder form = productsUtils.generateRandomProductUpdateRequesForm();
+    MultiPartFormBuilder form = productsUtils.generateRandomProductUpdateRequestForm();
     form.add("imagesIdsToDelete", getIdsFromImages(product.getImages()));
 
     ResponseEntity<String> response = sendProductUpdateRequest(product.getId(), form);
-    ProductResponse updatedProduct = (ProductResponse) apiUtils
+    ProductResponse updatedProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(updatedProduct.getName()).isEqualTo(form.get("name"));
-    assertThat(updatedProduct.getDescription()).isEqualTo(form.get("description"));
-    assertThat(updatedProduct.getPrice()).isEqualTo(form.get("price"));
-    assertThat(updatedProduct.getPriceSale()).isEqualTo(form.get("priceSale"));
-    assertThat(updatedProduct.isInSale()).isEqualTo(form.get("inSale"));
-    assertThat(updatedProduct.isActive()).isEqualTo(form.get("active"));
-    assertThat(updatedProduct.getStock()).isEqualTo(form.get("stock"));
-    assertThat(updatedProduct.getCategory().getId()).isEqualTo(form.get("category"));
+    assertThatProductResponseIsEqualToProduct(updatedProduct, form);
     assertThat(updatedProduct.getImages().size())
         .isEqualTo(((List<?>) form.getAll("newImages")).size());
   }
@@ -180,7 +153,7 @@ public class ProductControllerTest extends BaseTest {
       throws JsonParseException, JsonMappingException, IOException {
     Long nonExistentId = 1L;
 
-    FormBuilder form = new FormBuilder();
+    MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", "some name").add("description", "some description");
 
     ResponseEntity<String> response = sendProductUpdateRequest(nonExistentId, form);
@@ -190,7 +163,7 @@ public class ProductControllerTest extends BaseTest {
 
   @Test(expected = NoSuchElementException.class)
   public void testItDeletesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    Product product = this.productsUtils.saveRandomProductOnDB();
+    Product product = productsUtils.saveRandomProductOnDB();
 
     ResponseEntity<String> response = sendProductDeleteRequest(product.getId());
 
@@ -211,7 +184,8 @@ public class ProductControllerTest extends BaseTest {
   private ResponseEntity<String> sendFindAllProductsRequest() {
     String url = "/api/admin/products";
     ResponseEntity<String> response =
-        this.apiUtils.sendRequestWithAuth(url, HttpMethod.GET, null, null);
+        requestBuilder.url(url).httpMethod(HttpMethod.GET).withJwtAuth().send();
+
     return response;
   }
 
@@ -219,31 +193,32 @@ public class ProductControllerTest extends BaseTest {
       throws JsonParseException, JsonMappingException, IOException {
     String url = "/api/admin/products/" + id;
     ResponseEntity<String> response =
-        this.apiUtils.sendRequestWithAuth(url, HttpMethod.GET, null, null);
+        requestBuilder.url(url).httpMethod(HttpMethod.GET).withJwtAuth().send();
     return response;
   }
 
-  private ResponseEntity<String> sendProductCreateRequest(FormBuilder form)
+  private ResponseEntity<String> sendProductCreateRequest(MultiPartFormBuilder form)
       throws JsonParseException, JsonMappingException, IOException {
     String url = "/api/admin/products";
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.MULTIPART_FORM_DATA);
     MultiValueMap<String, Object> body = form.build();
 
-    ResponseEntity<String> response =
-        this.apiUtils.sendRequestWithAuth(url, HttpMethod.POST, headers, body);
+    ResponseEntity<String> response = requestBuilder.url(url).httpMethod(HttpMethod.POST)
+        .headers(headers).body(body).withJwtAuth().send();
     return response;
   }
 
-  private ResponseEntity<String> sendProductUpdateRequest(Long productId, FormBuilder form)
+  private ResponseEntity<String> sendProductUpdateRequest(Long productId, MultiPartFormBuilder form)
       throws JsonParseException, JsonMappingException, IOException {
     String url = "/api/admin/products/" + productId;
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.MULTIPART_FORM_DATA);
     MultiValueMap<String, Object> body = form.build();
 
-    ResponseEntity<String> response =
-        this.apiUtils.sendRequestWithAuth(url, HttpMethod.PUT, headers, body);
+    ResponseEntity<String> response = requestBuilder.url(url).httpMethod(HttpMethod.PUT)
+        .headers(headers).body(body).withJwtAuth().send();
+
     return response;
   }
 
@@ -251,8 +226,31 @@ public class ProductControllerTest extends BaseTest {
       throws JsonParseException, JsonMappingException, IOException {
     String url = "/api/admin/products/" + productId;
     ResponseEntity<String> response =
-        this.apiUtils.sendRequestWithAuth(url, HttpMethod.DELETE, null, null);
+        requestBuilder.url(url).httpMethod(HttpMethod.DELETE).withJwtAuth().send();
     return response;
+  }
+
+  private void assertThatProductResponseIsEqualToProduct(ProductResponse expectedProduct,
+      Product product) {
+    assertThat(expectedProduct.getName()).isEqualTo(product.getName());
+    assertThat(expectedProduct.getDescription()).isEqualTo(product.getDescription());
+    assertThat(expectedProduct.getPrice()).isEqualTo(product.getPrice());
+    assertThat(expectedProduct.getPriceSale()).isEqualTo(product.getPriceSale());
+    assertThat(expectedProduct.isInSale()).isEqualTo(product.isInSale());
+    assertThat(expectedProduct.isActive()).isEqualTo(product.isActive());
+    assertThat(expectedProduct.getStock()).isEqualTo(product.getStock());
+  }
+
+  private void assertThatProductResponseIsEqualToProduct(ProductResponse expectedProduct,
+      MultiPartFormBuilder form) {
+    assertThat(expectedProduct.getName()).isEqualTo(form.get("name"));
+    assertThat(expectedProduct.getDescription()).isEqualTo(form.get("description"));
+    assertThat(expectedProduct.getPrice()).isEqualTo(form.get("price"));
+    assertThat(expectedProduct.getPriceSale()).isEqualTo(form.get("priceSale"));
+    assertThat(expectedProduct.isInSale()).isEqualTo(form.get("inSale"));
+    assertThat(expectedProduct.isActive()).isEqualTo(form.get("active"));
+    assertThat(expectedProduct.getStock()).isEqualTo(form.get("stock"));
+    assertThat(expectedProduct.getCategory().getId()).isEqualTo(form.get("category"));
   }
 
   private List<Long> getIdsFromImages(List<Image> images) {

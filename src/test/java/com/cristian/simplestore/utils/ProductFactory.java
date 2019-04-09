@@ -51,7 +51,7 @@ public class ProductFactory {
     return form;
   }
 
-  public ProductUpdateRequest generateRandomProductUpdateForm(Long id) {
+  public ProductUpdateRequest generateRandomProductUpdateRequest(Long id) {
     ProductUpdateRequest form = new ProductUpdateRequest();
 
     form.setId(id);

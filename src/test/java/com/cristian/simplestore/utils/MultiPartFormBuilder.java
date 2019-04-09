@@ -4,15 +4,15 @@ import java.util.List;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-public class FormBuilder {
+public class MultiPartFormBuilder {
 
   MultiValueMap<String, Object> form;
 
-  public FormBuilder() {
+  public MultiPartFormBuilder() {
     form = new LinkedMultiValueMap<>();
   }
 
-  public <T> FormBuilder add(String key, T value) {
+  public <T> MultiPartFormBuilder add(String key, T value) {
     if (value instanceof List) {
       form.addAll(key, (List<?>) value);
     } else {
@@ -32,7 +32,4 @@ public class FormBuilder {
   public MultiValueMap<String, Object> build() {
     return this.form;
   }
-
-
-
 }

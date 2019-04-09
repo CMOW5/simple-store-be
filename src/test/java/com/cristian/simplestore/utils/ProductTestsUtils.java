@@ -68,11 +68,11 @@ public class ProductTestsUtils {
     return products;
   }
 
-  public FormBuilder generateRandomProductCreateRequesForm() {
+  public MultiPartFormBuilder generateRandomProductCreateRequestForm() {
     Product product = productFactory.generateRandomProduct();
     int IMAGES_SIZE = 2;
 
-    FormBuilder form = new FormBuilder();
+    MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", product.getName()).add("description", product.getDescription())
         .add("price", product.getPrice()).add("priceSale", product.getPriceSale())
         .add("inSale", product.isInSale()).add("active", product.isActive())
@@ -82,11 +82,11 @@ public class ProductTestsUtils {
     return form;
   }
 
-  public FormBuilder generateRandomProductUpdateRequesForm() {
+  public MultiPartFormBuilder generateRandomProductUpdateRequestForm() {
     Product product = productFactory.generateRandomProduct();
     int IMAGES_SIZE = 2;
 
-    FormBuilder form = new FormBuilder();
+    MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", product.getName()).add("description", product.getDescription())
         .add("price", product.getPrice()).add("priceSale", product.getPriceSale())
         .add("inSale", product.isInSale()).add("active", product.isActive())
@@ -100,7 +100,7 @@ public class ProductTestsUtils {
     return productFactory.generateRandomProductCreateForm();
   }
 
-  public ProductUpdateRequest generateRandomProductUpdateForm(Long id) {
-    return productFactory.generateRandomProductUpdateForm(id);
+  public ProductUpdateRequest generateRandomProductUpdateRequest(Long id) {
+    return productFactory.generateRandomProductUpdateRequest(id);
   }
 }

@@ -18,8 +18,8 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ImageService;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.repositories.ImageRepository;
-import com.cristian.simplestore.utils.ApiRequestUtils;
 import com.cristian.simplestore.utils.ImageBuilder;
+import com.cristian.simplestore.utils.RequestBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -32,7 +32,7 @@ public class ImageControllerTest extends BaseTest {
   private ImageBuilder imageBuilder;
   
   @Autowired
-  private ApiRequestUtils apiUtils;
+  private RequestBuilder requestBuilder;
 
   @Autowired
   private ImageRepository imageRepository;
@@ -76,7 +76,7 @@ public class ImageControllerTest extends BaseTest {
 
   public ResponseEntity<String> sendGetImageRequest(String imageName) {
     String url = "/api/images/" + imageName;
-    ResponseEntity<String> response = this.apiUtils.sendRequest(url, HttpMethod.GET, null, null);
+    ResponseEntity<String> response = requestBuilder.url(url).httpMethod(HttpMethod.GET).send();
     return response;
   }
 }
