@@ -3,7 +3,6 @@ package com.cristian.simplestore.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,7 +22,6 @@ import com.cristian.simplestore.security.oauth2.HttpCookieOAuth2AuthorizationReq
 import com.cristian.simplestore.security.oauth2.OAuth2AuthenticationFailureHandler;
 import com.cristian.simplestore.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
-@Profile("!test")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
@@ -122,7 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                   "/**/*.css",
                   "/**/*.js")
                   .permitAll()
-              .antMatchers("/api/auth/**", "/oauth2/**")
+              .antMatchers("/api/auth/**", "/oauth2/**", "/api/images/**")
                   .permitAll()
               .anyRequest()
                   .authenticated()
