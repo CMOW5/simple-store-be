@@ -4,7 +4,7 @@ import com.cristian.simplestore.persistence.entities.User;
 import com.cristian.simplestore.persistence.repositories.UserRepository;
 import com.cristian.simplestore.security.CurrentUser;
 import com.cristian.simplestore.security.UserPrincipal;
-import com.cristian.simplestore.web.dto.response.user.UserResponseDto;
+import com.cristian.simplestore.web.dto.response.user.UserResponse;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,6 @@ public class UserController {
         .orElseThrow(() -> new EntityNotFoundException(
             "Couldnt find the User with id " + userPrincipal.getId()));
 
-    return new ApiResponse().status(HttpStatus.OK).content(UserResponseDto.build(user)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(UserResponse.build(user)).build();
   }
 }

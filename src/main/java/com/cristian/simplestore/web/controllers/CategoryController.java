@@ -17,7 +17,7 @@ import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
-import com.cristian.simplestore.web.dto.response.CategoryResponseDto;
+import com.cristian.simplestore.web.dto.response.CategoryResponse;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
@@ -66,12 +66,12 @@ public class CategoryController {
     return response.status(HttpStatus.OK).content(categoriesCount).build();
   }
 
-  private CategoryResponseDto convertEntityToDto(Category category) {
-    return new CategoryResponseDto(category);
+  private CategoryResponse convertEntityToDto(Category category) {
+    return new CategoryResponse(category);
   }
 
-  private List<CategoryResponseDto> convertEntitiesToDto(List<Category> categories) {
-    List<CategoryResponseDto> dtos = new ArrayList<>();
+  private List<CategoryResponse> convertEntitiesToDto(List<Category> categories) {
+    List<CategoryResponse> dtos = new ArrayList<>();
     categories.forEach(category -> dtos.add(convertEntityToDto(category)));
     return dtos;
   }

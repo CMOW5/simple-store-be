@@ -17,7 +17,7 @@ import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
-import com.cristian.simplestore.web.dto.response.ProductResponseDto;
+import com.cristian.simplestore.web.dto.response.ProductResponse;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
@@ -67,12 +67,12 @@ public class ProductController {
     return response.status(HttpStatus.OK).content(productsCount).build();
   }
 
-  private ProductResponseDto convertEntityToDto(Product product) {
-    return new ProductResponseDto(product);
+  private ProductResponse convertEntityToDto(Product product) {
+    return new ProductResponse(product);
   }
 
-  private List<ProductResponseDto> convertEntitiesToDto(List<Product> products) {
-    List<ProductResponseDto> dtos = new ArrayList<>();
+  private List<ProductResponse> convertEntitiesToDto(List<Product> products) {
+    List<ProductResponse> dtos = new ArrayList<>();
     products.forEach(product -> dtos.add(convertEntityToDto(product)));
     return dtos;
   }
