@@ -33,7 +33,7 @@ public class CategoryResponse implements ResponseEntityDto<Category> {
 
   private void mapParentCategory(Category parentCategory) {
     if (parentCategory != null) {
-      this.parentCategory = new LinkedHashMap<String, Object>();
+      this.parentCategory = new LinkedHashMap<>();
       this.parentCategory.put("id", parentCategory.getId());
       this.parentCategory.put("name", parentCategory.getName());
       this.parentCategoryObject = parentCategory;

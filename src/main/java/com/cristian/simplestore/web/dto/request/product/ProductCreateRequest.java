@@ -35,16 +35,12 @@ public class ProductCreateRequest implements Request<Product> {
 
   private Category category;
 
-  private List<MultipartFile> images = new ArrayList<MultipartFile>();
+  private List<MultipartFile> images = new ArrayList<>();
 
   private Long stock;
 
   public void setImages(List<MultipartFile> images) {
-    if (images == null) {
-      this.images = new ArrayList<>();
-    } else {
-      this.images = images;
-    }
+    this.images = images != null ? images : new ArrayList<>();
   }
 
   @Override

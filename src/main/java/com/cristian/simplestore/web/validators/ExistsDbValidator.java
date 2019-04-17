@@ -27,7 +27,8 @@ public class ExistsDbValidator implements ConstraintValidator<ExistsDb, Object> 
     this.columnValueField = constraintAnnotation.columnValueField();
     this.exceptIdColumn = constraintAnnotation.exceptIdColumn();
   }
-
+  
+  @Override
   public boolean isValid(Object value, ConstraintValidatorContext context) {
     String uniqueFieldValue =
         (String) new BeanWrapperImpl(value).getPropertyValue(columnValueField);

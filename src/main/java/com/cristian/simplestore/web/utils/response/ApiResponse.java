@@ -23,7 +23,7 @@ public class ApiResponse {
   private Map<String, Object> attachments;
 
   public ApiResponse() {
-    this.attachments = new HashMap<String, Object>();
+    this.attachments = new HashMap<>();
     this.errors = new ArrayList<>();
     this.status = HttpStatus.OK;
     this.headers = new HttpHeaders();
