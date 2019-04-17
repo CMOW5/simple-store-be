@@ -1,5 +1,6 @@
 package com.cristian.simplestore.business.services;
 
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,24 +20,24 @@ import com.cristian.simplestore.web.exceptions.BadRequestException;
 
 @Service
 public class AuthService {
-  
+
   @Autowired
   private UserRepository userRepository;
-  
+
   @Autowired
   private AuthenticationManager authenticationManager;
-  
+
   @Autowired
   private TokenProvider tokenProvider;
-  
+
   @Autowired
   private PasswordEncoder passwordEncoder;
-  
+
   public User signup(SignUpRequest signUpRequest) {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       throw new BadRequestException("Email address already in use.");
     }
-    
+
     User user = new User();
     user.setName(signUpRequest.getName());
     user.setEmail(signUpRequest.getEmail());
@@ -47,7 +48,7 @@ public class AuthService {
 
     return userRepository.save(user);
   }
-  
+
   public LoginResponse login(LoginRequest loginRequest) {
     Authentication authentication =
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -55,11 +56,11 @@ public class AuthService {
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    User user =
-        userRepository.findById(((UserPrincipal) authentication.getPrincipal()).getId()).get();
-    
+    User user = userRepository.findById(((UserPrincipal) authentication.getPrincipal()).getId())
+        .orElseThrow(() -> new EntityNotFoundException("the user was not found"));
+
     String token = tokenProvider.createToken(authentication);
-    
+
     return new LoginResponse(token, user);
   }
 }
