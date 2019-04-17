@@ -1,5 +1,6 @@
 package com.cristian.simplestore.persistence.entities;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "images")
 @Data
 @NoArgsConstructor
-public class Image {
+public class Image implements Serializable {
+  private static final long serialVersionUID = 3603066326555414036L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,7 +39,7 @@ public class Image {
   private List<ProductImage> owners = new ArrayList<>();
 
   public String getName() {
-    if (isValidUrl(name)) {
+    if (isUrl()) {
       return name;
     } else {
       return StringUtils.getFilename(name);
@@ -45,7 +47,7 @@ public class Image {
   }
 
   public String getUrl() {
-    if (isValidUrl(name)) {
+    if (isUrl()) {
       return name;
     } else {
       return convertNameToUrl(getName());
@@ -57,11 +59,7 @@ public class Image {
     return "http://localhost:8000/api/images/" + name;
   }
 
-  public boolean isAUrl() {
-    return isValidUrl(name);
-  }
-
-  private boolean isValidUrl(String url) {
+  public boolean isUrl() {
     try {
       new URL(name);
       return true;
@@ -69,4 +67,5 @@ public class Image {
       return false;
     }
   }
+
 }
