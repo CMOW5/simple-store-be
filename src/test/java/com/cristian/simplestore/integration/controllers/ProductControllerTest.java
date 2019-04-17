@@ -60,6 +60,7 @@ public class ProductControllerTest extends BaseTest {
   public void cleanUpDb() {
     dbCleaner.cleanProductsTable();
     dbCleaner.cleanUsersTable();
+    dbCleaner.cleanCategoriesTable();
   }
 
   @Test
