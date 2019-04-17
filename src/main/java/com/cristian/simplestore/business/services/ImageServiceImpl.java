@@ -50,8 +50,9 @@ public class ImageServiceImpl implements ImageService {
     return imageRepository.save(image);
   }
 
+  @Transactional
   public List<Image> saveAll(List<MultipartFile> imagesFiles) {
-    List<Image> savedImages = new ArrayList<Image>();
+    List<Image> savedImages = new ArrayList<>();
 
     for (MultipartFile imageFile : imagesFiles) {
       Image image = save(imageFile);
@@ -88,8 +89,7 @@ public class ImageServiceImpl implements ImageService {
   }
 
   private String generateImageName(MultipartFile file) {
-    String fileName =
-        UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(file.getOriginalFilename());
-    return fileName;
+    return UUID.randomUUID().toString() + "."
+        + FilenameUtils.getExtension(file.getOriginalFilename());
   }
 }

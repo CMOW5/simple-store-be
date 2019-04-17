@@ -24,15 +24,14 @@ public class CategoryServiceImpl implements CategoryService {
   private ImageService imageService;
 
   public List<Category> findAll() {
-    List<Category> foundCategories = new ArrayList<Category>();
+    List<Category> foundCategories = new ArrayList<>();
     categoryRepository.findAll().forEach(foundCategories::add);
     return foundCategories;
   }
 
   public Category findById(Long id) {
-    Category foundCategory = categoryRepository.findById(id).orElseThrow(
+    return categoryRepository.findById(id).orElseThrow(
         () -> new EntityNotFoundException("The category with the given id was not found"));
-    return foundCategory;
   }
 
   public Category create(Category category) {
@@ -44,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     Category category = new Category();
     category.setName(form.getName());
     category.setParentCategory(form.getParentCategory());
-    category = addImageToCategory(category, form.getImage());
+    addImageToCategory(category, form.getImage());
 
     return categoryRepository.save(category);
   }
@@ -64,8 +63,8 @@ public class CategoryServiceImpl implements CategoryService {
     Long imageIdToDelete = form.getImageIdToDelete();
 
     storedCategory.setName(newName);
-    storedCategory = updateParentCategory(storedCategory, newParentCategory);
-    storedCategory = updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
+    updateParentCategory(storedCategory, newParentCategory);
+    updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
 
     return storedCategory;
   }

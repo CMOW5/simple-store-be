@@ -33,9 +33,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public Product findById(Long id) {
-    Product foundProduct = productRepository.findById(id).orElseThrow(
+    return productRepository.findById(id).orElseThrow(
         () -> new EntityNotFoundException("The product with the given id was not found"));
-    return foundProduct;
   }
 
   @Transactional

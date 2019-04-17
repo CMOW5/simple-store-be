@@ -113,7 +113,6 @@ public class ImageStorageService implements StorageService {
 
   @Override
   public void deleteAll() {
-    // FileSystemUtils.deleteRecursively(rootLocation.toFile());
     try {
       FileUtils.cleanDirectory(rootLocation.toFile());
     } catch (IOException e) {
