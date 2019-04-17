@@ -20,7 +20,7 @@ public class SimpleStoreApplication {
 
   @Bean
   public CommandLineRunner demo(CategorySeeder categorySeeder, ImageStorageService storageService) {
-    return (args) -> {
+    return args -> {
       // categorySeeder.seed();
       storageService.init();
     };
