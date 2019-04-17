@@ -31,10 +31,7 @@ public class CategorySeeder {
       try {
         Category category = createRandomCategoryOnDB();
         createRandomCategoriesWithParentOnDB(category, 4);
-      } catch (DataIntegrityViolationException e) {
-        continue;
-      }
-
+      } catch (DataIntegrityViolationException e) {}
     }
   }
 
@@ -42,8 +39,7 @@ public class CategorySeeder {
     Category category = new Category();
     category.setName(faker.commerce().department());
     category.setImage(generateRandomImageOnDB());
-    categoryRepository.save(category);
-    return category;
+    return categoryRepository.save(category);
   }
 
   private void createRandomCategoriesWithParentOnDB(Category parentCategory, long categoriesSize) {
