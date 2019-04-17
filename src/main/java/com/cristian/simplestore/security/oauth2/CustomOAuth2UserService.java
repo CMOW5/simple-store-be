@@ -6,11 +6,9 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import com.cristian.simplestore.security.oauth2.AuthProvider;
 import com.cristian.simplestore.security.oauth2.exceptions.OAuth2AuthenticationProcessingException;
 import com.cristian.simplestore.persistence.entities.User;
 import com.cristian.simplestore.persistence.repositories.UserRepository;
@@ -39,8 +37,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
    * This method is called after an access token is obtained from the OAuth2 provider
    */
   @Override
-  public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest)
-      throws OAuth2AuthenticationException {
+  public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) {
     OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 
     try {
