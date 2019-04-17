@@ -42,7 +42,7 @@ public class ImageEntityEventListener implements PostDeleteEventListener {
     final Object entity = event.getEntity();
     if (entity instanceof Image) {
       Image image = (Image) entity;
-      if (!image.isAUrl()) {
+      if (!image.isUrl()) {
         imageStorageService.delete(image.getName());
       }
     }
