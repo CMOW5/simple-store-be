@@ -1,4 +1,4 @@
-package com.cristian.simplestore.integration.controllers;
+package com.cristian.simplestore.integration.controllers.category;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
@@ -11,17 +11,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.MultiValueMap;
 import com.cristian.simplestore.BaseTest;
+import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
-import com.cristian.simplestore.utils.CategoryTestsUtils;
+import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.RequestBuilder;
@@ -37,13 +34,13 @@ public class CategoryControllerTest extends BaseTest {
   private CategoryRepository categoryRepository;
 
   @Autowired
-  private CategoryTestsUtils categoryUtils;
+  private CategoryTestFactory categoryFactory;
+  
+  @Autowired
+  private AuthenticatedCategoryRequest categoryRequest;
 
   @Autowired
   DbCleaner dbCleaner;
-
-  @Autowired
-  RequestBuilder requestBuilder;
 
   @Before
   public void setUp() {
@@ -65,9 +62,9 @@ public class CategoryControllerTest extends BaseTest {
   public void testItFindsAllCategories()
       throws JsonParseException, JsonMappingException, IOException {
     long MAX_CATEGORIES_SIZE = 4;
-    List<Category> categories = categoryUtils.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
+    List<Category> categories = categoryFactory.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
 
-    ResponseEntity<String> response = sendFindAllCategoriesRequest();
+    ResponseEntity<String> response = categoryRequest.sendFindAllCategoriesRequest();
 
     List<?> responseCategories =
         (List<?>) RequestBuilder.getContentFromJsonRespose(response.getBody(), List.class);
@@ -79,9 +76,9 @@ public class CategoryControllerTest extends BaseTest {
   @Test
   public void testItFindsACategoryById()
       throws JsonParseException, JsonMappingException, IOException {
-    Category category = categoryUtils.saveRandomCategoryOnDb();
+    Category category = categoryFactory.saveRandomCategoryOnDb();
 
-    ResponseEntity<String> response = sendFindCategoryByIdRequest(category.getId());
+    ResponseEntity<String> response = categoryRequest.sendFindCategoryByIdRequest(category.getId());
 
     CategoryResponse foundCategory = (CategoryResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), CategoryResponse.class);
@@ -95,7 +92,7 @@ public class CategoryControllerTest extends BaseTest {
   public void testItDoesNotFindACategoryById()
       throws JsonParseException, JsonMappingException, IOException {
     Long nonExistentCategoryId = 1L;
-    ResponseEntity<String> response = sendFindCategoryByIdRequest(nonExistentCategoryId);
+    ResponseEntity<String> response = categoryRequest.sendFindCategoryByIdRequest(nonExistentCategoryId);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
@@ -103,9 +100,9 @@ public class CategoryControllerTest extends BaseTest {
   @Test
   public void testItCreatesACategory()
       throws JsonParseException, JsonMappingException, IOException {
-    MultiPartFormBuilder form = categoryUtils.generateRandomCategoryCreateRequesForm();
+    MultiPartFormBuilder form = categoryFactory.generateRandomCategoryCreateRequestForm();
 
-    ResponseEntity<String> response = sendCategoryCreateRequest(form);
+    ResponseEntity<String> response = categoryRequest.sendCategoryCreateRequest(form);
     CategoryResponse createdCategory = (CategoryResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), CategoryResponse.class);
 
@@ -117,10 +114,10 @@ public class CategoryControllerTest extends BaseTest {
   @Test
   public void testItUpdatesACategory()
       throws JsonParseException, JsonMappingException, IOException {
-    Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb();
-    MultiPartFormBuilder form = categoryUtils.generateRandomCategoryUpdateRequesForm();
+    Category categoryToUpdate = categoryFactory.saveRandomCategoryOnDb();
+    MultiPartFormBuilder form = categoryFactory.generateRandomCategoryUpdateRequesForm();
 
-    ResponseEntity<String> response = sendCategoryUpdateRequest(categoryToUpdate.getId(), form);
+    ResponseEntity<String> response = categoryRequest.sendCategoryUpdateRequest(categoryToUpdate.getId(), form);
     CategoryResponse updatedCategory = (CategoryResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), CategoryResponse.class);
 
@@ -134,8 +131,8 @@ public class CategoryControllerTest extends BaseTest {
   @Test
   public void testItCorrectlyUpdatesTheParentCategory()
       throws JsonParseException, JsonMappingException, IOException {
-    Category categoryA = categoryUtils.saveRandomCategoryOnDb();
-    Category categoryB = categoryUtils.saveRandomCategoryOnDb();
+    Category categoryA = categoryFactory.saveRandomCategoryOnDb();
+    Category categoryB = categoryFactory.saveRandomCategoryOnDb();
 
     categoryA.setParentCategory(categoryB);
     categoryA = categoryRepository.save(categoryA);
@@ -147,7 +144,7 @@ public class CategoryControllerTest extends BaseTest {
     MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", categoryB.getName()).add("parentCategory", categoryA.getId());
 
-    ResponseEntity<String> response = sendCategoryUpdateRequest(categoryB.getId(), form);
+    ResponseEntity<String> response = categoryRequest.sendCategoryUpdateRequest(categoryB.getId(), form);
     CategoryResponse updatedCategory = (CategoryResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), CategoryResponse.class);
 
@@ -168,7 +165,7 @@ public class CategoryControllerTest extends BaseTest {
     MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", "some name");
 
-    ResponseEntity<String> response = sendCategoryUpdateRequest(nonExistentCategoryId, form);
+    ResponseEntity<String> response = categoryRequest.sendCategoryUpdateRequest(nonExistentCategoryId, form);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
@@ -176,9 +173,9 @@ public class CategoryControllerTest extends BaseTest {
   @Test(expected = NoSuchElementException.class)
   public void testItDeletesACategory()
       throws JsonParseException, JsonMappingException, IOException {
-    Category category = categoryUtils.saveRandomCategoryOnDb();
+    Category category = categoryFactory.saveRandomCategoryOnDb();
 
-    ResponseEntity<String> response = sendCategoryDeleteRequest(category.getId());
+    ResponseEntity<String> response = categoryRequest.sendCategoryDeleteRequest(category.getId());
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     categoryRepository.findById(category.getId()).get();
@@ -189,61 +186,9 @@ public class CategoryControllerTest extends BaseTest {
       throws JsonParseException, JsonMappingException, IOException {
     Long nonExistentId = 1L;
 
-    ResponseEntity<String> response = sendCategoryDeleteRequest(nonExistentId);
+    ResponseEntity<String> response = categoryRequest.sendCategoryDeleteRequest(nonExistentId);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-  }
-
-  private ResponseEntity<String> sendFindAllCategoriesRequest()
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/categories";
-    ResponseEntity<String> jsonResponse =
-        requestBuilder.url(url).httpMethod(HttpMethod.GET).withJwtAuth().send();
-    return jsonResponse;
-  }
-
-  private ResponseEntity<String> sendFindCategoryByIdRequest(Long id)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/categories/" + id;
-    ResponseEntity<String> jsonResponse =
-        requestBuilder.url(url).httpMethod(HttpMethod.GET).withJwtAuth().send();
-    return jsonResponse;
-  }
-
-  private ResponseEntity<String> sendCategoryCreateRequest(MultiPartFormBuilder form)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/categories";
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-    MultiValueMap<String, Object> body = form.build();
-
-    ResponseEntity<String> jsonResponse =
-        requestBuilder.url(url).httpMethod(HttpMethod.POST).headers(headers).body(body).withJwtAuth().send();
-
-    return jsonResponse;
-  }
-
-  private ResponseEntity<String> sendCategoryUpdateRequest(Long categoryId, MultiPartFormBuilder form)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/categories/" + categoryId;
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-    MultiValueMap<String, Object> body = form.build();
-
-    ResponseEntity<String> jsonResponse =
-        requestBuilder.url(url).httpMethod(HttpMethod.PUT).headers(headers).body(body).withJwtAuth().send();
-
-    return jsonResponse;
-  }
-
-  private ResponseEntity<String> sendCategoryDeleteRequest(Long categoryId)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/categories/" + categoryId;
-
-    ResponseEntity<String> jsonResponse =
-        requestBuilder.url(url).httpMethod(HttpMethod.DELETE).withJwtAuth().send();
-
-    return jsonResponse;
   }
 
   private void assertThatDtoisEqualToForm(CategoryResponse categoryDto, MultiPartFormBuilder form) {
