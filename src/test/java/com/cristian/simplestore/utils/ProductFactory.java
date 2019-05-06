@@ -15,7 +15,7 @@ public class ProductFactory {
   private static int MAX_STOCK = 100000000;
 
   @Autowired
-  CategoryTestsUtils categoryUtils;
+  CategoryTestFactory categoryUtils;
 
   @Autowired
   ImageTestsUtils imageUtils;
