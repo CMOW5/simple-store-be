@@ -2,8 +2,6 @@ package com.cristian.simplestore.integration.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,38 +12,23 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ImageService;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.repositories.ImageRepository;
-import com.cristian.simplestore.utils.ImageBuilder;
+import com.cristian.simplestore.utils.ImageFileFactory;
 import com.cristian.simplestore.utils.RequestBuilder;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ImageControllerTest extends BaseTest {
+public class ImageControllerTest extends BaseIntegrationTest {
 
   @Autowired
   private ImageService imageService;
 
   @Autowired
-  private ImageBuilder imageBuilder;
+  private ImageFileFactory imageBuilder;
   
   @Autowired
   private RequestBuilder requestBuilder;
-
-  @Autowired
-  private ImageRepository imageRepository;
-
-  @Before
-  public void setUp() {
-    this.imageRepository.deleteAll();
-  }
-
-  @After
-  public void tearDown() {
-    this.imageRepository.deleteAll();
-  }
 
   @Test
   public void testItServesAnImage() throws IOException {

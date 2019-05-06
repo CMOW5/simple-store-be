@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.cristian.simplestore.BaseTest;
-import com.cristian.simplestore.business.services.AuthService;
 import com.cristian.simplestore.utils.AuthTestUtils;
-import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.RequestBuilder;
 import com.cristian.simplestore.web.dto.response.LoginResponse;
 import com.cristian.simplestore.web.dto.response.user.UserResponse;
@@ -31,36 +26,16 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AuthControllerTest extends BaseTest {
+public class AuthControllerTest extends BaseIntegrationTest {
 
   @Autowired
   TestRestTemplate restTemplate;
-
-  @Autowired
-  AuthService userService;
-
-  @Autowired
-  DbCleaner dbCleaner;
 
   @Autowired
   AuthTestUtils authUtils;
 
   @Autowired
   RequestBuilder requestBuilder;
-
-  @Before
-  public void setUp() {
-    cleanUpDb();
-  }
-
-  @After
-  public void tearDown() {
-    cleanUpDb();
-  }
-
-  public void cleanUpDb() {
-    dbCleaner.cleanUsersTable();
-  }
 
   @Test
   public void testSignUp() throws JsonParseException, JsonMappingException, IOException {
