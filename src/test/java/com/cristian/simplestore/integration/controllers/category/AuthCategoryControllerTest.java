@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.cristian.simplestore.BaseTest;
+import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.UnauthenticatedCategoryRequest;
 import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AuthCategoryTest extends BaseTest {
+public class AuthCategoryControllerTest extends BaseIntegrationTest {
 
   @Autowired
   private CategoryTestFactory categoryUtils;

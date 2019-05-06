@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.cristian.simplestore.BaseTest;
+import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.utils.CategoryTestFactory;
-import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.RequestBuilder;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
@@ -28,7 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class CategoryControllerTest extends BaseTest {
+public class CategoryControllerTest extends BaseIntegrationTest {
 
   @Autowired
   private CategoryRepository categoryRepository;
@@ -38,25 +35,6 @@ public class CategoryControllerTest extends BaseTest {
   
   @Autowired
   private AuthenticatedCategoryRequest categoryRequest;
-
-  @Autowired
-  DbCleaner dbCleaner;
-
-  @Before
-  public void setUp() {
-    cleanUpDb();
-  }
-
-  @After
-  public void tearDown() {
-    cleanUpDb();
-  }
-
-  public void cleanUpDb() {
-    dbCleaner.cleanCategoriesTable();
-    dbCleaner.cleanImagesTable();
-    dbCleaner.cleanUsersTable();
-  }
 
   @Test
   public void testItFindsAllCategories()
@@ -134,6 +112,7 @@ public class CategoryControllerTest extends BaseTest {
     Category categoryA = categoryFactory.saveRandomCategoryOnDb();
     Category categoryB = categoryFactory.saveRandomCategoryOnDb();
 
+    // TODO: violation of tests boundary
     categoryA.setParentCategory(categoryB);
     categoryA = categoryRepository.save(categoryA);
 
@@ -151,7 +130,8 @@ public class CategoryControllerTest extends BaseTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(((Integer) updatedCategory.getParentCategory().get("id")).longValue())
         .isEqualTo(categoryA.getId());
-
+    
+    // TODO: violation of tests boundary 
     categoryA = categoryRepository.findById(categoryA.getId()).get();
     assertThat(categoryA.getParentCategory()).isNull();
 
@@ -178,6 +158,7 @@ public class CategoryControllerTest extends BaseTest {
     ResponseEntity<String> response = categoryRequest.sendCategoryDeleteRequest(category.getId());
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    // TODO: violation of test boundary
     categoryRepository.findById(category.getId()).get();
   }
 
