@@ -1,7 +1,6 @@
 package com.cristian.simplestore.integration.controllers.category.request;
 
 import java.io.IOException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -15,12 +14,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Component
 public abstract class CategoryRequest {
-
+  
+  private static String ADMIN_CATEGORIES_BASE_URL = "/api/admin/categories";
+  
   private RequestBuilder requestBuilder;
 
-  private static String ADMIN_CATEGORIES_BASE_URL = "/api/admin/categories";
-
-  @Autowired
   public CategoryRequest(RequestBuilder requestBuilder) {
     this.requestBuilder = requestBuilder;
   }

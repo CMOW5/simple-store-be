@@ -42,5 +42,4 @@ public class AuthenticatedCategoryRequest extends CategoryRequest {
     RequestBuilder requestBuilder = super.buildCategoryDeleteRequest(categoryId);
     return requestBuilder.withJwtAuth();
   }
-
 }
