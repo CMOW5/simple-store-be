@@ -14,18 +14,23 @@ import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 import com.github.javafaker.Faker;
 
 @Component
-public class CategoryTestsUtils {
+public class CategoryTestFactory {
 
-  @Autowired
   private CategoryRepository categoryRepository;
 
-  @Autowired
-  private ImageBuilder imageBuilder;
-
-  @Autowired
+  private ImageFileFactory imageFileFactory;
+  
   private ImageTestsUtils imageUtils;
-
+  
   private Faker faker = new Faker();
+  
+  @Autowired
+  private CategoryTestFactory(CategoryRepository categoryRepository, ImageFileFactory imageFileFactory,
+      ImageTestsUtils imageUtils) {
+    this.categoryRepository = categoryRepository;
+    this.imageFileFactory = imageFileFactory;
+    this.imageUtils = imageUtils;
+  }
 
   /**
    * create a category instance with random data
@@ -33,10 +38,16 @@ public class CategoryTestsUtils {
    * @return the newly created category
    */
   public Category generateRandomCategory() {
-    String name = generateRandomName();
-    Category category = new Category();
-    category.setName(name);
+    Category category = new Category(generateRandomName());
     return category;
+  }
+
+  public List<Category> generateRandomCategories(int size) {
+    List<Category> categories = new ArrayList<>();
+    for (int i = 0; i < size; i++) {
+      categories.add(generateRandomCategory());
+    }
+    return categories;
   }
 
   public CategoryCreateRequest generateRandomCategoryCreateForm() {
@@ -44,7 +55,7 @@ public class CategoryTestsUtils {
 
     String name = generateRandomName();
     Category parentCategory = saveRandomCategoryOnDb();
-    MultipartFile image = imageBuilder.createMockMultipartImage();
+    MultipartFile image = imageFileFactory.createMockMultipartImage();
 
     form.setName(name);
     form.setParentCategory(parentCategory);
@@ -58,7 +69,7 @@ public class CategoryTestsUtils {
 
     String name = generateRandomName();
     Category parentCategory = saveRandomCategoryOnDb();
-    MultipartFile newImage = imageBuilder.createMockMultipartImage();
+    MultipartFile newImage = imageFileFactory.createMockMultipartImage();
 
     form.setId(id);
     form.setName(name);
@@ -68,7 +79,7 @@ public class CategoryTestsUtils {
     return form;
   }
 
-  public MultiPartFormBuilder generateRandomCategoryCreateRequesForm() {
+  public MultiPartFormBuilder generateRandomCategoryCreateRequestForm() {
     String name = generateRandomName();
     Category parentCategory = saveRandomCategoryOnDb();
     Resource image = imageUtils.storeImageOnDisk();
