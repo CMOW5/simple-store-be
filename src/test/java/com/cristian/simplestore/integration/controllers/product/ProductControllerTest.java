@@ -1,29 +1,21 @@
-package com.cristian.simplestore.integration.controllers;
+package com.cristian.simplestore.integration.controllers.product;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.MultiValueMap;
-import com.cristian.simplestore.BaseTest;
+import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
+import com.cristian.simplestore.integration.controllers.product.request.AuthenticatedProductRequest;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.persistence.repositories.ProductRepository;
-import com.cristian.simplestore.utils.DbCleaner;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.ProductTestsUtils;
 import com.cristian.simplestore.utils.RequestBuilder;
@@ -33,35 +25,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class ProductControllerTest extends BaseTest {
-
-  @Autowired
-  private ProductRepository productRepository;
+public class ProductControllerTest extends BaseIntegrationTest {
 
   @Autowired
   private ProductTestsUtils productsUtils;
-
+  
   @Autowired
-  DbCleaner dbCleaner;
-
-  @Autowired
-  private RequestBuilder requestBuilder;
-
-  @Before
-  public void setUp() {
-    cleanUpDb();
-  }
-
-  @After
-  public void tearDown() {
-    cleanUpDb();
-  }
-
-  public void cleanUpDb() {
-    dbCleaner.cleanProductsTable();
-    dbCleaner.cleanUsersTable();
-    dbCleaner.cleanCategoriesTable();
-  }
+  private AuthenticatedProductRequest request;
 
   @Test
   public void testItFindsAllProducts()
@@ -69,7 +39,7 @@ public class ProductControllerTest extends BaseTest {
     long MAX_PRODUCTS_SIZE = 4;
     List<Product> products = productsUtils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 
-    ResponseEntity<String> response = sendFindAllProductsRequest();
+    ResponseEntity<String> response = request.sendFindAllProductsRequest();
 
     List<?> foundProducts =
         (List<?>) RequestBuilder.getContentFromJsonRespose(response.getBody(), List.class);
@@ -83,7 +53,7 @@ public class ProductControllerTest extends BaseTest {
       throws JsonParseException, JsonMappingException, IOException {
     Product product = productsUtils.saveRandomProductOnDB();
 
-    ResponseEntity<String> response = sendFindProductByIdRequest(product.getId());
+    ResponseEntity<String> response = request.sendFindProductByIdRequest(product.getId());
 
     ProductResponse foundProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
@@ -96,7 +66,7 @@ public class ProductControllerTest extends BaseTest {
   public void testItDoesNotFindAProductById()
       throws JsonParseException, JsonMappingException, IOException {
     Long nonExistentProductId = 1L;
-    ResponseEntity<String> response = sendFindProductByIdRequest(nonExistentProductId);
+    ResponseEntity<String> response = request.sendFindProductByIdRequest(nonExistentProductId);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
@@ -105,7 +75,7 @@ public class ProductControllerTest extends BaseTest {
   public void testItCreatesAProduct() throws JsonParseException, JsonMappingException, IOException {
     MultiPartFormBuilder form = productsUtils.generateRandomProductCreateRequestForm();
 
-    ResponseEntity<String> response = sendProductCreateRequest(form);
+    ResponseEntity<String> response = request.sendProductCreateRequest(form);
 
     ProductResponse createdProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
@@ -121,7 +91,7 @@ public class ProductControllerTest extends BaseTest {
     Product productToUpdate = productsUtils.saveRandomProductOnDB();
     MultiPartFormBuilder form = productsUtils.generateRandomProductUpdateRequestForm();
 
-    ResponseEntity<String> response = sendProductUpdateRequest(productToUpdate.getId(), form);
+    ResponseEntity<String> response = request.sendProductUpdateRequest(productToUpdate.getId(), form);
 
     ProductResponse updatedProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
@@ -139,7 +109,7 @@ public class ProductControllerTest extends BaseTest {
     MultiPartFormBuilder form = productsUtils.generateRandomProductUpdateRequestForm();
     form.add("imagesIdsToDelete", getIdsFromImages(product.getImages()));
 
-    ResponseEntity<String> response = sendProductUpdateRequest(product.getId(), form);
+    ResponseEntity<String> response = request.sendProductUpdateRequest(product.getId(), form);
     ProductResponse updatedProduct = (ProductResponse) RequestBuilder
         .getContentFromJsonRespose(response.getBody(), ProductResponse.class);
 
@@ -157,19 +127,21 @@ public class ProductControllerTest extends BaseTest {
     MultiPartFormBuilder form = new MultiPartFormBuilder();
     form.add("name", "some name").add("description", "some description");
 
-    ResponseEntity<String> response = sendProductUpdateRequest(nonExistentId, form);
+    ResponseEntity<String> response = request.sendProductUpdateRequest(nonExistentId, form);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
   }
 
-  @Test(expected = NoSuchElementException.class)
+  @Test
   public void testItDeletesAProduct() throws JsonParseException, JsonMappingException, IOException {
     Product product = productsUtils.saveRandomProductOnDB();
 
-    ResponseEntity<String> response = sendProductDeleteRequest(product.getId());
+    ResponseEntity<String> response = request.sendProductDeleteRequest(product.getId());
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-    productRepository.findById(product.getId()).get();
+    
+    response = request.sendFindProductByIdRequest(product.getId());
+    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
   @Test
@@ -177,58 +149,9 @@ public class ProductControllerTest extends BaseTest {
       throws JsonParseException, JsonMappingException, IOException {
     Long nonExistentId = 1L;
 
-    ResponseEntity<String> response = sendProductDeleteRequest(nonExistentId);
+    ResponseEntity<String> response = request.sendProductDeleteRequest(nonExistentId);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-  }
-
-  private ResponseEntity<String> sendFindAllProductsRequest() {
-    String url = "/api/admin/products";
-    ResponseEntity<String> response =
-        requestBuilder.url(url).httpMethod(HttpMethod.GET).withJwtAuth().send();
-
-    return response;
-  }
-
-  private ResponseEntity<String> sendFindProductByIdRequest(Long id)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/products/" + id;
-    ResponseEntity<String> response =
-        requestBuilder.url(url).httpMethod(HttpMethod.GET).withJwtAuth().send();
-    return response;
-  }
-
-  private ResponseEntity<String> sendProductCreateRequest(MultiPartFormBuilder form)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/products";
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-    MultiValueMap<String, Object> body = form.build();
-
-    ResponseEntity<String> response = requestBuilder.url(url).httpMethod(HttpMethod.POST)
-        .headers(headers).body(body).withJwtAuth().send();
-    return response;
-  }
-
-  private ResponseEntity<String> sendProductUpdateRequest(Long productId, MultiPartFormBuilder form)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/products/" + productId;
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-    MultiValueMap<String, Object> body = form.build();
-
-    ResponseEntity<String> response = requestBuilder.url(url).httpMethod(HttpMethod.PUT)
-        .headers(headers).body(body).withJwtAuth().send();
-
-    return response;
-  }
-
-  private ResponseEntity<String> sendProductDeleteRequest(Long productId)
-      throws JsonParseException, JsonMappingException, IOException {
-    String url = "/api/admin/products/" + productId;
-    ResponseEntity<String> response =
-        requestBuilder.url(url).httpMethod(HttpMethod.DELETE).withJwtAuth().send();
-    return response;
   }
 
   private void assertThatProductResponseIsEqualToProduct(ProductResponse expectedProduct,
