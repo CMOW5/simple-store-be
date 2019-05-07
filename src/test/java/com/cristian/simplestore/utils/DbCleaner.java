@@ -26,6 +26,7 @@ public class DbCleaner {
     categoryRepository.deleteAll();
     imageRepository.deleteAll();
     productRepository.deleteAll();
+    userRepository.deleteAll();
   }
 
   public void cleanCategoriesTable() {
