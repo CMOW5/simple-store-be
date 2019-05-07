@@ -9,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import com.cristian.simplestore.web.CustomPaginator;
 
 public class ApiResponse {
 
   private static final String CONTENT_KEY = "content";
   private static final String ERRORS_KEY = "errors";
   private static final String STATUS_KEY = "status";
+  private static final String PAGINATOR_KEY = "paginator";
 
   private HttpStatus status;
   private HttpHeaders headers;
@@ -68,6 +70,11 @@ public class ApiResponse {
   
   public ApiResponse addHeader(String header, String value) {
     this.headers.add(header, value);
+    return this;
+  }
+  
+  public ApiResponse paginator(CustomPaginator paginator) {
+    this.attachments.put(PAGINATOR_KEY, paginator);
     return this;
   }
 
