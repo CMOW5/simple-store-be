@@ -100,7 +100,11 @@ public class Product implements Serializable {
       removeImage(image);
     }
   }
-
+  
+  public Category getCategory() {
+    return null;
+  }
+  
   @Override
   public boolean equals(Object o) {
     if (this == o) {

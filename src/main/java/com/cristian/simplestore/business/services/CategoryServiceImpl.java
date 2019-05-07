@@ -6,6 +6,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.persistence.entities.Category;
@@ -27,6 +29,10 @@ public class CategoryServiceImpl implements CategoryService {
     List<Category> foundCategories = new ArrayList<>();
     categoryRepository.findAll().forEach(foundCategories::add);
     return foundCategories;
+  }
+  
+  public Page<Category> findAll(int page, int size) {
+    return categoryRepository.findAll(PageRequest.of(page, size)); 
   }
 
   public Category findById(Long id) {

@@ -42,6 +42,10 @@ public class Category {
   @ManyToOne
   @JoinColumn(name = "image_id")
   private Image image;
+  
+  public Category(String name) {
+    this.name = name;
+  }
 
   public void addSubCategory(Category subcategory) {
     // this.subcategories.add(subcategory);
