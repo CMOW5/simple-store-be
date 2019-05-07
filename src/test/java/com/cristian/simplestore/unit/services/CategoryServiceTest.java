@@ -13,7 +13,7 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
-import com.cristian.simplestore.utils.CategoryTestsUtils;
+import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 
@@ -29,7 +29,7 @@ public class CategoryServiceTest extends BaseTest {
   CategoryRepository categoryRepository;
 
   @Autowired
-  CategoryTestsUtils categoryUtils;
+  CategoryTestFactory categoryUtils;
 
   @Test
   public void testItfindsAllCategories() {
