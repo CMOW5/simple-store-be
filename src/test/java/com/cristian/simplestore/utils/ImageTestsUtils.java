@@ -16,7 +16,7 @@ public class ImageTestsUtils {
   ImageServiceImpl imageService;
 
   @Autowired
-  ImageBuilder imageBuilder;
+  ImageFileFactory imageBuilder;
 
   public Image saveRandomImageOnDb() {
     MultipartFile imageFile = this.imageBuilder.createMockMultipartImage();
