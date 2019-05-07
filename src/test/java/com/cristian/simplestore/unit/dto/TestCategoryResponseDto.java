@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.utils.CategoryTestsUtils;
+import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
 
 @RunWith(SpringRunner.class)
@@ -18,7 +18,7 @@ import com.cristian.simplestore.web.dto.response.CategoryResponse;
 public class TestCategoryResponseDto extends BaseTest {
 
   @Autowired
-  private CategoryTestsUtils categoryUtils;
+  private CategoryTestFactory categoryUtils;
 
   @Test
   public void convertEntityToDto() {
