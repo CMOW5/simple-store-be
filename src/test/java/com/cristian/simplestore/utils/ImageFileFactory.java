@@ -23,14 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.config.properties.StorageConfig;
 
 @Component
-public class ImageBuilder {
+public class ImageFileFactory {
 
   private Path defaultRootPath;
 
   private String defaultExtension = ".jpg";
 
   @Autowired
-  public ImageBuilder(StorageConfig storageConfig) {
+  public ImageFileFactory(StorageConfig storageConfig) {
     this.defaultRootPath = Paths.get(storageConfig.getLocation());
   }
 
