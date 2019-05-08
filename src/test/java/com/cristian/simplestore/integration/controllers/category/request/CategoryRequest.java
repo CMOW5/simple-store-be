@@ -7,20 +7,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
+import com.cristian.simplestore.integration.controllers.TestRequest;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.RequestBuilder;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Component
-public abstract class CategoryRequest {
+public abstract class CategoryRequest extends TestRequest {
   
   private static String ADMIN_CATEGORIES_BASE_URL = "/api/admin/categories";
   
-  private RequestBuilder requestBuilder;
-
   public CategoryRequest(RequestBuilder requestBuilder) {
-    this.requestBuilder = requestBuilder;
+    super(requestBuilder);
   }
 
   public ResponseEntity<String> sendFindAllCategoriesRequest()
@@ -30,7 +29,7 @@ public abstract class CategoryRequest {
     return jsonResponse;
   }
 
-  protected RequestBuilder buildFindAllCategoriesRequest() {
+  public RequestBuilder buildFindAllCategoriesRequest() {
     String url = ADMIN_CATEGORIES_BASE_URL;
     return requestBuilder.url(url).httpMethod(HttpMethod.GET);
   }
