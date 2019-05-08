@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.web.CustomPaginator;
+import com.cristian.simplestore.web.CustomPaginatorImp;
 import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
@@ -31,9 +35,12 @@ public class ProductController {
   private ApiResponse response = new ApiResponse();
 
   @GetMapping
-  public ResponseEntity<?> findAllProducts() {
-    List<Product> products = productService.findAll();
-    return response.status(HttpStatus.OK).content(convertEntitiesToDto(products)).build();
+  public ResponseEntity<?> findAllProducts(@RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size) {
+    Page<Product> paginatedResult = productService.findAll(page, size);
+    List<ProductResponse> products = convertEntitiesToDto(paginatedResult.getContent());
+    CustomPaginator paginator = new CustomPaginatorImp(paginatedResult);
+    return response.status(HttpStatus.OK).content(products).paginator(paginator).build();
   }
 
   @GetMapping("/{id}")
