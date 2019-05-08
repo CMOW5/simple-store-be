@@ -101,10 +101,6 @@ public class Product implements Serializable {
     }
   }
   
-  public Category getCategory() {
-    return null;
-  }
-  
   @Override
   public boolean equals(Object o) {
     if (this == o) {
