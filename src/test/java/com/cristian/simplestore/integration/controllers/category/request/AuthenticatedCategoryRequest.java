@@ -14,7 +14,7 @@ public class AuthenticatedCategoryRequest extends CategoryRequest {
   }
   
   @Override
-  protected RequestBuilder buildFindAllCategoriesRequest() {
+  public RequestBuilder buildFindAllCategoriesRequest() {
     RequestBuilder requestBuilder = super.buildFindAllCategoriesRequest();
     return requestBuilder.withJwtAuth();
   }
