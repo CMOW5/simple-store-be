@@ -16,6 +16,7 @@ import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
 import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.utils.RequestBuilder;
+import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -37,13 +38,16 @@ public class PaginatedCategoryControllerTest extends BaseIntegrationTest {
     Integer page = 0;
     Integer size = 5;
 
-    ResponseEntity<String> response = categoryRequest.buildFindAllCategoriesRequest()
-        .addRequestParam("page", String.valueOf(page)).addRequestParam("size", String.valueOf(size)).send();
+    RequestEntityBuilder request = categoryRequest.createFindAllCategoriesRequest()
+        .addRequestParam("page", String.valueOf(page))
+        .addRequestParam("size", String.valueOf(size));
     
+    ResponseEntity<String> response = categoryRequest.send(request.build());
+
     List<?> responseCategories =
         (List<?>) RequestBuilder.getContentFromJsonRespose(response.getBody(), List.class);
 
-    Map<?,?> paginator = RequestBuilder.getPaginatorFromJsonRespose(response.getBody(), Map.class);
+    Map<?, ?> paginator = RequestBuilder.getPaginatorFromJsonRespose(response.getBody(), Map.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(responseCategories.size()).isEqualTo(size);
@@ -53,6 +57,6 @@ public class PaginatedCategoryControllerTest extends BaseIntegrationTest {
     assertThat(paginator.get("hasPrevious")).isEqualTo(false);
     assertThat(paginator.get("previousPage")).isEqualTo(null);
     assertThat(paginator.get("pageSize")).isEqualTo(size);
-    assertThat(paginator.get("totalPages")).isEqualTo(((int) (MAX_CATEGORIES_SIZE / size)));   
+    assertThat(paginator.get("totalPages")).isEqualTo(((int) (MAX_CATEGORIES_SIZE / size)));
   }
 }
