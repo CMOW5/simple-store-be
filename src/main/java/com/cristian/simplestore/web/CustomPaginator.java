@@ -13,7 +13,10 @@ public interface CustomPaginator extends Pageable {
   boolean hasMorePages();
 
   Integer getNextPage();
+  
+  Integer getLastPage();
 
   String getCurrentPageUrl();
   
+  String getPath();  
 }
