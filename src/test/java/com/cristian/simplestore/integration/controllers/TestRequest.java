@@ -1,17 +1,18 @@
 package com.cristian.simplestore.integration.controllers;
 
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import com.cristian.simplestore.utils.RequestBuilder;
+import com.cristian.simplestore.utils.request.RequestSender;
 
 public abstract class TestRequest {
   
-  protected RequestBuilder requestBuilder;
+  protected RequestSender requestSender;
 
-  public TestRequest(RequestBuilder requestBuilder) {
-    this.requestBuilder = requestBuilder;
+  public TestRequest(RequestSender requestSender) {
+    this.requestSender = requestSender;
   }
   
-  public ResponseEntity<String> send() {
-    return requestBuilder.send();
+  public ResponseEntity<String> send(RequestEntity<?> request) {
+    return requestSender.sendRequest(request);
   }
 }
