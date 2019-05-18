@@ -3,43 +3,48 @@ package com.cristian.simplestore.integration.controllers.category.request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
-import com.cristian.simplestore.utils.RequestBuilder;
+import com.cristian.simplestore.utils.request.RequestEntityBuilder;
+import com.cristian.simplestore.utils.request.RequestSender;
 
 @Component
 public class AuthenticatedCategoryRequest extends CategoryRequest {
   
   @Autowired
-  public AuthenticatedCategoryRequest(RequestBuilder requestBuilder) {
-    super(requestBuilder);
+  public AuthenticatedCategoryRequest(RequestSender requestSender) {
+    super(requestSender);
   }
   
   @Override
-  public RequestBuilder buildFindAllCategoriesRequest() {
-    RequestBuilder requestBuilder = super.buildFindAllCategoriesRequest();
-    return requestBuilder.withJwtAuth();
+  public RequestEntityBuilder createFindAllCategoriesRequest() {
+    RequestEntityBuilder requestBuilder = super.createFindAllCategoriesRequest();
+    return addJwtAuthToRequest(requestBuilder);
   }
   
   @Override
-  protected RequestBuilder buildFindCategoryByIdRequest(Long id) {
-    RequestBuilder requestBuilder = super.buildFindCategoryByIdRequest(id);
-    return requestBuilder.withJwtAuth();
+  protected RequestEntityBuilder createFindCategoryByIdRequest(Long id) {
+    RequestEntityBuilder requestBuilder = super.createFindCategoryByIdRequest(id);
+    return addJwtAuthToRequest(requestBuilder);
   }
   
   @Override
-  protected RequestBuilder buildCategoryCreateRequest(MultiPartFormBuilder form) {
-    RequestBuilder requestBuilder = super.buildCategoryCreateRequest(form);
-    return requestBuilder.withJwtAuth();
+  protected RequestEntityBuilder createCategoryCreateRequest(MultiPartFormBuilder form) {
+    RequestEntityBuilder requestBuilder = super.createCategoryCreateRequest(form);
+    return addJwtAuthToRequest(requestBuilder);
   }
    
   @Override
-  protected RequestBuilder buildCategoryUpdateRequest(Long categoryId, MultiPartFormBuilder form) {
-    RequestBuilder requestBuilder = super.buildCategoryUpdateRequest(categoryId, form);
-    return requestBuilder.withJwtAuth();
+  protected RequestEntityBuilder createCategoryUpdateRequest(Long categoryId, MultiPartFormBuilder form) {
+    RequestEntityBuilder requestBuilder = super.createCategoryUpdateRequest(categoryId, form);
+    return addJwtAuthToRequest(requestBuilder);
   }
   
   @Override
-  protected RequestBuilder buildCategoryDeleteRequest(Long categoryId) {
-    RequestBuilder requestBuilder = super.buildCategoryDeleteRequest(categoryId);
-    return requestBuilder.withJwtAuth();
+  protected RequestEntityBuilder createCategoryDeleteRequest(Long categoryId) {
+    RequestEntityBuilder requestBuilder = super.createCategoryDeleteRequest(categoryId);
+    return addJwtAuthToRequest(requestBuilder);
+  }
+  
+  private RequestEntityBuilder addJwtAuthToRequest(RequestEntityBuilder requestBuilder) {
+    return requestBuilder.withJwtAuth(tokenGenerator);
   }
 }
