@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.CustomPaginator;
-import com.cristian.simplestore.web.CustomPaginatorImp;
+import com.cristian.simplestore.web.CustomPaginatorImpl;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
@@ -38,7 +38,7 @@ public class CategoryController {
   public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
     Page<Category> result = categoryService.findAll(page, size);
     List<CategoryResponse> categoriesResponse = convertEntitiesToDto(result.getContent());
-    CustomPaginator paginator = new CustomPaginatorImp(result);
+    CustomPaginator paginator = new CustomPaginatorImpl(result);
     return response.status(HttpStatus.OK).content(categoriesResponse).paginator(paginator).build();
   }
 

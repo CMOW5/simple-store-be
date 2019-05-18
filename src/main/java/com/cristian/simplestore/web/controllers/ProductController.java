@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.web.CustomPaginator;
-import com.cristian.simplestore.web.CustomPaginatorImp;
+import com.cristian.simplestore.web.CustomPaginatorImpl;
 import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
@@ -39,7 +39,7 @@ public class ProductController {
       @RequestParam(defaultValue = "20") int size) {
     Page<Product> paginatedResult = productService.findAll(page, size);
     List<ProductResponse> products = convertEntitiesToDto(paginatedResult.getContent());
-    CustomPaginator paginator = new CustomPaginatorImp(paginatedResult);
+    CustomPaginator paginator = new CustomPaginatorImpl(paginatedResult);
     return response.status(HttpStatus.OK).content(products).paginator(paginator).build();
   }
 
