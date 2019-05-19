@@ -1,4 +1,4 @@
-package com.cristian.simplestore.utils;
+package com.cristian.simplestore.utils.image;
 
 import java.util.ArrayList;
 import java.util.List;

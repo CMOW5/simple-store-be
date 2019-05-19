@@ -1,4 +1,4 @@
-package com.cristian.simplestore.utils;
+package com.cristian.simplestore.utils.image;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
