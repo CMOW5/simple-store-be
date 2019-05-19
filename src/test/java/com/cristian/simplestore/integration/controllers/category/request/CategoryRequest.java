@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import com.cristian.simplestore.integration.controllers.TestRequest;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
+import com.cristian.simplestore.utils.request.JsonResponse;
 import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 import com.cristian.simplestore.utils.request.RequestSender;
-import com.cristian.simplestore.utils.request.TestTokenGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -20,21 +20,18 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public abstract class CategoryRequest extends TestRequest {
   
   private static String ADMIN_CATEGORIES_BASE_URL = "/api/admin/categories";
-  
-  @Autowired
-  protected TestTokenGenerator tokenGenerator;
-  
+   
   @Autowired
   public CategoryRequest(RequestSender requestSender) {
     super(requestSender);
   }
 
-  public ResponseEntity<String> sendFindAllCategoriesRequest()
+  public JsonResponse sendFindAllCategoriesRequest()
       throws JsonParseException, JsonMappingException, IOException {
     // TODO: template method here
     RequestEntityBuilder requestBuilder = createFindAllCategoriesRequest();
     ResponseEntity<String> jsonResponse = send(requestBuilder.build()); 
-    return jsonResponse;
+    return new JsonResponse(jsonResponse);
   }
 
   public RequestEntityBuilder createFindAllCategoriesRequest() {
@@ -42,11 +39,12 @@ public abstract class CategoryRequest extends TestRequest {
     return new RequestEntityBuilder().url(url).httpMethod(HttpMethod.GET);
   }
 
-  public ResponseEntity<String> sendFindCategoryByIdRequest(Long id)
+  public JsonResponse sendFindCategoryByIdRequest(Long id)
       throws JsonParseException, JsonMappingException, IOException {
     RequestEntityBuilder requestBuilder = createFindCategoryByIdRequest(id);
     ResponseEntity<String> jsonResponse = send(requestBuilder.build()); 
-    return jsonResponse;
+    return new JsonResponse(jsonResponse);
+
   }
 
   protected RequestEntityBuilder createFindCategoryByIdRequest(Long id) {
@@ -54,11 +52,11 @@ public abstract class CategoryRequest extends TestRequest {
     return new RequestEntityBuilder().url(url).httpMethod(HttpMethod.GET);
   }
 
-  public ResponseEntity<String> sendCategoryCreateRequest(MultiPartFormBuilder form)
+  public JsonResponse sendCategoryCreateRequest(MultiPartFormBuilder form)
       throws JsonParseException, JsonMappingException, IOException {
     RequestEntityBuilder requestBuilder = createCategoryCreateRequest(form);
     ResponseEntity<String> jsonResponse = send(requestBuilder.build()); 
-    return jsonResponse;
+    return new JsonResponse(jsonResponse);
   }
 
   protected RequestEntityBuilder createCategoryCreateRequest(MultiPartFormBuilder form) {
@@ -69,11 +67,11 @@ public abstract class CategoryRequest extends TestRequest {
     return new RequestEntityBuilder().url(url).httpMethod(HttpMethod.POST).headers(headers).body(body);
   }
 
-  public ResponseEntity<String> sendCategoryUpdateRequest(Long categoryId,
+  public JsonResponse sendCategoryUpdateRequest(Long categoryId,
       MultiPartFormBuilder form) throws JsonParseException, JsonMappingException, IOException {
     RequestEntityBuilder requestBuilder = createCategoryUpdateRequest(categoryId, form);
     ResponseEntity<String> jsonResponse = send(requestBuilder.build()); 
-    return jsonResponse;
+    return new JsonResponse(jsonResponse);
   }
   
   protected RequestEntityBuilder createCategoryUpdateRequest(Long categoryId, MultiPartFormBuilder form) {
@@ -84,11 +82,11 @@ public abstract class CategoryRequest extends TestRequest {
     return new RequestEntityBuilder().url(url).httpMethod(HttpMethod.PUT).headers(headers).body(body);
   }
 
-  public ResponseEntity<String> sendCategoryDeleteRequest(Long categoryId)
+  public JsonResponse sendCategoryDeleteRequest(Long categoryId)
       throws JsonParseException, JsonMappingException, IOException {
     RequestEntityBuilder requestBuilder = createCategoryDeleteRequest(categoryId);
     ResponseEntity<String> jsonResponse = send(requestBuilder.build()); 
-    return jsonResponse;
+    return new JsonResponse(jsonResponse);
   }
   
   protected RequestEntityBuilder createCategoryDeleteRequest(Long categoryId) {
