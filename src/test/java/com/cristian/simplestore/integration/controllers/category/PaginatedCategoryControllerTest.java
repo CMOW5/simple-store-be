@@ -10,12 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
 import com.cristian.simplestore.utils.CategoryTestFactory;
-import com.cristian.simplestore.utils.RequestBuilder;
+import com.cristian.simplestore.utils.request.JsonResponse;
 import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -42,12 +41,12 @@ public class PaginatedCategoryControllerTest extends BaseIntegrationTest {
         .addRequestParam("page", String.valueOf(page))
         .addRequestParam("size", String.valueOf(size));
     
-    ResponseEntity<String> response = categoryRequest.send(request.build());
+    JsonResponse response = new JsonResponse(categoryRequest.send(request.build()));
 
     List<?> responseCategories =
-        (List<?>) RequestBuilder.getContentFromJsonRespose(response.getBody(), List.class);
+        (List<?>) response.getContentFromJsonRespose(List.class);
 
-    Map<?, ?> paginator = RequestBuilder.getPaginatorFromJsonRespose(response.getBody(), Map.class);
+    Map<?, ?> paginator = response.getPaginatorFromJsonRespose(Map.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(responseCategories.size()).isEqualTo(size);
