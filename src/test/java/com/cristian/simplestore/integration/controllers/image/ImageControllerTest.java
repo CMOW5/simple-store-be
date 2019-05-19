@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.business.services.ImageService;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.utils.ImageFileFactory;
+import com.cristian.simplestore.utils.image.ImageFileFactory;
 import com.cristian.simplestore.utils.request.JsonResponse;
 
 @RunWith(SpringRunner.class)
