@@ -1,4 +1,4 @@
-package com.cristian.simplestore.utils.request;
+package com.cristian.simplestore.utils.auth;
 
 public interface TokenGenerator {
   String generate();

@@ -8,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 
+import com.cristian.simplestore.utils.auth.TokenGenerator;
+
 public class RequestEntityBuilder {
   
   private String url;

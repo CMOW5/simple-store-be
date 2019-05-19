@@ -1,8 +1,7 @@
-package com.cristian.simplestore.utils.request;
+package com.cristian.simplestore.utils.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.cristian.simplestore.utils.AuthTestUtils;
 
 @Component
 public class TestTokenGenerator implements TokenGenerator {
