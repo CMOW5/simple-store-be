@@ -17,7 +17,8 @@ import com.cristian.simplestore.business.services.ProductService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.utils.ProductTestsUtils;
+import com.cristian.simplestore.utils.product.ProductGenerator;
+import com.cristian.simplestore.utils.product.ProductRequestUtils;
 import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 
@@ -29,13 +30,14 @@ public class ProductServiceTest extends BaseTest {
   @Autowired
   private ProductService productService;
 
-  @Autowired
-  private ProductTestsUtils productUtils;
-
+  @Autowired ProductGenerator productGenerator;
+  
+  @Autowired ProductRequestUtils productRequestUtils;
+  
   @Test
   public void testItFindsAllProducts() throws Exception {
     int MAX_PRODUCTS_SIZE = 4;
-    List<Product> createdProducts = productUtils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
+    List<Product> createdProducts = productGenerator.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 
     List<Product> expectedProducts = productService.findAll();
 
@@ -44,7 +46,7 @@ public class ProductServiceTest extends BaseTest {
 
   @Test
   public void testItFindsAProductById() throws Exception {
-    Product product = productUtils.saveRandomProductOnDB();
+    Product product = productGenerator.saveRandomProductOnDB();
 
     Product expectedProduct = productService.findById(product.getId());
 
@@ -59,7 +61,7 @@ public class ProductServiceTest extends BaseTest {
 
   @Test
   public void testItCreatesAProduct() {
-    Product product = productUtils.generateRandomProduct();
+    Product product = productGenerator.generateRandomProduct();
 
     Product expectedProduct = productService.create(product);
 
@@ -68,36 +70,41 @@ public class ProductServiceTest extends BaseTest {
 
   @Test
   public void testItCreatesAProductWithForm() {
-    ProductCreateRequest productForm = productUtils.generateRandomProductCreateForm();
+	ProductCreateRequest productCreateRequest = productRequestUtils.generateRandomProductCreateForm();
 
-    Product expectedProduct = productService.create(productForm);
+    Product expectedProduct = productService.create(productCreateRequest);
 
-    assertThatTwoProductsAreEqual(expectedProduct, productForm.getModel());
+    assertThatTwoProductsAreEqual(expectedProduct, productCreateRequest.getModel());
     assertThat(expectedProduct.getImages().size()).isNotZero();
-    assertThat(expectedProduct.getImages().size()).isEqualTo(productForm.getImages().size());
+    assertThat(expectedProduct.getImages().size()).isEqualTo(productCreateRequest.getImages().size());
   }
 
   @Test
   public void testItUpdatesAProductWithForm() {
-    Product productToUpdate = productUtils.saveRandomProductOnDB();
+    Product productToUpdate = productGenerator.saveRandomProductOnDB();
     ProductUpdateRequest newProductData =
-        productUtils.generateRandomProductUpdateRequest(productToUpdate.getId());
-
+    		productRequestUtils.generateRandomProductUpdateRequest(productToUpdate.getId());
+    int expectedImagesSize = productToUpdate.getImages().size() + newProductData.getNewImages().size();
+    
     Product expectedProduct = productService.update(newProductData);
 
     assertThatTwoProductsAreEqual(expectedProduct, newProductData.getModel());
     assertThat(expectedProduct.getImages().size()).isNotZero();
-    assertThat(expectedProduct.getImages().size()).isEqualTo(newProductData.getNewImages().size());
+    assertThat(expectedProduct.getImages().size()).isEqualTo(expectedImagesSize);
   }
 
   @Test
   public void testItDeletesAProductImages() {
-    Product productToUpdate = productUtils.saveRandomProductOnDBWithImages();
+    Product productToUpdate = productGenerator.saveRandomProductOnDB();
     ProductUpdateRequest newProductData =
-        productUtils.generateRandomProductUpdateRequest(productToUpdate.getId());
-    newProductData.setNewImages(null);
-    newProductData.setImagesIdsToDelete(getIdsFromImages(productToUpdate.getImages()));
-
+    		productRequestUtils.new ProductUpdateRequestBuilder(productToUpdate.getId()).randomName()
+    		.randomDescription()
+    		.randomCategory()
+    		.randomPriceSale()
+    		.active()
+    		.imagesIdsToDelete(getIdsFromImages(productToUpdate.getImages()))
+    		.build();
+    
     Product expectedProduct = productService.update(newProductData);
 
     assertThatTwoProductsAreEqual(expectedProduct, newProductData.getModel());
@@ -108,14 +115,14 @@ public class ProductServiceTest extends BaseTest {
   public void testItDoesNotUpdateAProductWithForm() {
     long nonExistentProductId = 1;
     ProductUpdateRequest newProductData =
-        productUtils.generateRandomProductUpdateRequest(nonExistentProductId);
+    		productRequestUtils.generateRandomProductUpdateRequest(nonExistentProductId);
 
     productService.update(newProductData);
   }
 
   @Test(expected = EntityNotFoundException.class)
   public void testItDeletesAProduct() {
-    Product product = productUtils.saveRandomProductOnDB();
+    Product product = productGenerator.saveRandomProductOnDB();
     productService.deleteById(product.getId());
     productService.findById(product.getId());
   }
