@@ -3,9 +3,9 @@ package com.cristian.simplestore.integration.controllers.product.request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
+import com.cristian.simplestore.utils.auth.TokenGenerator;
 import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 import com.cristian.simplestore.utils.request.RequestSender;
-import com.cristian.simplestore.utils.request.TokenGenerator;
 
 @Component
 public class AuthenticatedProductRequest extends ProductRequest {

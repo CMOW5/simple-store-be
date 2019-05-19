@@ -16,7 +16,8 @@ import com.cristian.simplestore.integration.controllers.product.request.Authenti
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
-import com.cristian.simplestore.utils.ProductTestsUtils;
+import com.cristian.simplestore.utils.product.ProductFormUtils;
+import com.cristian.simplestore.utils.product.ProductGenerator;
 import com.cristian.simplestore.utils.request.JsonResponse;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -27,7 +28,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class ProductControllerTest extends BaseIntegrationTest {
 
   @Autowired
-  private ProductTestsUtils productsUtils;
+  private ProductGenerator productsGenerator;
+  
+  @Autowired
+  private ProductFormUtils productsFormUtils;
   
   @Autowired
   private AuthenticatedProductRequest request;
@@ -35,8 +39,8 @@ public class ProductControllerTest extends BaseIntegrationTest {
   @Test
   public void testItFindsAllProducts()
       throws JsonParseException, JsonMappingException, IOException {
-    long MAX_PRODUCTS_SIZE = 4;
-    List<Product> products = productsUtils.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
+    int MAX_PRODUCTS_SIZE = 4;
+    List<Product> products = productsGenerator.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 
     JsonResponse response = request.sendFindAllProductsRequest();
 
@@ -50,7 +54,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
   @Test
   public void testItFindsAProductById()
       throws JsonParseException, JsonMappingException, IOException {
-    Product product = productsUtils.saveRandomProductOnDB();
+    Product product = productsGenerator.saveRandomProductOnDB();
 
     JsonResponse response = request.sendFindProductByIdRequest(product.getId());
 
@@ -72,7 +76,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
 
   @Test
   public void testItCreatesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    MultiPartFormBuilder form = productsUtils.generateRandomProductCreateRequestForm();
+    MultiPartFormBuilder form = productsFormUtils.generateRandomProductCreateRequestForm();
 
     JsonResponse response = request.sendProductCreateRequest(form);
 
@@ -87,8 +91,8 @@ public class ProductControllerTest extends BaseIntegrationTest {
 
   @Test
   public void testItUpdatesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    Product productToUpdate = productsUtils.saveRandomProductOnDB();
-    MultiPartFormBuilder form = productsUtils.generateRandomProductUpdateRequestForm();
+    Product productToUpdate = productsGenerator.saveRandomProductOnDB();
+    MultiPartFormBuilder form = productsFormUtils.generateRandomProductUpdateRequestForm();
 
     JsonResponse response = request.sendProductUpdateRequest(productToUpdate.getId(), form);
 
@@ -104,8 +108,8 @@ public class ProductControllerTest extends BaseIntegrationTest {
   @Test
   public void testItUpdatesAProductImages()
       throws JsonParseException, JsonMappingException, IOException {
-    Product product = productsUtils.saveRandomProductOnDBWithImages();
-    MultiPartFormBuilder form = productsUtils.generateRandomProductUpdateRequestForm();
+    Product product = productsGenerator.saveRandomProductOnDB();
+    MultiPartFormBuilder form = productsFormUtils.generateRandomProductUpdateRequestForm();
     form.add("imagesIdsToDelete", getIdsFromImages(product.getImages()));
 
     JsonResponse response = request.sendProductUpdateRequest(product.getId(), form);
@@ -133,7 +137,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
 
   @Test
   public void testItDeletesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    Product product = productsUtils.saveRandomProductOnDB();
+    Product product = productsGenerator.saveRandomProductOnDB();
 
     JsonResponse response = request.sendProductDeleteRequest(product.getId());
 

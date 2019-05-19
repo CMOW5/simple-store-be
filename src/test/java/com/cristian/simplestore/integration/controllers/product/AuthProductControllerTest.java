@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.product.request.UnauthenticatedProductRequest;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
-import com.cristian.simplestore.utils.ProductTestsUtils;
+import com.cristian.simplestore.utils.product.ProductFormUtils;
 import com.cristian.simplestore.utils.request.JsonResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class AuthProductControllerTest extends BaseIntegrationTest {
 
 	@Autowired
-	private ProductTestsUtils productsUtils;
+	private ProductFormUtils productFormUtils;
 
 	@Autowired
 	private UnauthenticatedProductRequest request;
@@ -47,7 +47,7 @@ public class AuthProductControllerTest extends BaseIntegrationTest {
 	@Test
 	public void testItFailsCreateProductWithoutCredentials()
 			throws JsonParseException, JsonMappingException, IOException {
-		MultiPartFormBuilder form = productsUtils.generateRandomProductCreateRequestForm();
+		MultiPartFormBuilder form = productFormUtils.generateRandomProductCreateRequestForm();
 
 		JsonResponse response = request.sendProductCreateRequest(form);
 
@@ -58,7 +58,7 @@ public class AuthProductControllerTest extends BaseIntegrationTest {
 	public void testItFailsUpdateProductWithoutCredentials()
 			throws JsonParseException, JsonMappingException, IOException {
 		Long productId = 1L;
-		MultiPartFormBuilder form = productsUtils.generateRandomProductUpdateRequestForm();
+		MultiPartFormBuilder form = productFormUtils.generateRandomProductUpdateRequestForm();
 
 		JsonResponse response = request.sendProductUpdateRequest(productId, form);
 
