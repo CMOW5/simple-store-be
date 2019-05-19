@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.UnauthenticatedCategoryRequest;
-import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
+import com.cristian.simplestore.utils.category.CategoryFormUtils;
 import com.cristian.simplestore.utils.request.JsonResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class AuthCategoryControllerTest extends BaseIntegrationTest {
 
 	@Autowired
-	private CategoryTestFactory categoryUtils;
+	private CategoryFormUtils categoryFormUtils;
 
 	@Autowired
 	private UnauthenticatedCategoryRequest categoryRequest;
@@ -46,8 +46,8 @@ public class AuthCategoryControllerTest extends BaseIntegrationTest {
 
 	@Test
 	public void testItFailsCreateCategoryWithoutCredentials()
-			throws JsonParseException, JsonMappingException, IOException {
-		MultiPartFormBuilder form = categoryUtils.generateRandomCategoryCreateRequestForm();
+			throws JsonParseException, JsonMappingException, IOException {		
+		MultiPartFormBuilder form = categoryFormUtils.new CreateRequestFormBuilder().randomName().randomImage().randomParent().build();
 
 		JsonResponse response = categoryRequest.sendCategoryCreateRequest(form);
 
@@ -58,7 +58,7 @@ public class AuthCategoryControllerTest extends BaseIntegrationTest {
 	public void testItFailsUpdateCategoryWithoutCredentials()
 			throws JsonParseException, JsonMappingException, IOException {
 		Long id = 1L;
-		MultiPartFormBuilder form = categoryUtils.generateRandomCategoryUpdateRequesForm();
+		MultiPartFormBuilder form = categoryFormUtils.new UpdateRequestFormBuilder().randomName().randomImage().randomParent().build();
 
 		JsonResponse response = categoryRequest.sendCategoryUpdateRequest(id, form);
 

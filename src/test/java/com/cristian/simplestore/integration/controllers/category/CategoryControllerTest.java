@@ -15,8 +15,9 @@ import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
-import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
+import com.cristian.simplestore.utils.category.CategoryFormUtils;
+import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.utils.request.JsonResponse;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -30,15 +31,18 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 	private CategoryRepository categoryRepository;
 
 	@Autowired
-	private CategoryTestFactory categoryFactory;
+	private CategoryFormUtils categoryFormUtils;
+	
+	@Autowired
+	private CategoryGenerator categoryGenerator;
 
 	@Autowired
 	private AuthenticatedCategoryRequest categoryRequest;
 
 	@Test
 	public void testItFindsAllCategories() throws JsonParseException, JsonMappingException, IOException {
-		long MAX_CATEGORIES_SIZE = 4;
-		List<Category> categories = categoryFactory.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
+		int MAX_CATEGORIES_SIZE = 4;
+		List<Category> categories = categoryGenerator.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
 
 		JsonResponse response = categoryRequest.sendFindAllCategoriesRequest();
 
@@ -50,7 +54,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
 	@Test
 	public void testItFindsACategoryById() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryFactory.saveRandomCategoryOnDb();
+		Category category = categoryGenerator.saveRandomCategoryOnDb();
 
 		JsonResponse response = categoryRequest.sendFindCategoryByIdRequest(category.getId());
 
@@ -71,8 +75,10 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
 	@Test
 	public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
-		MultiPartFormBuilder form = categoryFactory.generateRandomCategoryCreateRequestForm();
+		// MultiPartFormBuilder form = categoryFormUtils.generateRandomCategoryCreateRequestForm();
+		MultiPartFormBuilder form = categoryFormUtils.new CreateRequestFormBuilder().randomName().randomImage().randomParent().build();
 
+		
 		JsonResponse response = categoryRequest.sendCategoryCreateRequest(form);
 		CategoryResponse createdCategory = (CategoryResponse) response
 				.getContentFromJsonRespose(CategoryResponse.class);
@@ -84,46 +90,16 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
 	@Test
 	public void testItUpdatesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category categoryToUpdate = categoryFactory.saveRandomCategoryOnDb();
-		MultiPartFormBuilder form = categoryFactory.generateRandomCategoryUpdateRequesForm();
+		Category categoryToUpdate = categoryGenerator.saveRandomCategoryOnDb();		
+		MultiPartFormBuilder form = categoryFormUtils.new UpdateRequestFormBuilder().randomName().randomImage().randomParent().build();
 
 		JsonResponse response = categoryRequest.sendCategoryUpdateRequest(categoryToUpdate.getId(), form);
 		CategoryResponse updatedCategory = (CategoryResponse) response
 				.getContentFromJsonRespose(CategoryResponse.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
 		assertThatDtoisEqualToForm(updatedCategory, form);
 		assertThat(updatedCategory.getImage().getId()).isNotEqualTo(categoryToUpdate.getImage().getId());
-	}
-
-	@Test
-	public void testItCorrectlyUpdatesTheParentCategory() throws JsonParseException, JsonMappingException, IOException {
-		Category categoryA = categoryFactory.saveRandomCategoryOnDb();
-		Category categoryB = categoryFactory.saveRandomCategoryOnDb();
-
-		// TODO: violation of tests boundary
-		categoryA.setParentCategory(categoryB);
-		categoryA = categoryRepository.save(categoryA);
-
-		// here we manually create a circular reference
-		// Between the category A and its parent, the category B.
-		// example B -> A -> B is not allowed
-		// it should update to null -> A -> B
-		MultiPartFormBuilder form = new MultiPartFormBuilder();
-		form.add("name", categoryB.getName()).add("parentCategory", categoryA.getId());
-
-		JsonResponse response = categoryRequest.sendCategoryUpdateRequest(categoryB.getId(), form);
-		CategoryResponse updatedCategory = (CategoryResponse) response
-				.getContentFromJsonRespose(CategoryResponse.class);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(((Integer) updatedCategory.getParentCategory().get("id")).longValue()).isEqualTo(categoryA.getId());
-
-		// TODO: violation of tests boundary
-		categoryA = categoryRepository.findById(categoryA.getId()).get();
-		assertThat(categoryA.getParentCategory()).isNull();
-
 	}
 
 	@Test
@@ -140,7 +116,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
 	@Test(expected = NoSuchElementException.class)
 	public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
-		Category category = categoryFactory.saveRandomCategoryOnDb();
+		Category category = categoryGenerator.saveRandomCategoryOnDb();
 
 		JsonResponse response = categoryRequest.sendCategoryDeleteRequest(category.getId());
 

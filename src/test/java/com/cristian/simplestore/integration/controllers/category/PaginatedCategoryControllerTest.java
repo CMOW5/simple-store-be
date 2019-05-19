@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
-import com.cristian.simplestore.utils.CategoryTestFactory;
+import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.utils.request.JsonResponse;
 import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class PaginatedCategoryControllerTest extends BaseIntegrationTest {
 
   @Autowired
-  private CategoryTestFactory categoryFactory;
+  private CategoryGenerator categoryGenerator;
 
   @Autowired
   private AuthenticatedCategoryRequest categoryRequest;
@@ -32,8 +32,8 @@ public class PaginatedCategoryControllerTest extends BaseIntegrationTest {
   @Test
   public void testItFindsAllCategories()
       throws JsonParseException, JsonMappingException, IOException {
-    long MAX_CATEGORIES_SIZE = 20;
-    categoryFactory.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
+    int MAX_CATEGORIES_SIZE = 20;
+    categoryGenerator.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
     Integer page = 0;
     Integer size = 5;
 
