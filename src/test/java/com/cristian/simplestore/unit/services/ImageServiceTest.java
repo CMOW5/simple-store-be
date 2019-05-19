@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.ImageServiceImpl;
 import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.utils.ImageTestsUtils;
+import com.cristian.simplestore.utils.image.ImageTestsUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

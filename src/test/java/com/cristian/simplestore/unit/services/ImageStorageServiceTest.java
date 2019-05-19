@@ -18,7 +18,7 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
 import com.cristian.simplestore.config.properties.StorageConfig;
-import com.cristian.simplestore.utils.ImageTestsUtils;
+import com.cristian.simplestore.utils.image.ImageTestsUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
