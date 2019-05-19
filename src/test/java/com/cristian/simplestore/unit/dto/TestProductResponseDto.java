@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Product;
-import com.cristian.simplestore.utils.ProductTestsUtils;
+import com.cristian.simplestore.utils.product.ProductGenerator;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
 
 @RunWith(SpringRunner.class)
@@ -18,11 +18,11 @@ import com.cristian.simplestore.web.dto.response.ProductResponse;
 public class TestProductResponseDto extends BaseTest {
 
   @Autowired
-  private ProductTestsUtils productUtils;
+  private ProductGenerator productGenerator;
 
   @Test
   public void convertEntityToDto() {
-    Product product = productUtils.saveRandomProductOnDBWithImages();
+    Product product = productGenerator.saveRandomProductOnDB();
     ProductResponse productDto = new ProductResponse(product);
 
     assertThatImageAndDtoDataAreEqual(product, productDto);

@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.utils.CategoryTestFactory;
+import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
 
 @RunWith(SpringRunner.class)
@@ -18,11 +18,11 @@ import com.cristian.simplestore.web.dto.response.CategoryResponse;
 public class TestCategoryResponseDto extends BaseTest {
 
   @Autowired
-  private CategoryTestFactory categoryUtils;
+  private CategoryGenerator categoryGenerator;
 
   @Test
   public void convertEntityToDto() {
-    Category category = categoryUtils.saveRandomCategoryOnDbWithParent();
+	Category category = categoryGenerator.new Builder().randomName().randomImage().randomParent().save(); 
     CategoryResponse categoryDto = new CategoryResponse(category);
 
     assertThatCategoryAndDtoDataAreEqual(category, categoryDto);
