@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.UnauthenticatedCategoryRequest;
 import com.cristian.simplestore.utils.CategoryTestFactory;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
+import com.cristian.simplestore.utils.request.JsonResponse;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -21,61 +21,60 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuthCategoryControllerTest extends BaseIntegrationTest {
 
-  @Autowired
-  private CategoryTestFactory categoryUtils;
-  
-  @Autowired
-  private UnauthenticatedCategoryRequest categoryRequest;
+	@Autowired
+	private CategoryTestFactory categoryUtils;
 
-  @Test
-  public void testItFailsFindsAllCategoriesWithoutCredentials()
-      throws JsonParseException, JsonMappingException, IOException {
-    ResponseEntity<String> response = categoryRequest.sendFindAllCategoriesRequest();
-    assertResponseHasUnauthorizedStatus(response);
-  }
+	@Autowired
+	private UnauthenticatedCategoryRequest categoryRequest;
 
-  @Test
-  public void testItFailsFindsACategoryByIdWithoutCredentials()
-      throws JsonParseException, JsonMappingException, IOException {
-    Long id = 1L;
+	@Test
+	public void testItFailsFindsAllCategoriesWithoutCredentials()
+			throws JsonParseException, JsonMappingException, IOException {
+		JsonResponse response = categoryRequest.sendFindAllCategoriesRequest();
+		assertResponseHasUnauthorizedStatus(response);
+	}
 
-    ResponseEntity<String> response = categoryRequest.sendFindCategoryByIdRequest(id);
-    
-    assertResponseHasUnauthorizedStatus(response);
-  }
+	@Test
+	public void testItFailsFindsACategoryByIdWithoutCredentials()
+			throws JsonParseException, JsonMappingException, IOException {
+		Long id = 1L;
 
+		JsonResponse response = categoryRequest.sendFindCategoryByIdRequest(id);
 
-  @Test
-  public void testItFailsCreateCategoryWithoutCredentials()
-      throws JsonParseException, JsonMappingException, IOException {
-    MultiPartFormBuilder form = categoryUtils.generateRandomCategoryCreateRequestForm();
+		assertResponseHasUnauthorizedStatus(response);
+	}
 
-    ResponseEntity<String> response = categoryRequest.sendCategoryCreateRequest(form);
+	@Test
+	public void testItFailsCreateCategoryWithoutCredentials()
+			throws JsonParseException, JsonMappingException, IOException {
+		MultiPartFormBuilder form = categoryUtils.generateRandomCategoryCreateRequestForm();
 
-    assertResponseHasUnauthorizedStatus(response);
-  }
+		JsonResponse response = categoryRequest.sendCategoryCreateRequest(form);
 
-  @Test
-  public void testItFailsUpdateCategoryWithoutCredentials()
-      throws JsonParseException, JsonMappingException, IOException {
-    Long id = 1L;
-    MultiPartFormBuilder form = categoryUtils.generateRandomCategoryUpdateRequesForm();
+		assertResponseHasUnauthorizedStatus(response);
+	}
 
-    ResponseEntity<String> response = categoryRequest.sendCategoryUpdateRequest(id, form);
-   
-    assertResponseHasUnauthorizedStatus(response);
-  }
+	@Test
+	public void testItFailsUpdateCategoryWithoutCredentials()
+			throws JsonParseException, JsonMappingException, IOException {
+		Long id = 1L;
+		MultiPartFormBuilder form = categoryUtils.generateRandomCategoryUpdateRequesForm();
 
-  @Test
-  public void testFailsItDeleteCategoryWithoutCredentials()
-      throws JsonParseException, JsonMappingException, IOException {
-    Long id = 1L;
+		JsonResponse response = categoryRequest.sendCategoryUpdateRequest(id, form);
 
-    ResponseEntity<String> response = categoryRequest.sendCategoryDeleteRequest(id);
-    assertResponseHasUnauthorizedStatus(response);
-  }
-  
-  private void assertResponseHasUnauthorizedStatus(ResponseEntity<String> response) {
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
-  }
+		assertResponseHasUnauthorizedStatus(response);
+	}
+
+	@Test
+	public void testFailsItDeleteCategoryWithoutCredentials()
+			throws JsonParseException, JsonMappingException, IOException {
+		Long id = 1L;
+
+		JsonResponse response = categoryRequest.sendCategoryDeleteRequest(id);
+		assertResponseHasUnauthorizedStatus(response);
+	}
+
+	private void assertResponseHasUnauthorizedStatus(JsonResponse response) {
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+	}
 }
