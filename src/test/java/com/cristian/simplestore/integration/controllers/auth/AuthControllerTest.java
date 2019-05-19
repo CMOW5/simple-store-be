@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
-import com.cristian.simplestore.utils.AuthTestUtils;
+import com.cristian.simplestore.utils.auth.AuthTestUtils;
 import com.cristian.simplestore.utils.request.JsonResponse;
 import com.cristian.simplestore.web.dto.response.LoginResponse;
 import com.cristian.simplestore.web.dto.response.user.UserResponse;
