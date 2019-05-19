@@ -9,22 +9,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class RequestSender {
 
-  // this is not required because when the
-  // unit.services tests are loaded this
-  // dependency cannot be resolved because
-  // this needs a @SpringBootTest(webEnvironment)
-  // context which is not provided on unit tests
-  @Autowired(required = false)
-  private TestRestTemplate restTemplate;
+	// this is not required because when the
+	// unit.services tests are loaded this
+	// dependency cannot be resolved because
+	// this needs a @SpringBootTest(webEnvironment)
+	// context which is not provided on unit tests
+	@Autowired(required = false)
+	private TestRestTemplate restTemplate;
 
-  public RequestSender() {}
+	public RequestSender() {
+	}
 
-  public ResponseEntity<String> sendRequest(RequestEntity<?> requestEntity) {
-    return (ResponseEntity<String>) sendRequest(requestEntity, String.class);
-  }
+	public ResponseEntity<String> sendRequest(RequestEntity<?> requestEntity) {
+		return (ResponseEntity<String>) sendRequest(requestEntity, String.class);
+	}
 
-  public <T> ResponseEntity<?> sendRequest(RequestEntity<?> requestEntity, Class<T> responseType) {
-    return restTemplate.exchange(requestEntity.getUrl(), requestEntity.getMethod(), requestEntity,
-        responseType);
-  }
+	public <T> ResponseEntity<?> sendRequest(RequestEntity<?> requestEntity, Class<T> responseType) {
+		return restTemplate.exchange(requestEntity.getUrl(), requestEntity.getMethod(), requestEntity, responseType);
+	}
 }
