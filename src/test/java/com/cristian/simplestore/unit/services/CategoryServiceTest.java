@@ -13,7 +13,8 @@ import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
-import com.cristian.simplestore.utils.CategoryTestFactory;
+import com.cristian.simplestore.utils.category.CategoryGenerator;
+import com.cristian.simplestore.utils.category.CategoryRequestUtils;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 
@@ -22,107 +23,107 @@ import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 @Transactional
 public class CategoryServiceTest extends BaseTest {
 
-  @Autowired
-  CategoryService categoryService;
+	@Autowired
+	CategoryService categoryService;
 
-  @Autowired
-  CategoryRepository categoryRepository;
+	@Autowired
+	CategoryRepository categoryRepository;
 
-  @Autowired
-  CategoryTestFactory categoryUtils;
+	@Autowired
+	CategoryRequestUtils categoryRequestUtils;
 
-  @Test
-  public void testItfindsAllCategories() {
-    long CATEGORIES_SIZE = 4;
-    List<Category> categories = categoryUtils.saveRandomCategoriesOnDb(CATEGORIES_SIZE);
+	@Autowired
+	CategoryGenerator categoryGenerator;
 
-    List<Category> foundCategories = categoryService.findAll();
+	@Test
+	public void testItfindsAllCategories() {
+		int CATEGORIES_SIZE = 4;
+		List<Category> categories = categoryGenerator.saveRandomCategoriesOnDb(CATEGORIES_SIZE);
 
-    assertThat(foundCategories.size()).isEqualTo(categories.size());
-  }
+		List<Category> foundCategories = categoryService.findAll();
 
-  @Test
-  public void testItfindACategoryById() {
-    Category category = categoryUtils.saveRandomCategoryOnDb();
+		assertThat(foundCategories.size()).isEqualTo(categories.size());
+	}
 
-    Category foundCategory = categoryService.findById(category.getId());
+	@Test
+	public void testItfindACategoryById() {
+		Category category = categoryGenerator.saveRandomCategoryOnDb();
 
-    assertThatTwoCategoriesAreEqual(foundCategory, category);
-  }
+		Category foundCategory = categoryService.findById(category.getId());
 
-  @Test
-  public void testItcreatesACategoryWithForm() {
-    CategoryCreateRequest form = categoryUtils.generateRandomCategoryCreateForm();
+		assertThatTwoCategoriesAreEqual(foundCategory, category);
+	}
 
-    Category createdCategory = categoryService.create(form);
+	@Test
+	public void testItcreatesACategoryWithForm() {
+		CategoryCreateRequest categoryCreateData = categoryRequestUtils.new CategoryCreateRequestBuilder().withRandomName()
+				.withRandomImage().withRandomParent().build();
 
-    assertThatTwoCategoriesAreEqual(createdCategory, form.getModel());
-    assertThat(createdCategory.getImage()).isNotNull();
-  }
+		Category createdCategory = categoryService.create(categoryCreateData);
 
-  @Test
-  public void testItupdatesACategoryWithForm() {
-    Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb();
-    Long originalImageId = categoryToUpdate.getImage().getId();
-    CategoryUpdateRequest newCategoryDataForm =
-        categoryUtils.generateRandomCategoryUpdateForm(categoryToUpdate.getId());
+		assertThatTwoCategoriesAreEqual(createdCategory, categoryCreateData.getModel());
+		assertThat(createdCategory.getImage()).isNotNull();
+	}
 
-    Category updatedCategory = categoryService.update(newCategoryDataForm);
+	@Test
+	public void testItupdatesACategoryWithForm() {
+		Category categoryToUpdate = categoryGenerator.saveRandomCategoryOnDb();
+		Long originalImageId = categoryToUpdate.getImage().getId();
 
-    assertThatTwoCategoriesAreEqual(updatedCategory, newCategoryDataForm.getModel());
-    assertThat(updatedCategory.getId()).isEqualTo(newCategoryDataForm.getId());
-    assertThat(updatedCategory.getImage()).isNotNull();
-    assertThat(updatedCategory.getImage().getId()).isNotEqualTo(originalImageId);
-  }
+		CategoryUpdateRequest categoryUpdateData = categoryRequestUtils.new CategoryUpdateRequestBuilder(
+				categoryToUpdate.getId()).withRandomName().withRandomImage().withRandomParent()
+						.imageIdToDelete(originalImageId).build();
 
-  @Test
-  public void testItCorrectlyUpdatesTheParentCategory() {
-    Category categoryA = categoryUtils.saveRandomCategoryOnDb();
-    Category categoryB = categoryUtils.saveRandomCategoryOnDb();
+		Category updatedCategory = categoryService.update(categoryUpdateData);
 
-    CategoryUpdateRequest categoryBform =
-        categoryUtils.generateRandomCategoryUpdateForm(categoryB.getId());
+		assertThatTwoCategoriesAreEqual(updatedCategory, categoryUpdateData.getModel());
+		assertThat(updatedCategory.getId()).isEqualTo(categoryUpdateData.getId());
+		assertThat(updatedCategory.getImage()).isNotNull();
+		assertThat(updatedCategory.getImage().getId()).isNotEqualTo(originalImageId);
+	}
 
-    // here we manually create a circular reference
-    // Between the category A and its parent, the category B.
-    // example B -> A -> B is not allowed
-    // it should update to null -> A -> B
-    categoryA.setParentCategory(categoryB);
-    categoryA = categoryRepository.save(categoryA);
-    categoryBform.setParentCategory(categoryA);
+	@Test
+	public void testItCorrectlyUpdatesTheParentCategory() {
+		// B -> A
+		Category categoryA = categoryGenerator.new Builder().randomName().randomParent().save();
+		Category categoryB = categoryA.getParentCategory();
+		
+		// we attempt to create a circular reference by setting A as parent of B
+		// example B -> A -> B is not allowed
+		// it should update to null -> A -> B
+		CategoryUpdateRequest updateCategoryBdata= categoryRequestUtils.new CategoryUpdateRequestBuilder(categoryB.getId())
+				.parent(categoryA).build();
+		
+		Category expectedCategoryB = categoryService.update(updateCategoryBdata);
+		Category expectedCategoryA = categoryService.findById(categoryA.getId());
 
-    Category expectedCategoryB = categoryService.update(categoryBform);
-    Category expectedCategoryA = categoryService.findById(categoryA.getId());
+		assertThat(expectedCategoryA.getParentCategory()).isNull();
+		assertThat(expectedCategoryB.getParentCategory().getId()).isEqualTo(categoryA.getId());
+	}
 
-    assertThat(expectedCategoryA.getParentCategory()).isNull();
-    assertThat(expectedCategoryB.getParentCategory().getId()).isEqualTo(categoryA.getId());
-  }
+	@Test
+	public void testItDeletesACategoryImage() {
+		Category categoryToUpdate = categoryGenerator.saveRandomCategoryOnDb();
+		CategoryUpdateRequest newCategoryData = categoryRequestUtils.new CategoryUpdateRequestBuilder(
+				categoryToUpdate.getId()).withRandomName().imageIdToDelete(categoryToUpdate.getImage().getId()).build();
 
-  @Test
-  public void testItDeletesACategoryImage() {
-    Category categoryToUpdate = categoryUtils.saveRandomCategoryOnDb();
-    CategoryUpdateRequest newCategoryData =
-        categoryUtils.generateRandomCategoryUpdateForm(categoryToUpdate.getId());
-    newCategoryData.setImageIdToDelete(categoryToUpdate.getImage().getId());
-    newCategoryData.setNewImage(null);
+		Category updatedCategory = categoryService.update(newCategoryData);
 
-    Category updatedCategory = categoryService.update(newCategoryData);
+		assertThat(updatedCategory.getImage()).isNull();
+	}
 
-    assertThat(updatedCategory.getImage()).isNull();
-  }
+	@Test(expected = EntityNotFoundException.class)
+	public void delete() {
+		Category categoryToDelete = categoryGenerator.saveRandomCategoryOnDb();
 
-  @Test(expected = EntityNotFoundException.class)
-  public void delete() {
-    Category categoryToDelete = categoryUtils.saveRandomCategoryOnDb();
+		categoryService.deleteById(categoryToDelete.getId());
 
-    categoryService.deleteById(categoryToDelete.getId());
+		// this should throw an exception
+		categoryService.findById(categoryToDelete.getId());
+	}
 
-    // this should throw an exception
-    categoryService.findById(categoryToDelete.getId());
-  }
-
-  private void assertThatTwoCategoriesAreEqual(Category c1, Category c2) {
-    assertThat(c1.getName()).isEqualTo(c2.getName());
-    assertThat(c1.getParentCategory()).isEqualTo(c2.getParentCategory());
-  }
+	private void assertThatTwoCategoriesAreEqual(Category c1, Category c2) {
+		assertThat(c1.getName()).isEqualTo(c2.getName());
+		assertThat(c1.getParentCategory()).isEqualTo(c2.getParentCategory());
+	}
 }
