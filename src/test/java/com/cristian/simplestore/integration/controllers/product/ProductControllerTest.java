@@ -147,16 +147,6 @@ public class ProductControllerTest extends BaseIntegrationTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
-  @Test
-  public void testItReturnsNotFoundWhenDeleting()
-      throws JsonParseException, JsonMappingException, IOException {
-    Long nonExistentId = 1L;
-
-    JsonResponse response = request.sendProductDeleteRequest(nonExistentId);
-
-    assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-  }
-
   private void assertThatProductResponseIsEqualToProduct(ProductResponse expectedProduct,
       Product product) {
     assertThat(expectedProduct.getName()).isEqualTo(product.getName());
