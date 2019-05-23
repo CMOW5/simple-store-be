@@ -3,7 +3,6 @@ package com.cristian.simplestore.utils.category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.image.ImageTestsUtils;
 
@@ -18,6 +17,14 @@ public class CategoryFormUtils {
 	private CategoryFormUtils(CategoryGenerator categortyGenerator, ImageTestsUtils imageUtils) {
 		this.categortyGenerator = categortyGenerator;
 		this.imageUtils = imageUtils;
+	}
+	
+	public MultiPartFormBuilder generateRandomCategoryCreateRequestForm() {
+	  return new CreateRequestFormBuilder().randomName().randomImage().randomParent().build();
+	}
+	
+	public MultiPartFormBuilder generateRandomCategoryUpdateRequestForm() {
+	  return new UpdateRequestFormBuilder().randomName().randomImage().randomParent().build();
 	}
 
 	// TODO merge this in a single builder with UpdateRequestFormBuilder
