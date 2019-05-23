@@ -26,8 +26,8 @@ public class CategorySeeder {
     faker = new Faker();
   }
 
-  public void seed() {
-    for (int i = 0; i < MAX_CATEGORIES; i++) {
+  public void seed(int size) {
+    for (int i = 0; i < size; i++) {
       try {
         Category category = createRandomCategoryOnDB();
         createRandomCategoriesWithParentOnDB(category, 4);
@@ -37,7 +37,7 @@ public class CategorySeeder {
 
   private Category createRandomCategoryOnDB() {
     Category category = new Category();
-    category.setName(faker.commerce().department());
+    category.setName(generateRandomName());
     category.setImage(generateRandomImageOnDB());
     return categoryRepository.save(category);
   }
@@ -45,13 +45,13 @@ public class CategorySeeder {
   private void createRandomCategoriesWithParentOnDB(Category parentCategory, long categoriesSize) {
     for (int i = 0; i < categoriesSize; i++) {
       Category category1 = new Category();
-      category1.setName(faker.commerce().department());
+      category1.setName(generateRandomName());
       category1.setParentCategory(parentCategory);
       category1.setImage(generateRandomImageOnDB());
       categoryRepository.save(category1);
 
       Category category2 = new Category();
-      category2.setName(faker.commerce().department());
+      category2.setName(generateRandomName());
       category2.setParentCategory(category1);
       category2.setImage(generateRandomImageOnDB());
       categoryRepository.save(category2);
@@ -69,6 +69,11 @@ public class CategorySeeder {
     image.setName(imageName);
     imageRepository.save(image);
     return image;
+  }
+  
+  private String generateRandomName() {
+    // return faker.name().name();
+    return faker.commerce().department();
   }
 
 }

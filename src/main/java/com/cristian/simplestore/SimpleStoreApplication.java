@@ -21,7 +21,7 @@ public class SimpleStoreApplication {
   @Bean
   public CommandLineRunner demo(CategorySeeder categorySeeder, ImageStorageService storageService) {
     return args -> {
-      // categorySeeder.seed();
+      // categorySeeder.seed(100);
       storageService.init();
     };
 
