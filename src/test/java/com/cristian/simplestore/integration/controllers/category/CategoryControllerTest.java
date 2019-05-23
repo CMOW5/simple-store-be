@@ -3,7 +3,6 @@ package com.cristian.simplestore.integration.controllers.category;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
 import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.category.CategoryFormUtils;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
@@ -26,9 +24,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest extends BaseIntegrationTest {
-
-    @Autowired
-    private CategoryRepository categoryRepository;
 
     @Autowired
     private CategoryFormUtils categoryFormUtils;
@@ -112,23 +107,14 @@ public class CategoryControllerTest extends BaseIntegrationTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
-    @Test(expected = NoSuchElementException.class)
     public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
         Category category = categoryGenerator.saveRandomCategoryOnDb();
 
         JsonResponse response = categoryRequest.sendCategoryDeleteRequest(category.getId());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
-        // TODO: violation of test boundary
-        categoryRepository.findById(category.getId()).get();
-    }
-
-    @Test
-    public void testItReturnsNotFoundWhenDeleting() throws JsonParseException, JsonMappingException, IOException {
-        Long nonExistentId = 1L;
-
-        JsonResponse response = categoryRequest.sendCategoryDeleteRequest(nonExistentId);
-
+        
+        response = categoryRequest.sendFindCategoryByIdRequest(category.getId());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
