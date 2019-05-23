@@ -1,4 +1,4 @@
-package com.cristian.simplestore.business.services;
+package com.cristian.simplestore.business.services.product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.cristian.simplestore.business.services.image.ImageService;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;

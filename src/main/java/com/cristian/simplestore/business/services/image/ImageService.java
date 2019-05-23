@@ -1,4 +1,4 @@
-package com.cristian.simplestore.business.services;
+package com.cristian.simplestore.business.services.image;
 
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;

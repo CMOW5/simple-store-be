@@ -1,4 +1,4 @@
-package com.cristian.simplestore.business.services;
+package com.cristian.simplestore.business.services.product;
 
 import java.util.List;
 import org.springframework.data.domain.Page;

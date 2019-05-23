@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.BaseTest;
-import com.cristian.simplestore.business.services.ImageServiceImpl;
+import com.cristian.simplestore.business.services.image.ImageServiceImpl;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.utils.image.ImageTestsUtils;
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.cristian.simplestore.business.services.CategoryService;
+import com.cristian.simplestore.business.services.category.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.CustomPaginator;
 import com.cristian.simplestore.web.CustomPaginatorImpl;

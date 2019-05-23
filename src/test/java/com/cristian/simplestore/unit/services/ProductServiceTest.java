@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
-import com.cristian.simplestore.business.services.ProductService;
+import com.cristian.simplestore.business.services.product.ProductService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.entities.Product;

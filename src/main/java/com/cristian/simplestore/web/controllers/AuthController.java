@@ -5,7 +5,7 @@ import com.cristian.simplestore.web.dto.request.user.SignUpRequest;
 import com.cristian.simplestore.web.dto.response.LoginResponse;
 import com.cristian.simplestore.web.dto.response.user.UserResponse;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
-import com.cristian.simplestore.business.services.AuthService;
+import com.cristian.simplestore.business.services.auth.AuthService;
 import com.cristian.simplestore.persistence.entities.User;
 import com.cristian.simplestore.security.CurrentUser;
 import com.cristian.simplestore.security.UserPrincipal;

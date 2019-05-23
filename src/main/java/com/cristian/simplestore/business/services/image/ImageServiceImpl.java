@@ -1,4 +1,4 @@
-package com.cristian.simplestore.business.services;
+package com.cristian.simplestore.business.services.image;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.cristian.simplestore.business.services.ImageService;
+import com.cristian.simplestore.business.services.image.ImageService;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.utils.image.ImageFileFactory;

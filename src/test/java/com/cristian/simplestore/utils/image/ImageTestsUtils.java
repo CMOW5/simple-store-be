@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.business.services.ImageServiceImpl;
+import com.cristian.simplestore.business.services.image.ImageServiceImpl;
 import com.cristian.simplestore.persistence.entities.Image;
 
 @Component

@@ -3,7 +3,7 @@ package com.cristian.simplestore.utils.auth;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.cristian.simplestore.business.services.AuthService;
+import com.cristian.simplestore.business.services.auth.AuthService;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.web.dto.request.user.LoginRequest;
 import com.cristian.simplestore.web.dto.request.user.SignUpRequest;
