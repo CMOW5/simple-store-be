@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AuthProductControllerTest extends BaseIntegrationTest {
+public class UnAuthProductControllerTest extends BaseIntegrationTest {
 
 	@Autowired
 	private ProductFormUtils productFormUtils;
