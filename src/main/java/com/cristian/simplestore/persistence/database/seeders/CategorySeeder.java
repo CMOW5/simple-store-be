@@ -35,7 +35,7 @@ public class CategorySeeder {
     }
   }
 
-  private Category createRandomCategoryOnDB() {
+  public Category createRandomCategoryOnDB() {
     Category category = new Category();
     category.setName(generateRandomName());
     category.setImage(generateRandomImageOnDB());
@@ -58,7 +58,7 @@ public class CategorySeeder {
     }
   }
 
-  private Image generateRandomImageOnDB() {
+  public Image generateRandomImageOnDB() {
     String baseUrl = "https://picsum.photos/";
     int width = faker.number().numberBetween(200, 800);
     int height = faker.number().numberBetween(200, 800);
