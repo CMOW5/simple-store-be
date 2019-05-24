@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
-import com.cristian.simplestore.web.CustomPaginator;
+import com.cristian.simplestore.web.pagination.CustomPaginator;
 
 public class ApiResponse {
 
