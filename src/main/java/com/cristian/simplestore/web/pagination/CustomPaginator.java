@@ -1,11 +1,11 @@
-package com.cristian.simplestore.web;
+package com.cristian.simplestore.web.pagination;
 
 import org.springframework.data.domain.Pageable;
 
 public interface CustomPaginator extends Pageable {
-
+  
   int getTotalPages();
-
+  
   String getPreviousPageUrl();
 
   Integer getPreviousPage();
@@ -17,6 +17,8 @@ public interface CustomPaginator extends Pageable {
   Integer getLastPage();
 
   String getCurrentPageUrl();
+  
+  int getPageCount();
   
   String getPath();  
 }

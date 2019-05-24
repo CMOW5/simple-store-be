@@ -1,5 +1,6 @@
-package com.cristian.simplestore.web;
+package com.cristian.simplestore.web.pagination;
 
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,45 +11,47 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
   "hasPrevious" ,"previousPage", "previousPageUrl", "pageSize", "totalPages", "offset"})
 public class CustomPaginatorImpl implements CustomPaginator {
 
-  Page<?> page;
-  Pageable pageable;
-  
-  public <T> CustomPaginatorImpl(Page<T> page) {
+  private Page<?> page;
+  private Pageable paginationInfo;
+  private HttpServletRequest request;
+  private int currentPageNumber;
+  private int pageSize;
+    
+  public <T> CustomPaginatorImpl(Page<T> page, int currentPageNumber, int pageSize, HttpServletRequest request) {
     this.page = page;
-    this.pageable = page.getPageable();
+    this.paginationInfo = page.getPageable();
+    this.currentPageNumber = currentPageNumber;
+    this.pageSize = pageSize;
+    this.request = request;
   }
-  
+   
+
   @Override
   @JsonProperty("currentPage")
   public int getPageNumber() {
-    return pageable.getPageNumber();
+    return paginationInfo.getPageNumber();
   }
 
-  // TODO
   @Override
   public String getCurrentPageUrl() {
-    return "";
+    return buildUrlPath(currentPageNumber, pageSize);
   }
 
-  // TODO
   @Override
   public Integer getNextPage() {
     return hasMorePages() ? page.nextPageable().getPageNumber() : null;
   }
   
-  //TODO
   @JsonProperty
   @Override
   public boolean hasMorePages() {
     return page.hasNext();
   }
   
-  //TODO
   public String getNextPageUrl() {
-    return "";
+    return hasMorePages() ? buildUrlPath(getNextPage(), pageSize) : null;
   }
   
-  // TODO
   @Override
   public Integer getPreviousPage() {
     return hasPrevious() ? page.previousPageable().getPageNumber() : null;
@@ -57,46 +60,44 @@ public class CustomPaginatorImpl implements CustomPaginator {
   @Override
   @JsonProperty
   public boolean hasPrevious() {
-    return pageable.hasPrevious();
+    return paginationInfo.hasPrevious();
   }
   
-  // TODO
   @Override
   public String getPreviousPageUrl() {
-    return "";
+    return hasPrevious() ? buildUrlPath(getPreviousPage(), pageSize) : null;
   }
   
   @Override
   public int getPageSize() {
-    return pageable.getPageSize();
+    return paginationInfo.getPageSize();
   }
 
   @Override
   public long getOffset() {
-    return pageable.getOffset();
+    return paginationInfo.getOffset();
   }
 
   @Override
   public Sort getSort() {
-    return pageable.getSort();
+    return paginationInfo.getSort();
   }
 
   @Override
   public Pageable next() {
-    return pageable.next();
+    return paginationInfo.next();
   }
 
   @Override
   public Pageable previousOrFirst() {
-    return pageable.previousOrFirst();
+    return paginationInfo.previousOrFirst();
   }
 
   @Override
   public Pageable first() {
-    return pageable.first();
+    return paginationInfo.first();
   }
    
-  // TODO
   @Override
   public int getTotalPages() {
     return page.getTotalPages();
@@ -104,12 +105,21 @@ public class CustomPaginatorImpl implements CustomPaginator {
 
   @Override
   public String getPath() {
-    return "";
+    return request.getRequestURL().toString();
   }
 
   @Override
   public Integer getLastPage() {
     return page.getTotalPages() - 1;
+  }
+  
+  private String buildUrlPath(int page, int size) {
+    return getPath() + "?page="+ page + "&size=" + size;
+  }
+
+  @Override
+  public int getPageCount() {
+    return page.getContent().size();
   }
   
   /*
