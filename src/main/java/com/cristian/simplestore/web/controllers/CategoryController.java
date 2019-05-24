@@ -2,6 +2,7 @@ package com.cristian.simplestore.web.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,59 +18,58 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.category.CategoryService;
 import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.web.CustomPaginator;
-import com.cristian.simplestore.web.CustomPaginatorImpl;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
+import com.cristian.simplestore.web.pagination.CustomPaginator;
+import com.cristian.simplestore.web.pagination.CustomPaginatorImpl;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
-
 
 @RestController
 @RequestMapping("/api/admin/categories")
 public class CategoryController {
 
-  private ApiResponse response = new ApiResponse();
-
   @Autowired
   private CategoryService categoryService;
 
   @GetMapping
-  public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+  public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
     Page<Category> result = categoryService.findAll(page, size);
     List<CategoryResponse> categoriesResponse = convertEntitiesToDto(result.getContent());
-    CustomPaginator paginator = new CustomPaginatorImpl(result);
-    return response.status(HttpStatus.OK).content(categoriesResponse).paginator(paginator).build();
+    CustomPaginator paginator = new CustomPaginatorImpl(result, page, size, request);
+    return new ApiResponse().status(HttpStatus.OK).content(categoriesResponse).paginator(paginator).build();
   }
+
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<?> findCategoryById(@PathVariable long id) {
     Category foundCategory = categoryService.findById(id);
-    return response.status(HttpStatus.OK).content(convertEntityToDto(foundCategory)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(convertEntityToDto(foundCategory)).build();
   }
 
   @PostMapping
   public ResponseEntity<?> create(@Valid CategoryCreateRequest form) {
     Category createdCategory = categoryService.create(form);
-    return response.status(HttpStatus.CREATED).content(convertEntityToDto(createdCategory)).build();
+    return new ApiResponse().status(HttpStatus.CREATED).content(convertEntityToDto(createdCategory)).build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@Valid CategoryUpdateRequest form) {
     Category updatedCategory = categoryService.update(form);
-    return response.status(HttpStatus.OK).content(convertEntityToDto(updatedCategory)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(convertEntityToDto(updatedCategory)).build();
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<?> delete(@PathVariable Long id) {
     categoryService.deleteById(id);
-    return response.status(HttpStatus.NO_CONTENT).content(null).build();
+    return new ApiResponse().status(HttpStatus.NO_CONTENT).content(null).build();
   }
 
   @GetMapping("/count")
   public ResponseEntity<?> count() {
     long categoriesCount = categoryService.count();
-    return response.status(HttpStatus.OK).content(categoriesCount).build();
+    return new ApiResponse().status(HttpStatus.OK).content(categoriesCount).build();
   }
 
   private CategoryResponse convertEntityToDto(Category category) {
