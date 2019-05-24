@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.cristian.simplestore.config.properties.AppProperties;
+import com.cristian.simplestore.config.properties.AuthProperties;
 import com.cristian.simplestore.security.TokenProvider;
 import com.cristian.simplestore.security.util.CookieUtils;
 import com.cristian.simplestore.web.exceptions.BadRequestException;
@@ -30,13 +30,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
   private TokenProvider tokenProvider;
 
-  private AppProperties appProperties;
+  private AuthProperties appProperties;
 
   private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
 
   @Autowired
-  OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties,
+  OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AuthProperties appProperties,
       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
     this.tokenProvider = tokenProvider;
     this.appProperties = appProperties;

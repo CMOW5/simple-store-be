@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import com.cristian.simplestore.config.properties.AppProperties;
+import com.cristian.simplestore.config.properties.AuthProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -26,9 +26,9 @@ public class TokenProvider {
 
   private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
-  private AppProperties appProperties;
+  private AuthProperties appProperties;
 
-  public TokenProvider(AppProperties appProperties) {
+  public TokenProvider(AuthProperties appProperties) {
     this.appProperties = appProperties;
   }
 
