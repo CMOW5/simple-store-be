@@ -1,52 +1,16 @@
+# Ignore Gradle project-specific cache directory
 .gradle
-/build/
-!gradle/wrapper/gradle-wrapper.jar
+
+# Ignore Gradle build output directory
+/build/*
+!/build/libs/ 
+
+bin
 
 upload-dir/
 test-upload-dir/
 
 src/main/resources/application-production.yml
-
-*#
-*.iml
-*.ipr
-*.iws
-*.jar
-*.sw?
-*~
-.#*
-.*.md.html
-.DS_Store
-.classpath
-.factorypath
-.gradle
-.idea
-.metadata
-.project
-.recommenders
-.settings
-.springBeans
-/build
-/code
-MANIFEST.MF
-_site/
-activemq-data
-bin/
-build
-build.log
-dependency-reduced-pom.xml
-dump.rdb
-interpolated*.xml
-lib/
-manifest.yml
-overridedb.*
-settings.xml
-target
-transaction-logs
-.flattened-pom.xml
-secrets.yml
-.gradletasknamecache
-.sts4-cache
 
 ### STS ###
 .apt_generated
@@ -63,10 +27,3 @@ secrets.yml
 *.iml
 *.ipr
 /out/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
