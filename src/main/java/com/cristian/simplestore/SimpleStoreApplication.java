@@ -6,14 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
-import com.cristian.simplestore.config.properties.AppProperties;
 import com.cristian.simplestore.config.properties.AuthProperties;
 import com.cristian.simplestore.config.properties.StorageConfig;
 import com.cristian.simplestore.persistence.database.seeders.CategorySeeder;
 import com.cristian.simplestore.persistence.database.seeders.ProductSeeder;
 
 @SpringBootApplication
-@EnableConfigurationProperties({StorageConfig.class, AuthProperties.class, AppProperties.class})
+@EnableConfigurationProperties({StorageConfig.class, AuthProperties.class})
 public class SimpleStoreApplication {
 
   public static void main(String[] args) {
