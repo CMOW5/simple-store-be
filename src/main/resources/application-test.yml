@@ -1,0 +1,30 @@
+server:
+  port: 8000
+
+logging:
+  level: 
+    org.hibernate:
+      SQL: DEBUG
+      type: TRACE
+
+storage:
+  location: test-upload-dir
+  
+
+spring:
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/simple_store_tests_db
+    username: root
+    password: root
+    initialization-mode: never
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB 
