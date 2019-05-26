@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.category.CategoryService;
 import com.cristian.simplestore.business.services.image.ImageService;
-import com.cristian.simplestore.config.properties.AppProperties;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
 import com.cristian.simplestore.web.pagination.CustomPaginator;
@@ -32,10 +31,6 @@ public class TestController {
 
   @PersistenceContext
   EntityManager entityManager;
-
-  @Autowired
-  AppProperties appProperties;
-
 
   @Autowired
   private CategoryService categoryService;
