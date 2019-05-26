@@ -5,6 +5,8 @@
 upload-dir/
 test-upload-dir/
 
+src/main/resources/application-production.yml
+
 *#
 *.iml
 *.ipr
