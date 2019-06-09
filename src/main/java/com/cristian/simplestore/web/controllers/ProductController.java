@@ -1,6 +1,5 @@
 package com.cristian.simplestore.web.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,7 +21,6 @@ import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
 import com.cristian.simplestore.web.pagination.CustomPaginator;
-import com.cristian.simplestore.web.pagination.CustomPaginatorImpl;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
@@ -37,27 +35,27 @@ public class ProductController {
   public ResponseEntity<?> findAllProducts(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
     Page<Product> paginatedResult = productService.findAll(page, size);
-    List<ProductResponse> products = convertEntitiesToDto(paginatedResult.getContent());
-    CustomPaginator paginator = new CustomPaginatorImpl(paginatedResult, page, size, request);
+    List<ProductResponse> products = ProductResponse.from(paginatedResult.getContent());
+    CustomPaginator paginator = CustomPaginator.of(paginatedResult, page, size, request);
     return new ApiResponse().status(HttpStatus.OK).content(products).paginator(paginator).build();
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<?> findProductById(@PathVariable long id) {
     Product product = productService.findById(id);
-    return new ApiResponse().status(HttpStatus.OK).content(convertEntityToDto(product)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.from(product)).build();
   }
 
   @PostMapping
   public ResponseEntity<?> create(@Valid ProductCreateRequest form) {
     Product createdProduct = productService.create(form);
-    return new ApiResponse().status(HttpStatus.CREATED).content(convertEntityToDto(createdProduct)).build();
+    return new ApiResponse().status(HttpStatus.CREATED).content(ProductResponse.from(createdProduct)).build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@PathVariable long id, @Valid ProductUpdateRequest form) {
     Product updatedProduct = productService.update(form);
-    return new ApiResponse().status(HttpStatus.OK).content(convertEntityToDto(updatedProduct)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.from(updatedProduct)).build();
 
   }
 
@@ -71,15 +69,5 @@ public class ProductController {
   public ResponseEntity<?> count() {
     long productsCount = productService.count();
     return new ApiResponse().status(HttpStatus.OK).content(productsCount).build();
-  }
-
-  private ProductResponse convertEntityToDto(Product product) {
-    return new ProductResponse(product);
-  }
-
-  private List<ProductResponse> convertEntitiesToDto(List<Product> products) {
-    List<ProductResponse> dtos = new ArrayList<>();
-    products.forEach(product -> dtos.add(convertEntityToDto(product)));
-    return dtos;
   }
 }

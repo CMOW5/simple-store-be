@@ -17,7 +17,6 @@ import com.cristian.simplestore.business.services.image.ImageService;
 import com.cristian.simplestore.persistence.entities.Category;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
 import com.cristian.simplestore.web.pagination.CustomPaginator;
-import com.cristian.simplestore.web.pagination.CustomPaginatorImpl;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
@@ -40,7 +39,7 @@ public class TestController {
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
     Page<Category> result = categoryService.findAll(page, size);
     List<CategoryResponse> categoriesResponse = convertEntitiesToDto(result.getContent());
-    CustomPaginator paginator = new CustomPaginatorImpl(result, page, size, request);
+    CustomPaginator paginator = CustomPaginator.of(result, page, size, request);
     return response.status(HttpStatus.OK).content(categoriesResponse).paginator(paginator)
         .build();
   }

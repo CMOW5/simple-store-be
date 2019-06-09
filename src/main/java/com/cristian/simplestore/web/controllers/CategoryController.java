@@ -1,6 +1,5 @@
 package com.cristian.simplestore.web.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,7 +21,6 @@ import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
 import com.cristian.simplestore.web.pagination.CustomPaginator;
-import com.cristian.simplestore.web.pagination.CustomPaginatorImpl;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 @RestController
@@ -35,9 +33,9 @@ public class CategoryController {
   @GetMapping
   public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
-    Page<Category> result = categoryService.findAll(page, size);
-    List<CategoryResponse> categoriesResponse = convertEntitiesToDto(result.getContent());
-    CustomPaginator paginator = new CustomPaginatorImpl(result, page, size, request);
+    Page<Category> paginatedResult = categoryService.findAll(page, size);
+    List<CategoryResponse> categoriesResponse = CategoryResponse.from(paginatedResult.getContent());
+    CustomPaginator paginator = CustomPaginator.of(paginatedResult, page, size, request);
     return new ApiResponse().status(HttpStatus.OK).content(categoriesResponse).paginator(paginator).build();
   }
 
@@ -45,19 +43,19 @@ public class CategoryController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<?> findCategoryById(@PathVariable long id) {
     Category foundCategory = categoryService.findById(id);
-    return new ApiResponse().status(HttpStatus.OK).content(convertEntityToDto(foundCategory)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.from(foundCategory)).build();
   }
 
   @PostMapping
   public ResponseEntity<?> create(@Valid CategoryCreateRequest form) {
     Category createdCategory = categoryService.create(form);
-    return new ApiResponse().status(HttpStatus.CREATED).content(convertEntityToDto(createdCategory)).build();
+    return new ApiResponse().status(HttpStatus.CREATED).content(CategoryResponse.from(createdCategory)).build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@Valid CategoryUpdateRequest form) {
     Category updatedCategory = categoryService.update(form);
-    return new ApiResponse().status(HttpStatus.OK).content(convertEntityToDto(updatedCategory)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.from(updatedCategory)).build();
   }
 
   @DeleteMapping("/{id}")
@@ -70,15 +68,5 @@ public class CategoryController {
   public ResponseEntity<?> count() {
     long categoriesCount = categoryService.count();
     return new ApiResponse().status(HttpStatus.OK).content(categoriesCount).build();
-  }
-
-  private CategoryResponse convertEntityToDto(Category category) {
-    return new CategoryResponse(category);
-  }
-
-  private List<CategoryResponse> convertEntitiesToDto(List<Category> categories) {
-    List<CategoryResponse> dtos = new ArrayList<>();
-    categories.forEach(category -> dtos.add(convertEntityToDto(category)));
-    return dtos;
   }
 }

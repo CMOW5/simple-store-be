@@ -17,7 +17,7 @@ public class ValidationExceptionInterceptor {
   @ExceptionHandler(BindException.class)
   public ResponseEntity<?> handleControllersValidationException(HttpServletRequest request,
       BindException exception) {
-    return new ApiResponse().errors(exception).status(HttpStatus.BAD_REQUEST).build();
+    return new ApiResponse().errors(exception.getFieldErrors()).status(HttpStatus.BAD_REQUEST).build();
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
