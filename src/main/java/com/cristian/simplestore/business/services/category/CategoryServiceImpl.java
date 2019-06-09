@@ -20,113 +20,115 @@ import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-	@Autowired
-	private CategoryRepository categoryRepository;
+  @Autowired
+  private CategoryRepository categoryRepository;
 
-	@Autowired
-	private ImageService imageService;
+  @Autowired
+  private ImageService imageService;
 
-	private static final String CATEGORY_NOT_FOUND_EXCEPTION = "The category with the given id was not found";
+  private static final String CATEGORY_NOT_FOUND_EXCEPTION =
+      "The category with the given id was not found";
 
-	public List<Category> findAll() {
-		List<Category> foundCategories = new ArrayList<>();
-		categoryRepository.findAll().forEach(foundCategories::add);
-		return foundCategories;
-	}
+  public List<Category> findAll() {
+    List<Category> foundCategories = new ArrayList<>();
+    categoryRepository.findAll().forEach(foundCategories::add);
+    return foundCategories;
+  }
 
-	public Page<Category> findAll(int page, int size) {
-		return categoryRepository.findAll(PageRequest.of(page, size));
-	}
+  public Page<Category> findAll(int page, int size) {
+    return categoryRepository.findAll(PageRequest.of(page, size));
+  }
 
-	public Category findById(Long id) {
-		return categoryRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(CATEGORY_NOT_FOUND_EXCEPTION));
-	}
+  public Category findById(Long id) {
+    return categoryRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(CATEGORY_NOT_FOUND_EXCEPTION));
+  }
 
-	public Category create(Category category) {
-		return categoryRepository.save(category);
-	}
+  public Category create(Category category) {
+    return categoryRepository.save(category);
+  }
 
-	@Transactional
-	public Category create(CategoryCreateRequest form) {
-		Category category = new Category();
-		category.setName(form.getName());
-		category.setParentCategory(form.getParentCategory());
-		addImageToCategory(category, form.getImage());
+  @Transactional
+  public Category create(CategoryCreateRequest form) {
+    Category category = new Category();
+    category.setName(form.getName());
+    category.setParentCategory(form.getParentCategory());
+    addImageToCategory(category, form.getImage());
 
-		return categoryRepository.save(category);
-	}
+    return categoryRepository.save(category);
+  }
 
-	public Category update(Long id, Category category) {
-		category.setId(id);
-		return categoryRepository.save(category);
-	}
+  public Category update(Long id, Category category) {
+    category.setId(id);
+    return categoryRepository.save(category);
+  }
 
-	@Transactional
-	public Category update(CategoryUpdateRequest form) {
-		Category storedCategory = categoryRepository.findById(form.getId())
-				.orElseThrow(() -> new EntityNotFoundException(CATEGORY_NOT_FOUND_EXCEPTION));
-		String newName = form.getName();
-		Category newParentCategory = form.getParentCategory();
-		MultipartFile newImageFile = form.getNewImage();
-		Long imageIdToDelete = form.getImageIdToDelete();
+  @Transactional
+  public Category update(CategoryUpdateRequest form) {
+    Category storedCategory = categoryRepository.findById(form.getId())
+        .orElseThrow(() -> new EntityNotFoundException(CATEGORY_NOT_FOUND_EXCEPTION));
+    String newName = form.getName();
+    Category newParentCategory = form.getParentCategory();
+    MultipartFile newImageFile = form.getNewImage();
+    Long imageIdToDelete = form.getImageIdToDelete();
 
-		storedCategory.setName(newName);
-		updateParentCategory(storedCategory, newParentCategory);
-		updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
+    storedCategory.setName(newName);
+    updateParentCategory(storedCategory, newParentCategory);
+    updateCategoryImage(storedCategory, newImageFile, imageIdToDelete);
 
-		return storedCategory;
-	}
+    return storedCategory;
+  }
 
-	private Category updateParentCategory(Category categoryToUpdate, Category newParentCategory) {
-		if (categoryToUpdate.equals(newParentCategory)) {
-			newParentCategory = categoryToUpdate.getParentCategory();
-		} else if (categoryToUpdate.hasSubcategory(newParentCategory)) {
-			// here we avoid circular references between the category
-			// to update and its subcategories. for instance
-			// null -> A -> B -> C to C -> A -> B -> C is not allowed,
-			// the result will be: null -> C -> A -> B
-			newParentCategory.setParentCategory(categoryToUpdate.getParentCategory());
-			categoryRepository.save(newParentCategory);
-		}
+  private Category updateParentCategory(Category categoryToUpdate, Category newParentCategory) {
+    if (categoryToUpdate.equals(newParentCategory)) {
+      newParentCategory = categoryToUpdate.getParentCategory();
+    } else if (categoryToUpdate.hasSubcategory(newParentCategory)) {
+      // here we avoid circular references between the category
+      // to update and its subcategories. for instance
+      // null -> A -> B -> C to C -> A -> B -> C is not allowed,
+      // the result will be: null -> C -> A -> B
+      newParentCategory.setParentCategory(categoryToUpdate.getParentCategory());
+      categoryRepository.save(newParentCategory);
+    }
 
-		categoryToUpdate.setParentCategory(newParentCategory);
+    categoryToUpdate.setParentCategory(newParentCategory);
 
-		return categoryToUpdate;
-	}
+    return categoryToUpdate;
+  }
 
-	private Category updateCategoryImage(Category categoryToUpdate, MultipartFile newImageFile, Long imageIdToDelete) {
-		if (newImageFile != null) {
-			Image newImage = imageService.save(newImageFile);
-			Image currentImage = categoryToUpdate.getImage();
-			categoryToUpdate.setImage(newImage);
-			imageService.delete(currentImage);
-		} else if (imageIdToDelete != null) { // TODO: verify the imageId
-			categoryToUpdate.deleteImage();
-			imageService.deleteById(imageIdToDelete);
-		}
+  private Category updateCategoryImage(Category categoryToUpdate, MultipartFile newImageFile,
+      Long imageIdToDelete) {
+    if (newImageFile != null) {
+      Image newImage = imageService.save(newImageFile);
+      Image currentImage = categoryToUpdate.getImage();
+      categoryToUpdate.setImage(newImage);
+      imageService.delete(currentImage);
+    } else if (imageIdToDelete != null) { // TODO: verify the imageId
+      categoryToUpdate.deleteImage();
+      imageService.deleteById(imageIdToDelete);
+    }
 
-		return categoryToUpdate;
-	}
+    return categoryToUpdate;
+  }
 
-	public void deleteById(Long id) {
-		try {
-			categoryRepository.deleteById(id);
-		} catch (EmptyResultDataAccessException exception) {
-			throw new EntityNotFoundException(CATEGORY_NOT_FOUND_EXCEPTION);
-		}
+  public void deleteById(Long id) {
+    try {
+      categoryRepository.deleteById(id);
+    } catch (EmptyResultDataAccessException exception) {
+      throw new EntityNotFoundException(CATEGORY_NOT_FOUND_EXCEPTION);
+    }
 
-	}
+  }
 
-	public long count() {
-		return categoryRepository.count();
-	}
+  public long count() {
+    return categoryRepository.count();
+  }
 
-	private Category addImageToCategory(Category category, MultipartFile imageFile) {
-		if (imageFile != null) {
-			Image image = imageService.save(imageFile);
-			category.setImage(image);
-		}
-		return category;
-	}
+  private Category addImageToCategory(Category category, MultipartFile imageFile) {
+    if (imageFile != null) {
+      Image image = imageService.save(imageFile);
+      category.setImage(image);
+    }
+    return category;
+  }
 }
