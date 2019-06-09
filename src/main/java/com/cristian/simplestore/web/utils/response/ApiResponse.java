@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import com.cristian.simplestore.web.pagination.CustomPaginator;
 
@@ -41,15 +40,6 @@ public class ApiResponse {
   public <T> ApiResponse content(T content) {
     this.content = content;
     this.attachments.put(CONTENT_KEY, this.content);
-    return this;
-  }
-
-  public ApiResponse errors(BindException exception) {
-    for (FieldError fieldError : exception.getFieldErrors()) {
-      ApiError error = new ApiError(fieldError);
-      this.errors.add(error);
-    }
-    this.attachments.put(ERRORS_KEY, this.errors);
     return this;
   }
 
