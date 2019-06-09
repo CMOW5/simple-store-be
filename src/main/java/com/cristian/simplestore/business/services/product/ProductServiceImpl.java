@@ -26,6 +26,9 @@ public class ProductServiceImpl implements ProductService {
 
   @Autowired
   private ImageService imageService;
+  
+  private static final String PRODUCT_NOT_FOUND_EXCEPTION = "The product with the given id was not found";
+
 
   public List<Product> findAll() {
     List<Product> products = new ArrayList<>();
@@ -40,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
 
   public Product findById(Long id) {
     return productRepository.findById(id).orElseThrow(
-        () -> new EntityNotFoundException("The product with the given id was not found"));
+        () -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
   }
 
   @Transactional
@@ -68,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
   @Transactional
   public Product update(ProductUpdateRequest form) {
     Product storedProduct = productRepository.findById(form.getId()).orElseThrow(
-        () -> new EntityNotFoundException("The product with the given id was not found"));
+        () -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
     List<Long> imagesIdsToDelete = form.getImagesIdsToDelete();
     List<MultipartFile> newImages = form.getNewImages();
 
@@ -103,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
     try {
       productRepository.deleteById(id);
     } catch (EmptyResultDataAccessException exception) {
-      throw new EntityNotFoundException("The category with the given id was not found");
+      throw new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION);
     }
   }
 
