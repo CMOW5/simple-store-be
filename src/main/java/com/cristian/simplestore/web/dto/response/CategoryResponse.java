@@ -1,6 +1,8 @@
 package com.cristian.simplestore.web.dto.response;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.cristian.simplestore.persistence.entities.Category;
@@ -42,6 +44,16 @@ public class CategoryResponse implements ResponseEntityDto<Category> {
 
   private void mapImage(Image image) {
     this.image = ImageResponse.build(image);
+  }
+  
+  public static CategoryResponse from(Category category) {
+	return new CategoryResponse(category);
+  }
+
+  public static List<CategoryResponse> from(List<Category> categories) {
+    List<CategoryResponse> dtos = new ArrayList<>();
+    categories.forEach(category -> dtos.add(from(category)));
+    return dtos;
   }
 
   @Override

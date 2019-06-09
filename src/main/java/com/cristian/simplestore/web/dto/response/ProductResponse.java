@@ -44,6 +44,16 @@ public class ProductResponse {
     mapParentCategory(product.getCategory());
     mapImages(product.getImages());
   }
+  
+  public static ProductResponse from(Product product) {
+	  return new ProductResponse(product);
+  }
+  
+  public static List<ProductResponse> from(List<Product> products) {
+	  List<ProductResponse> dtos = new ArrayList<>();
+	  products.forEach(product -> dtos.add(from(product)));
+	  return dtos;
+  }
 
   private void mapImages(List<Image> images) {
     if (images != null) {
