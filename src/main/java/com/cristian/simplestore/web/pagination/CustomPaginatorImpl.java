@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "currentPage", "currentPageUrl", "hasMorePages" ,"nextPage", "nextPageUrl", 
   "hasPrevious" ,"previousPage", "previousPageUrl", "pageSize", "totalPages", "offset"})
-public class CustomPaginatorImpl implements CustomPaginator {
+class CustomPaginatorImpl implements CustomPaginator {
 
   private Page<?> page;
   private Pageable paginationInfo;
