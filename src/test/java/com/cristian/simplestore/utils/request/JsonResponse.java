@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JsonResponse {
 	
-	ResponseEntity<String> responseEntity;
+	private final ResponseEntity<String> responseEntity;
 	
 	public JsonResponse(ResponseEntity<String> responseEntity) {
 		this.responseEntity = responseEntity;
