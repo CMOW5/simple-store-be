@@ -20,14 +20,18 @@ import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-  @Autowired
-  private CategoryRepository categoryRepository;
+  private final CategoryRepository categoryRepository;
 
-  @Autowired
-  private ImageService imageService;
+  private final ImageService imageService;
 
   private static final String CATEGORY_NOT_FOUND_EXCEPTION =
       "The category with the given id was not found";
+
+  @Autowired
+  public CategoryServiceImpl(CategoryRepository categoryRepository, ImageService imageService) {
+    this.categoryRepository = categoryRepository;
+    this.imageService = imageService;
+  }
 
   public List<Category> findAll() {
     List<Category> foundCategories = new ArrayList<>();

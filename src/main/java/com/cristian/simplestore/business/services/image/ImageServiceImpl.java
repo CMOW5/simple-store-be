@@ -18,11 +18,16 @@ import com.cristian.simplestore.persistence.repositories.ImageRepository;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-  @Autowired
-  private ImageRepository imageRepository;
+  private final ImageRepository imageRepository;
+
+  private final ImageStorageService imageStorageService;
 
   @Autowired
-  private ImageStorageService imageStorageService;
+  public ImageServiceImpl(ImageRepository imageRepository,
+      ImageStorageService imageStorageService) {
+    this.imageRepository = imageRepository;
+    this.imageStorageService = imageStorageService;
+  }
 
   public Image findById(Long id) {
     return imageRepository.findById(id).orElseThrow(

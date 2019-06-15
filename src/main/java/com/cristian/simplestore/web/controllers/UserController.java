@@ -19,8 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 public class UserController {
 
+  private final UserRepository userRepository;
+  
   @Autowired
-  private UserRepository userRepository;
+  public UserController(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @GetMapping("/me")
   @PreAuthorize("hasRole('USER')")

@@ -28,8 +28,12 @@ import com.cristian.simplestore.web.utils.response.ApiResponse;
 @RequestMapping("/api/admin/products")
 public class ProductController {
 
+  private final ProductService productService;
+  
   @Autowired
-  private ProductService productService;
+  public ProductController(ProductService productService) {
+    this.productService = productService;
+  }
 
   @GetMapping
   public ResponseEntity<?> findAllProducts(@RequestParam(defaultValue = "0") int page,

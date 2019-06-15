@@ -21,29 +21,33 @@ import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-  @Autowired
-  ProductRepository productRepository;
+  private final ProductRepository productRepository;
+
+  private final ImageService imageService;
+
+  private static final String PRODUCT_NOT_FOUND_EXCEPTION =
+      "The product with the given id was not found";
 
   @Autowired
-  private ImageService imageService;
-  
-  private static final String PRODUCT_NOT_FOUND_EXCEPTION = "The product with the given id was not found";
-
+  public ProductServiceImpl(ProductRepository productRepository, ImageService imageService) {
+    this.productRepository = productRepository;
+    this.imageService = imageService;
+  }
 
   public List<Product> findAll() {
     List<Product> products = new ArrayList<>();
     productRepository.findAll().forEach(products::add);
     return products;
   }
-  
+
   @Override
   public Page<Product> findAll(int page, int size) {
     return productRepository.findAll(PageRequest.of(page, size));
   }
 
   public Product findById(Long id) {
-    return productRepository.findById(id).orElseThrow(
-        () -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
+    return productRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
   }
 
   @Transactional
@@ -70,8 +74,8 @@ public class ProductServiceImpl implements ProductService {
 
   @Transactional
   public Product update(ProductUpdateRequest form) {
-    Product storedProduct = productRepository.findById(form.getId()).orElseThrow(
-        () -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
+    Product storedProduct = productRepository.findById(form.getId())
+        .orElseThrow(() -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
     List<Long> imagesIdsToDelete = form.getImagesIdsToDelete();
     List<MultipartFile> newImages = form.getNewImages();
 

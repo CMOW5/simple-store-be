@@ -27,8 +27,12 @@ import com.cristian.simplestore.web.utils.response.ApiResponse;
 @RequestMapping("/api/admin/categories")
 public class CategoryController {
 
+  private final CategoryService categoryService;
+  
   @Autowired
-  private CategoryService categoryService;
+  public CategoryController(CategoryService categoryService) {
+    this.categoryService = categoryService;
+  }
 
   @GetMapping
   public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page,

@@ -17,9 +17,13 @@ import com.cristian.simplestore.business.services.storage.exceptions.StorageFile
 
 @RestController
 public class ImageController {
-
+  
+  private final ImageStorageService imageStorageService;
+  
   @Autowired
-  ImageStorageService imageStorageService;
+  public ImageController(ImageStorageService imageStorageService) {
+    this.imageStorageService = imageStorageService;
+  }
 
   @GetMapping(value = "api/images/{filename:..+}")
   public ResponseEntity<?> serveImage(@PathVariable String filename) throws IOException {

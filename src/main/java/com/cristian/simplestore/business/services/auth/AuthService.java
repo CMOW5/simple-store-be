@@ -21,17 +21,23 @@ import com.cristian.simplestore.web.exceptions.BadRequestException;
 @Service
 public class AuthService {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
+
+  private final AuthenticationManager authenticationManager;
+
+  private final TokenProvider tokenProvider;
+
+  private final PasswordEncoder passwordEncoder;
 
   @Autowired
-  private AuthenticationManager authenticationManager;
+  public AuthService(UserRepository userRepository, AuthenticationManager authenticationManager,
+      TokenProvider tokenProvider, PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.authenticationManager = authenticationManager;
+    this.tokenProvider = tokenProvider;
+    this.passwordEncoder = passwordEncoder;
+  }
 
-  @Autowired
-  private TokenProvider tokenProvider;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
 
   public User signup(SignUpRequest signUpRequest) {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
