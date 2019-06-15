@@ -41,7 +41,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
         JsonResponse response = categoryRequest.sendFindAllCategoriesRequest();
 
-        List<?> responseCategories = (List<?>) response.getContentFromJsonRespose(List.class);
+        List<?> responseCategories = (List<?>) response.getContent(List.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseCategories.size()).isEqualTo(categories.size());
@@ -53,7 +53,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
         JsonResponse response = categoryRequest.sendFindCategoryByIdRequest(category.getId());
 
-        CategoryResponse foundCategory = (CategoryResponse) response.getContentFromJsonRespose(CategoryResponse.class);
+        CategoryResponse foundCategory = (CategoryResponse) response.getContent(CategoryResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(foundCategory.getName()).isEqualTo(category.getName());
@@ -74,7 +74,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
         
         JsonResponse response = categoryRequest.sendCategoryCreateRequest(form);
         CategoryResponse createdCategory = (CategoryResponse) response
-                .getContentFromJsonRespose(CategoryResponse.class);
+                .getContent(CategoryResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThatDtoisEqualToForm(createdCategory, form);
@@ -88,7 +88,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
         JsonResponse response = categoryRequest.sendCategoryUpdateRequest(categoryToUpdate.getId(), form);
         CategoryResponse updatedCategory = (CategoryResponse) response
-                .getContentFromJsonRespose(CategoryResponse.class);
+                .getContent(CategoryResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThatDtoisEqualToForm(updatedCategory, form);

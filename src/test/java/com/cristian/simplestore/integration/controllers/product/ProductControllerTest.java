@@ -45,7 +45,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
     JsonResponse response = request.sendFindAllProductsRequest();
 
     List<?> foundProducts =
-        (List<?>) response.getContentFromJsonRespose(List.class);
+        (List<?>) response.getContent(List.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(foundProducts.size()).isEqualTo(products.size());
@@ -59,7 +59,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
     JsonResponse response = request.sendFindProductByIdRequest(product.getId());
 
     ProductResponse foundProduct = (ProductResponse) response
-        .getContentFromJsonRespose(ProductResponse.class);
+        .getContent(ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThatProductResponseIsEqualToProduct(foundProduct, product);
@@ -81,7 +81,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
     JsonResponse response = request.sendProductCreateRequest(form);
 
     ProductResponse createdProduct = (ProductResponse) response
-        .getContentFromJsonRespose(ProductResponse.class);
+        .getContent(ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     assertThatProductResponseIsEqualToProduct(createdProduct, form);
@@ -97,7 +97,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
     JsonResponse response = request.sendProductUpdateRequest(productToUpdate.getId(), form);
 
     ProductResponse updatedProduct = (ProductResponse) response
-        .getContentFromJsonRespose(ProductResponse.class);
+        .getContent(ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThatProductResponseIsEqualToProduct(updatedProduct, form);
@@ -114,7 +114,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
 
     JsonResponse response = request.sendProductUpdateRequest(product.getId(), form);
     ProductResponse updatedProduct = (ProductResponse) response
-        .getContentFromJsonRespose(ProductResponse.class);
+        .getContent(ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThatProductResponseIsEqualToProduct(updatedProduct, form);

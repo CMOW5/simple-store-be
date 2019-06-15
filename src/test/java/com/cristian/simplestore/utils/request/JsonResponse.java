@@ -30,7 +30,7 @@ public class JsonResponse {
 		return responseEntity.getBody();
 	}
 	
-	public <T> T getValueFromJsonRespose(String key, Class<T> classType)
+	public <T> T getValue(String key, Class<T> classType)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<?, ?> mappedResponse = mapJsonRespose(responseEntity.getBody());
@@ -45,7 +45,7 @@ public class JsonResponse {
 		return mappedResponse;
 	}
 
-	public <T> T getContentFromJsonRespose(Class<T> classType)
+	public <T> T getContent(Class<T> classType)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<?, ?> mappedResponse = mapJsonRespose(responseEntity.getBody());
@@ -53,7 +53,7 @@ public class JsonResponse {
 		return content;
 	}
 
-	public <T> T getPaginatorFromJsonRespose(Class<T> classType)
+	public <T> T getPaginator(Class<T> classType)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<?, ?> mappedResponse = mapJsonRespose(responseEntity.getBody());
@@ -61,7 +61,7 @@ public class JsonResponse {
 		return content;
 	}
 
-	public <T> T getErrorsFromJsonRespose(Class<T> classType)
+	public <T> T getErrors(Class<T> classType)
 			throws JsonParseException, JsonMappingException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<?, ?> mappedResponse = mapJsonRespose(responseEntity.getBody());

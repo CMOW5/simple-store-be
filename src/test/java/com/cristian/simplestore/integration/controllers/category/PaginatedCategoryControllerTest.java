@@ -44,9 +44,9 @@ public class PaginatedCategoryControllerTest extends BaseIntegrationTest {
     JsonResponse response = new JsonResponse(categoryRequest.send(request.build()));
 
     List<?> responseCategories =
-        (List<?>) response.getContentFromJsonRespose(List.class);
+        (List<?>) response.getContent(List.class);
 
-    Map<?, ?> paginator = response.getPaginatorFromJsonRespose(Map.class);
+    Map<?, ?> paginator = response.getPaginator(Map.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThat(responseCategories.size()).isEqualTo(size);

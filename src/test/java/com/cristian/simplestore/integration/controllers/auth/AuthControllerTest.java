@@ -41,7 +41,7 @@ public class AuthControllerTest extends BaseIntegrationTest {
 
 		JsonResponse response = authRequest.sendSignUpRequest(signUpRequestForm);
 
-		UserResponse user = (UserResponse) response.getContentFromJsonRespose(UserResponse.class);
+		UserResponse user = (UserResponse) response.getContent(UserResponse.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 		assertThat(user.getName()).isEqualTo(signUpRequestForm.get("name"));
@@ -54,7 +54,7 @@ public class AuthControllerTest extends BaseIntegrationTest {
 
 		JsonResponse response = authRequest.sendSignUpRequest(signUpRequestForm);
 
-		List<ApiError> errors = (List) response.getErrorsFromJsonRespose(List.class);
+		List<ApiError> errors = (List) response.getErrors(List.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 		assertThat(errors.size()).isEqualTo(3);
@@ -66,7 +66,7 @@ public class AuthControllerTest extends BaseIntegrationTest {
 
 		JsonResponse response = authRequest.sendLoginRequest(loginRequestForm);
 
-		LoginResponse loginResponse = (LoginResponse) response.getContentFromJsonRespose(LoginResponse.class);
+		LoginResponse loginResponse = (LoginResponse) response.getContent(LoginResponse.class);
 
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(loginResponse.getUser().getEmail()).isEqualTo(loginRequestForm.get("email"));
