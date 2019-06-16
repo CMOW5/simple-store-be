@@ -11,7 +11,7 @@ import org.hibernate.persister.entity.EntityPersister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
-import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
 
 @Component
 public class ImageEntityEventListener implements PostDeleteEventListener {
@@ -40,8 +40,8 @@ public class ImageEntityEventListener implements PostDeleteEventListener {
   @Override
   public void onPostDelete(PostDeleteEvent event) {
     final Object entity = event.getEntity();
-    if (entity instanceof Image) {
-      Image image = (Image) entity;
+    if (entity instanceof ImageEntity) {
+      ImageEntity image = (ImageEntity) entity;
       if (!image.isUrl()) {
         imageStorageService.delete(image.getName());
       }

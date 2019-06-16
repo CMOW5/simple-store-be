@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "categories")
 @NoArgsConstructor
 @Data
-public class Category {
+public class CategoryEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,7 @@ public class Category {
 	private String name;
 
 	@ManyToOne
-	private Category parentCategory;
+	private CategoryEntity parentCategory;
 
 	// @OneToMany(mappedBy = "parentCategory" , cascade = CascadeType.ALL,
 	// orphanRemoval = true)
@@ -38,30 +38,30 @@ public class Category {
 	// private List<Category> subcategories = new ArrayList<>();
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Product> products = new ArrayList<>();
+	private List<ProductEntity> productEntities = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "image_id")
-	private Image image;
+	private ImageEntity image;
 
-	public Category(String name) {
+	public CategoryEntity(String name) {
 		this.name = name;
 	}
 
-	public Category(String name, Image image, Category parentCategory) {
+	public CategoryEntity(String name, ImageEntity image, CategoryEntity parentCategory) {
 		this.name = name;
 		this.image = image;
 		this.parentCategory = parentCategory;
 	}
 
-	public void addSubCategory(Category subcategory) {
+	public void addSubCategory(CategoryEntity subcategory) {
 		// this.subcategories.add(subcategory);
 		// subcategory.setParentCategory(this);
 	}
 
-	public void addProduct(Product product) {
-		products.add(product);
-		product.setCategory(this);
+	public void addProduct(ProductEntity productEntity) {
+		productEntities.add(productEntity);
+		productEntity.setCategory(this);
 	}
 
 	public void deleteImage() {
@@ -74,11 +74,11 @@ public class Category {
 	 * @param category
 	 * @return true if the given category is a sub category of the current object
 	 */
-	public boolean hasSubcategory(Category category) {
+	public boolean hasSubcategory(CategoryEntity category) {
 		if (category == null)
 			return false;
 
-		Category currentCategory = category;
+		CategoryEntity currentCategory = category;
 
 		while (currentCategory.getParentCategory() != null) {
 			if (currentCategory.getParentCategory().getId() == id) {
@@ -91,26 +91,26 @@ public class Category {
 
 	public static class Builder {
 		String name;
-		Image image;
-		Category parentCategory;
+		ImageEntity image;
+		CategoryEntity parentCategory;
 
 		public Builder name(String name) {
 			this.name = name;
 			return this;
 		}
 
-		public Builder image(Image image) {
+		public Builder image(ImageEntity image) {
 			this.image = image;
 			return this;
 		}
 
-		public Builder parent(Category category) {
+		public Builder parent(CategoryEntity category) {
 			this.parentCategory = category;
 			return this;
 		}
 
-		public Category build() {
-			return new Category(name, image, parentCategory);
+		public CategoryEntity build() {
+			return new CategoryEntity(name, image, parentCategory);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class Category {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		Category category = (Category) o;
+		CategoryEntity category = (CategoryEntity) o;
 		return Objects.equals(name, category.name) && Objects.equals(id, category.id);
 	}
 

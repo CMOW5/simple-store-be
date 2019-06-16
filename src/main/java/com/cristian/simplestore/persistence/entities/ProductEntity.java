@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "products")
 @Data
 @NoArgsConstructor
-public class Product implements Serializable {
+public class ProductEntity implements Serializable {
   private static final long serialVersionUID = 8372995282951530629L;
 
   @Id
@@ -50,7 +50,7 @@ public class Product implements Serializable {
   private boolean active;
 
   @ManyToOne
-  private Category category;
+  private CategoryEntity category;
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   @Fetch(FetchMode.JOIN)
@@ -64,30 +64,30 @@ public class Product implements Serializable {
   @UpdateTimestamp
   private LocalDateTime updatedDate;
 
-  public Product(String name, double price) {
+  public ProductEntity(String name, double price) {
     this.name = name;
     this.price = price;
   }
 
-  public List<Image> getImages() {
-    List<Image> images = new ArrayList<>();
+  public List<ImageEntity> getImages() {
+    List<ImageEntity> images = new ArrayList<>();
     productImages.forEach(image -> images.add(image.getImage()));
     return images;
   }
 
-  public void addImage(Image image) {
+  public void addImage(ImageEntity image) {
     ProductImage productImage = new ProductImage(this, image);
     productImages.add(productImage);
     image.getOwners().add(productImage);
   }
 
-  public void addImages(List<Image> images) {
-    for (Image image : images) {
+  public void addImages(List<ImageEntity> images) {
+    for (ImageEntity image : images) {
       addImage(image);
     }
   }
 
-  public void removeImage(Image image) {
+  public void removeImage(ImageEntity image) {
     ProductImage productImage = new ProductImage(this, image);
     image.getOwners().remove(productImage);
     productImages.remove(productImage);
@@ -95,8 +95,8 @@ public class Product implements Serializable {
     productImage.setImage(null);
   }
 
-  public void removeImages(List<Image> images) {
-    for (Image image : images) {
+  public void removeImages(List<ImageEntity> images) {
+    for (ImageEntity image : images) {
       removeImage(image);
     }
   }
@@ -109,8 +109,8 @@ public class Product implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Product product = (Product) o;
-    return Objects.equals(name, product.name) && Objects.equals(id, product.id);
+    ProductEntity productEntity = (ProductEntity) o;
+    return Objects.equals(name, productEntity.name) && Objects.equals(id, productEntity.id);
   }
 
   @Override

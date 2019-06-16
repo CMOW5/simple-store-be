@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "images")
 @Data
 @NoArgsConstructor
-public class Image implements Serializable {
+public class ImageEntity implements Serializable {
   private static final long serialVersionUID = 3603066326555414036L;
 
   @Id

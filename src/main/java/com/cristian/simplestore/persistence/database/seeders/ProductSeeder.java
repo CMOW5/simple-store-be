@@ -3,9 +3,9 @@ package com.cristian.simplestore.persistence.database.seeders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;
 import com.github.javafaker.Faker;
 
@@ -39,21 +39,21 @@ public class ProductSeeder {
     return (long) faker.number().numberBetween(0, MAX_STOCK);
   }
   
-  public Product saveRandomProductOnDB() {
-    Product product = new Product();
-    product.setName(generateRandomName());
-    product.setDescription(generateRandomDescription());
-    product.setPrice(generateRandomPrice());
-    product.setPriceSale(generateRandomPrice());
-    product.setStock(generateRandomStock());
-    product.setActive(true);
-    Category category = categorySeeder.createRandomCategoryOnDB();
-    product.setCategory(category);
-    Image image1 = categorySeeder.generateRandomImageOnDB();
-    Image image2 = categorySeeder.generateRandomImageOnDB();
-    product.addImage(image1);
-    product.addImage(image2);
-    return productRepository.save(product);
+  public ProductEntity saveRandomProductOnDB() {
+    ProductEntity productEntity = new ProductEntity();
+    productEntity.setName(generateRandomName());
+    productEntity.setDescription(generateRandomDescription());
+    productEntity.setPrice(generateRandomPrice());
+    productEntity.setPriceSale(generateRandomPrice());
+    productEntity.setStock(generateRandomStock());
+    productEntity.setActive(true);
+    CategoryEntity category = categorySeeder.createRandomCategoryOnDB();
+    productEntity.setCategory(category);
+    ImageEntity image1 = categorySeeder.generateRandomImageOnDB();
+    ImageEntity image2 = categorySeeder.generateRandomImageOnDB();
+    productEntity.addImage(image1);
+    productEntity.addImage(image2);
+    return productRepository.save(productEntity);
 }
 
   public void seed(int size) {

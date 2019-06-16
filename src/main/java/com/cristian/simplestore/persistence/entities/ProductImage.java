@@ -19,14 +19,14 @@ public class ProductImage implements Serializable {
 
   @Id
   @ManyToOne
-  private Product product;
+  private ProductEntity product;
 
   @Id
   @ManyToOne
-  private Image image;
+  private ImageEntity image;
 
-  public ProductImage(Product product, Image image) {
-    this.product = product;
+  public ProductImage(ProductEntity productEntity, ImageEntity image) {
+    this.product = productEntity;
     this.image = image;
   }
 
