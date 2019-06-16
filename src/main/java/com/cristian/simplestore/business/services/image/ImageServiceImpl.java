@@ -11,7 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
-import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
 import com.cristian.simplestore.persistence.repositories.ImageRepository;
 
 
@@ -29,44 +29,44 @@ public class ImageServiceImpl implements ImageService {
     this.imageStorageService = imageStorageService;
   }
 
-  public Image findById(Long id) {
+  public ImageEntity findById(Long id) {
     return imageRepository.findById(id).orElseThrow(
         () -> new EntityNotFoundException("The image with the given id was not found"));
   }
 
-  public List<Image> findAllById(List<Long> imagesIds) {
-    Iterable<Image> storedImages = imageRepository.findAllById(imagesIds);
+  public List<ImageEntity> findAllById(List<Long> imagesIds) {
+    Iterable<ImageEntity> storedImages = imageRepository.findAllById(imagesIds);
 
-    List<Image> images = new ArrayList<>();
+    List<ImageEntity> images = new ArrayList<>();
     storedImages.forEach(images::add);
 
     return images;
   }
 
   @Transactional
-  public Image save(MultipartFile file) {
+  public ImageEntity save(MultipartFile file) {
     String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
-    Image image = new Image();
+    ImageEntity image = new ImageEntity();
     image.setName(imageNameWithPath);
     return imageRepository.save(image);
   }
 
-  public Image save(Image image) {
+  public ImageEntity save(ImageEntity image) {
     return imageRepository.save(image);
   }
 
   @Transactional
-  public List<Image> saveAll(List<MultipartFile> imagesFiles) {
-    List<Image> savedImages = new ArrayList<>();
+  public List<ImageEntity> saveAll(List<MultipartFile> imagesFiles) {
+    List<ImageEntity> savedImages = new ArrayList<>();
 
     for (MultipartFile imageFile : imagesFiles) {
-      Image image = save(imageFile);
+      ImageEntity image = save(imageFile);
       savedImages.add(image);
     }
     return savedImages;
   }
 
-  public void delete(Image image) {
+  public void delete(ImageEntity image) {
     try {
       imageRepository.delete(image);
     } catch (EmptyResultDataAccessException exception) {
@@ -85,11 +85,11 @@ public class ImageServiceImpl implements ImageService {
   }
 
   public void deleteAllById(Iterable<Long> imagesIdsToDelete) {
-    Iterable<Image> imagesToDelete = imageRepository.findAllById(imagesIdsToDelete);
+    Iterable<ImageEntity> imagesToDelete = imageRepository.findAllById(imagesIdsToDelete);
     imageRepository.deleteAll(imagesToDelete);
   }
 
-  public void deleteAll(Iterable<Image> imagesToDelete) {
+  public void deleteAll(Iterable<ImageEntity> imagesToDelete) {
     imageRepository.deleteAll(imagesToDelete);
   }
 

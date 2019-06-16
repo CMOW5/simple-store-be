@@ -11,8 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.business.services.image.ImageService;
-import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;
 import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
@@ -34,47 +34,47 @@ public class ProductServiceImpl implements ProductService {
     this.imageService = imageService;
   }
 
-  public List<Product> findAll() {
-    List<Product> products = new ArrayList<>();
-    productRepository.findAll().forEach(products::add);
-    return products;
+  public List<ProductEntity> findAll() {
+    List<ProductEntity> productEntities = new ArrayList<>();
+    productRepository.findAll().forEach(productEntities::add);
+    return productEntities;
   }
 
   @Override
-  public Page<Product> findAll(int page, int size) {
+  public Page<ProductEntity> findAll(int page, int size) {
     return productRepository.findAll(PageRequest.of(page, size));
   }
 
-  public Product findById(Long id) {
+  public ProductEntity findById(Long id) {
     return productRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
   }
 
   @Transactional
-  public Product create(Product product) {
-    return productRepository.save(product);
+  public ProductEntity create(ProductEntity productEntity) {
+    return productRepository.save(productEntity);
   }
 
   @Transactional
-  public Product create(ProductCreateRequest form) {
-    Product product = new Product();
+  public ProductEntity create(ProductCreateRequest form) {
+    ProductEntity productEntity = new ProductEntity();
 
-    product.setName(form.getName());
-    product.setDescription(form.getDescription());
-    product.setPrice(form.getPrice());
-    product.setPriceSale(form.getPriceSale());
-    product.setInSale(form.isInSale());
-    product.setActive(form.isActive());
-    product.setCategory(form.getCategory());
-    product.setStock(form.getStock());
-    product = addImagesToProduct(product, form.getImages());
+    productEntity.setName(form.getName());
+    productEntity.setDescription(form.getDescription());
+    productEntity.setPrice(form.getPrice());
+    productEntity.setPriceSale(form.getPriceSale());
+    productEntity.setInSale(form.isInSale());
+    productEntity.setActive(form.isActive());
+    productEntity.setCategory(form.getCategory());
+    productEntity.setStock(form.getStock());
+    productEntity = addImagesToProduct(productEntity, form.getImages());
 
-    return productRepository.save(product);
+    return productRepository.save(productEntity);
   }
 
   @Transactional
-  public Product update(ProductUpdateRequest form) {
-    Product storedProduct = productRepository.findById(form.getId())
+  public ProductEntity update(ProductUpdateRequest form) {
+    ProductEntity storedProduct = productRepository.findById(form.getId())
         .orElseThrow(() -> new EntityNotFoundException(PRODUCT_NOT_FOUND_EXCEPTION));
     List<Long> imagesIdsToDelete = form.getImagesIdsToDelete();
     List<MultipartFile> newImages = form.getNewImages();
@@ -93,17 +93,17 @@ public class ProductServiceImpl implements ProductService {
     return storedProduct;
   }
 
-  public Product addImagesToProduct(Product product, List<MultipartFile> newImages) {
-    List<Image> images = imageService.saveAll(newImages);
-    product.addImages(images);
-    return product;
+  public ProductEntity addImagesToProduct(ProductEntity productEntity, List<MultipartFile> newImages) {
+    List<ImageEntity> images = imageService.saveAll(newImages);
+    productEntity.addImages(images);
+    return productEntity;
   }
 
-  public Product deleteProductImages(Product product, List<Long> imagesIdsToDelete) {
-    List<Image> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
-    product.removeImages(imagesToDelete);
+  public ProductEntity deleteProductImages(ProductEntity productEntity, List<Long> imagesIdsToDelete) {
+    List<ImageEntity> imagesToDelete = imageService.findAllById(imagesIdsToDelete);
+    productEntity.removeImages(imagesToDelete);
     imageService.deleteAll(imagesToDelete);
-    return product;
+    return productEntity;
   }
 
   public void deleteById(Long id) {
@@ -114,9 +114,9 @@ public class ProductServiceImpl implements ProductService {
     }
   }
 
-  public Page<Product> test() {
-    Page<Product> products = productRepository.findAll(PageRequest.of(0, 20));
-    return products;
+  public Page<ProductEntity> test() {
+    Page<ProductEntity> productEntities = productRepository.findAll(PageRequest.of(0, 20));
+    return productEntities;
   }
 
   public long count() {

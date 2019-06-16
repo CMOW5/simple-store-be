@@ -2,25 +2,25 @@ package com.cristian.simplestore.business.services.category;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
-import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 
 public interface CategoryService {
 
-  List<Category> findAll();
+  List<CategoryEntity> findAll();
   
-  Page<Category> findAll(int page, int size);
+  Page<CategoryEntity> findAll(int page, int size);
 
-  Category findById(Long id);
+  CategoryEntity findById(Long id);
 
-  Category create(Category category);
+  CategoryEntity create(CategoryEntity category);
 
-  Category create(CategoryCreateRequest form);
+  CategoryEntity create(CategoryCreateRequest form);
 
-  Category update(Long id, Category category);
+  CategoryEntity update(Long id, CategoryEntity category);
 
-  Category update(CategoryUpdateRequest form);
+  CategoryEntity update(CategoryUpdateRequest form);
 
   void deleteById(Long id);
 

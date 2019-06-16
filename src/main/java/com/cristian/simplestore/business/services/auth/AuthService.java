@@ -15,7 +15,7 @@ import com.cristian.simplestore.security.UserPrincipal;
 import com.cristian.simplestore.security.oauth2.AuthProvider;
 import com.cristian.simplestore.web.dto.request.user.LoginRequest;
 import com.cristian.simplestore.web.dto.request.user.SignUpRequest;
-import com.cristian.simplestore.web.dto.response.LoginResponse;
+import com.cristian.simplestore.web.dto.response.user.LoginResponse;
 import com.cristian.simplestore.web.exceptions.BadRequestException;
 
 @Service
