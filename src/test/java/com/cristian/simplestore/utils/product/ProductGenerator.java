@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
 import com.cristian.simplestore.persistence.repositories.ProductRepository;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.utils.image.ImageTestsUtils;
@@ -48,21 +48,21 @@ public class ProductGenerator {
 		return (long) faker.number().numberBetween(0, MAX_STOCK);
 	}
 	
-	public Product generateRandomProduct() {
+	public ProductEntity generateRandomProduct() {
 		return new Builder().randomName().randomDescription().randomPrice().randomPriceSale().randomCategory()
 				.randomStock().randomImages(2).randomCategory().active().build();
 	}
 	
-	public Product saveRandomProductOnDB() {
+	public ProductEntity saveRandomProductOnDB() {
 		return productRepository.save(generateRandomProduct());
 	}
 	
-	public List<Product> saveRandomProductsOnDB(int size) {
-		List<Product> products = new ArrayList<>();
+	public List<ProductEntity> saveRandomProductsOnDB(int size) {
+		List<ProductEntity> productEntities = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
-			products.add(saveRandomProductOnDB());
+			productEntities.add(saveRandomProductOnDB());
 		}
-		return products;
+		return productEntities;
 	}
 
 	public class Builder {
@@ -72,9 +72,9 @@ public class ProductGenerator {
 		private double priceSale;
 		private boolean inSale;
 		private boolean active;
-		private Category category;
+		private CategoryEntity category;
 		private Long stock;
-		private List<Image> images = new ArrayList<>();
+		private List<ImageEntity> images = new ArrayList<>();
 
 		public Builder randomName() {
 			this.name = generateRandomName();
@@ -121,21 +121,21 @@ public class ProductGenerator {
 			return this;
 		}
 
-		public Product build() {
-			Product product = new Product();
-			product.setName(name);
-			product.setDescription(description);
-			product.setPrice(price);
-			product.setPriceSale(priceSale);
-			product.setStock(stock);
-			product.setInSale(inSale);
-			product.setActive(active);
-			product.setCategory(category);
-			product.addImages(images);
-			return product;
+		public ProductEntity build() {
+			ProductEntity productEntity = new ProductEntity();
+			productEntity.setName(name);
+			productEntity.setDescription(description);
+			productEntity.setPrice(price);
+			productEntity.setPriceSale(priceSale);
+			productEntity.setStock(stock);
+			productEntity.setInSale(inSale);
+			productEntity.setActive(active);
+			productEntity.setCategory(category);
+			productEntity.addImages(images);
+			return productEntity;
 		}
 		
-		public Product save() {
+		public ProductEntity save() {
 			return productRepository.save(build());
 		}
 	}

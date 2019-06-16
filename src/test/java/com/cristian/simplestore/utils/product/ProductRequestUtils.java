@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.utils.image.ImageTestsUtils;
 import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
@@ -45,7 +45,7 @@ public class ProductRequestUtils {
 		private double priceSale;
 		private boolean inSale;
 		private boolean active;
-		private Category category;
+		private CategoryEntity category;
 		private Long stock;
 		private List<MultipartFile> images = new ArrayList<>();
 
@@ -117,7 +117,7 @@ public class ProductRequestUtils {
 		private double priceSale;
 		private boolean inSale;
 		private boolean active;
-		private Category category;
+		private CategoryEntity category;
 		private Long stock;
 		private List<MultipartFile> newImages = new ArrayList<>();
 		private List<Long> imagesIdsToDelete = new ArrayList<>();

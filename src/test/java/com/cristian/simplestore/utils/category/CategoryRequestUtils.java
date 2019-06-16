@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
 import com.cristian.simplestore.utils.image.ImageFileFactory;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
@@ -24,7 +24,7 @@ public class CategoryRequestUtils {
 
 	public class CategoryCreateRequestBuilder {
 		private String name;
-		private Category parentCategory;
+		private CategoryEntity parentCategory;
 		private MultipartFile image;
 
 		public CategoryCreateRequestBuilder withRandomName() {
@@ -54,7 +54,7 @@ public class CategoryRequestUtils {
 	public class CategoryUpdateRequestBuilder {
 		private Long id;
 		private String name;
-		private Category parentCategory;
+		private CategoryEntity parentCategory;
 		private MultipartFile newImage;
 		private Long imageIdToDelete;
 
@@ -87,7 +87,7 @@ public class CategoryRequestUtils {
 			return this;
 		}
 		
-		public CategoryUpdateRequestBuilder parent(Category parent) {
+		public CategoryUpdateRequestBuilder parent(CategoryEntity parent) {
 			this.parentCategory = parent;
 			return this;
 		}

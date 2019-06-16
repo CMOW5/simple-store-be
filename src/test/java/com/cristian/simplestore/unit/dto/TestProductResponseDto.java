@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
-import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
 import com.cristian.simplestore.utils.product.ProductGenerator;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
 
@@ -22,22 +22,22 @@ public class TestProductResponseDto extends BaseTest {
 
   @Test
   public void convertEntityToDto() {
-    Product product = productGenerator.saveRandomProductOnDB();
-    ProductResponse productDto = new ProductResponse(product);
+    ProductEntity productEntity = productGenerator.saveRandomProductOnDB();
+    ProductResponse productDto = ProductResponse.of(productEntity);
 
-    assertThatImageAndDtoDataAreEqual(product, productDto);
+    assertThatImageAndDtoDataAreEqual(productEntity, productDto);
   }
 
-  private void assertThatImageAndDtoDataAreEqual(Product product, ProductResponse productDto) {
-    assertThat(product.getId()).isEqualTo(productDto.getId());
-    assertThat(product.getName()).isEqualTo(productDto.getName());
-    assertThat(product.getDescription()).isEqualTo(productDto.getDescription());
-    assertThat(product.getPrice()).isEqualTo(productDto.getPrice());
-    assertThat(product.getPriceSale()).isEqualTo(productDto.getPriceSale());
-    assertThat(product.isInSale()).isEqualTo(productDto.isInSale());
-    assertThat(product.isActive()).isEqualTo(productDto.isActive());
-    assertThat(product.getStock()).isEqualTo(productDto.getStock());
-    assertThat(product.getCategory().getId()).isEqualTo(productDto.getCategory().getId());
-    assertThat(product.getImages().size()).isEqualTo(productDto.getImages().size());
+  private void assertThatImageAndDtoDataAreEqual(ProductEntity productEntity, ProductResponse productDto) {
+    assertThat(productEntity.getId()).isEqualTo(productDto.getId());
+    assertThat(productEntity.getName()).isEqualTo(productDto.getName());
+    assertThat(productEntity.getDescription()).isEqualTo(productDto.getDescription());
+    assertThat(productEntity.getPrice()).isEqualTo(productDto.getPrice());
+    assertThat(productEntity.getPriceSale()).isEqualTo(productDto.getPriceSale());
+    assertThat(productEntity.isInSale()).isEqualTo(productDto.isInSale());
+    assertThat(productEntity.isActive()).isEqualTo(productDto.isActive());
+    assertThat(productEntity.getStock()).isEqualTo(productDto.getStock());
+    assertThat(productEntity.getCategory().getId()).isEqualTo(productDto.getCategory().getId());
+    assertThat(productEntity.getImages().size()).isEqualTo(productDto.getImages().size());
   }
 }

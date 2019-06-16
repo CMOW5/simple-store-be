@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.BaseTest;
-import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
 import com.cristian.simplestore.utils.image.ImageTestsUtils;
 import com.cristian.simplestore.web.dto.response.ImageResponse;
 
@@ -22,13 +22,13 @@ public class TestImageResponseDto extends BaseTest {
 
   @Test
   public void convertEntityToDto() {
-    Image image = imageUtils.saveRandomImageOnDb();
-    ImageResponse imageDto = new ImageResponse(image);
+    ImageEntity image = imageUtils.saveRandomImageOnDb();
+    ImageResponse imageDto = ImageResponse.of(image);
 
     assertThatImageAndDtoDataAreEqual(image, imageDto);
   }
 
-  private void assertThatImageAndDtoDataAreEqual(Image image, ImageResponse imageDto) {
+  private void assertThatImageAndDtoDataAreEqual(ImageEntity image, ImageResponse imageDto) {
     assertThat(image.getId()).isEqualTo(imageDto.getId());
     assertThat(image.getUrl()).isEqualTo(imageDto.getUrl());
   }

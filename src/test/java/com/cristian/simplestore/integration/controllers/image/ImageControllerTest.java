@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.business.services.image.ImageService;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
-import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
 import com.cristian.simplestore.utils.image.ImageFileFactory;
 import com.cristian.simplestore.utils.request.JsonResponse;
 
@@ -31,7 +31,7 @@ public class ImageControllerTest extends BaseIntegrationTest {
 
   @Test
   public void testItServesAnImage() throws IOException {
-    Image image = saveRandomImageOnDb();
+    ImageEntity image = saveRandomImageOnDb();
 
     JsonResponse response = imageRequest.sendGetImageRequest(image.getName());
 
@@ -48,10 +48,10 @@ public class ImageControllerTest extends BaseIntegrationTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
-  private Image saveRandomImageOnDb() throws IOException {
+  private ImageEntity saveRandomImageOnDb() throws IOException {
     Resource resource = imageFileFactory.storeImageOnDisk();
 
-    Image image = new Image();
+    ImageEntity image = new ImageEntity();
     image.setName(resource.getFile().getPath());
     return this.imageService.save(image);
   }

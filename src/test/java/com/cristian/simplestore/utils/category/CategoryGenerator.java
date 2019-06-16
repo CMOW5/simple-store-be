@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
 import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.utils.image.ImageTestsUtils;
 import com.github.javafaker.Faker;
@@ -25,7 +25,7 @@ public class CategoryGenerator {
 		this.imageUtils = imageUtils;
 	}
 	
-	public Category generateRandomCategory() {
+	public CategoryEntity generateRandomCategory() {
 		return new Builder().randomName().randomImage().randomParent().build();
 	}
 	
@@ -33,12 +33,12 @@ public class CategoryGenerator {
 		return faker.name().name();
 	}
 	
-	public Category saveRandomCategoryOnDb() {
+	public CategoryEntity saveRandomCategoryOnDb() {
 		return new Builder().randomName().randomImage().save();
 	}
 	
-	public List<Category> saveRandomCategoriesOnDb(int size) {
-		List<Category> categories = new ArrayList<>();
+	public List<CategoryEntity> saveRandomCategoriesOnDb(int size) {
+		List<CategoryEntity> categories = new ArrayList<>();
 		for (int i = 0; i < size; i++) {
 			categories.add(saveRandomCategoryOnDb());
 		}
@@ -47,8 +47,8 @@ public class CategoryGenerator {
 	
 	public class Builder {
 		String name;
-		Image image;
-		Category parent;
+		ImageEntity image;
+		CategoryEntity parent;
 		
 		public Builder randomName() {
 			this.name = generateRandomCategoryName();
@@ -65,7 +65,7 @@ public class CategoryGenerator {
 			return this;
 		}
 		
-		public Builder image(Image image) {
+		public Builder image(ImageEntity image) {
 			this.image = image;
 			return this;
 		}
@@ -75,16 +75,16 @@ public class CategoryGenerator {
 			return this;
 		}
 		
-		public Builder parent(Category parent) {
+		public Builder parent(CategoryEntity parent) {
 			this.parent = parent;
 			return this;
 		}
 		
-		public Category build() {
-			return new Category(name, image, parent);
+		public CategoryEntity build() {
+			return new CategoryEntity(name, image, parent);
 		}
 		
-		public Category save() {
+		public CategoryEntity save() {
 			return categoryRepository.save(build());
 		}
 	}

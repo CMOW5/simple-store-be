@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.product.request.AuthenticatedProductRequest;
-import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.product.ProductFormUtils;
 import com.cristian.simplestore.utils.product.ProductGenerator;
@@ -40,7 +40,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
   public void testItFindsAllProducts()
       throws JsonParseException, JsonMappingException, IOException {
     int MAX_PRODUCTS_SIZE = 4;
-    List<Product> products = productsGenerator.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
+    List<ProductEntity> productEntities = productsGenerator.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
 
     JsonResponse response = request.sendFindAllProductsRequest();
 
@@ -48,21 +48,21 @@ public class ProductControllerTest extends BaseIntegrationTest {
         (List<?>) response.getContent(List.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThat(foundProducts.size()).isEqualTo(products.size());
+    assertThat(foundProducts.size()).isEqualTo(productEntities.size());
   }
 
   @Test
   public void testItFindsAProductById()
       throws JsonParseException, JsonMappingException, IOException {
-    Product product = productsGenerator.saveRandomProductOnDB();
+    ProductEntity productEntity = productsGenerator.saveRandomProductOnDB();
 
-    JsonResponse response = request.sendFindProductByIdRequest(product.getId());
+    JsonResponse response = request.sendFindProductByIdRequest(productEntity.getId());
 
     ProductResponse foundProduct = (ProductResponse) response
         .getContent(ProductResponse.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThatProductResponseIsEqualToProduct(foundProduct, product);
+    assertThatProductResponseIsEqualToProduct(foundProduct, productEntity);
   }
 
   @Test
@@ -91,7 +91,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
 
   @Test
   public void testItUpdatesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    Product productToUpdate = productsGenerator.saveRandomProductOnDB();
+    ProductEntity productToUpdate = productsGenerator.saveRandomProductOnDB();
     MultiPartFormBuilder form = productsFormUtils.generateRandomProductUpdateRequestForm();
 
     JsonResponse response = request.sendProductUpdateRequest(productToUpdate.getId(), form);
@@ -108,11 +108,11 @@ public class ProductControllerTest extends BaseIntegrationTest {
   @Test
   public void testItUpdatesAProductImages()
       throws JsonParseException, JsonMappingException, IOException {
-    Product product = productsGenerator.saveRandomProductOnDB();
+    ProductEntity productEntity = productsGenerator.saveRandomProductOnDB();
     MultiPartFormBuilder form = productsFormUtils.generateRandomProductUpdateRequestForm();
-    form.add("imagesIdsToDelete", getIdsFromImages(product.getImages()));
+    form.add("imagesIdsToDelete", getIdsFromImages(productEntity.getImages()));
 
-    JsonResponse response = request.sendProductUpdateRequest(product.getId(), form);
+    JsonResponse response = request.sendProductUpdateRequest(productEntity.getId(), form);
     ProductResponse updatedProduct = (ProductResponse) response
         .getContent(ProductResponse.class);
 
@@ -137,25 +137,25 @@ public class ProductControllerTest extends BaseIntegrationTest {
 
   @Test
   public void testItDeletesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    Product product = productsGenerator.saveRandomProductOnDB();
+    ProductEntity productEntity = productsGenerator.saveRandomProductOnDB();
 
-    JsonResponse response = request.sendProductDeleteRequest(product.getId());
+    JsonResponse response = request.sendProductDeleteRequest(productEntity.getId());
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     
-    response = request.sendFindProductByIdRequest(product.getId());
+    response = request.sendFindProductByIdRequest(productEntity.getId());
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
   }
 
   private void assertThatProductResponseIsEqualToProduct(ProductResponse expectedProduct,
-      Product product) {
-    assertThat(expectedProduct.getName()).isEqualTo(product.getName());
-    assertThat(expectedProduct.getDescription()).isEqualTo(product.getDescription());
-    assertThat(expectedProduct.getPrice()).isEqualTo(product.getPrice());
-    assertThat(expectedProduct.getPriceSale()).isEqualTo(product.getPriceSale());
-    assertThat(expectedProduct.isInSale()).isEqualTo(product.isInSale());
-    assertThat(expectedProduct.isActive()).isEqualTo(product.isActive());
-    assertThat(expectedProduct.getStock()).isEqualTo(product.getStock());
+      ProductEntity productEntity) {
+    assertThat(expectedProduct.getName()).isEqualTo(productEntity.getName());
+    assertThat(expectedProduct.getDescription()).isEqualTo(productEntity.getDescription());
+    assertThat(expectedProduct.getPrice()).isEqualTo(productEntity.getPrice());
+    assertThat(expectedProduct.getPriceSale()).isEqualTo(productEntity.getPriceSale());
+    assertThat(expectedProduct.isInSale()).isEqualTo(productEntity.isInSale());
+    assertThat(expectedProduct.isActive()).isEqualTo(productEntity.isActive());
+    assertThat(expectedProduct.getStock()).isEqualTo(productEntity.getStock());
   }
 
   private void assertThatProductResponseIsEqualToProduct(ProductResponse expectedProduct,
@@ -170,7 +170,7 @@ public class ProductControllerTest extends BaseIntegrationTest {
     assertThat(expectedProduct.getCategory().getId()).isEqualTo(form.get("category"));
   }
 
-  private List<Long> getIdsFromImages(List<Image> images) {
+  private List<Long> getIdsFromImages(List<ImageEntity> images) {
     List<Long> imagesIds = new ArrayList<>();
     images.forEach((image) -> imagesIds.add(image.getId()));
     return imagesIds;

@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.BaseTest;
 import com.cristian.simplestore.business.services.image.ImageServiceImpl;
-import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
 import com.cristian.simplestore.utils.image.ImageTestsUtils;
 
 @RunWith(SpringRunner.class)
@@ -30,9 +30,9 @@ public class ImageServiceTest extends BaseTest {
 
   @Test
   public void testItFindsAnImageById() {
-    Image image = imageUtils.saveRandomImageOnDb();
+    ImageEntity image = imageUtils.saveRandomImageOnDb();
 
-    Image savedImage = imageService.findById(image.getId());
+    ImageEntity savedImage = imageService.findById(image.getId());
 
     assertThat(savedImage).isNotNull();
   }
@@ -47,9 +47,9 @@ public class ImageServiceTest extends BaseTest {
   @Test
   public void testItFindsAllImagesById() {
     long MAX_IMAGE_SIZE = 3;
-    List<Image> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
+    List<ImageEntity> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 
-    List<Image> expectedImages = imageService.findAllById(getIdsFromImages(images));
+    List<ImageEntity> expectedImages = imageService.findAllById(getIdsFromImages(images));
 
     assertThat(expectedImages.size()).isEqualTo(MAX_IMAGE_SIZE);
   }
@@ -58,7 +58,7 @@ public class ImageServiceTest extends BaseTest {
   public void testItsavesAnImageFile() {
     MultipartFile imageFile = imageUtils.generateMockMultipartFile();
 
-    Image savedImage = imageService.save(imageFile);
+    ImageEntity savedImage = imageService.save(imageFile);
 
     assertThat(savedImage).isNotNull();
   }
@@ -68,14 +68,14 @@ public class ImageServiceTest extends BaseTest {
     int MAX_IMAGE_FILES = 3;
     List<MultipartFile> imageFiles = imageUtils.generateMockMultiPartFiles(MAX_IMAGE_FILES);
 
-    List<Image> savedImages = imageService.saveAll(imageFiles);
+    List<ImageEntity> savedImages = imageService.saveAll(imageFiles);
 
     assertThat(savedImages.size()).isEqualTo(MAX_IMAGE_FILES);
   }
 
   @Test(expected = EntityNotFoundException.class)
   public void testItDeletesAnImage() {
-    Image image = imageUtils.saveRandomImageOnDb();
+    ImageEntity image = imageUtils.saveRandomImageOnDb();
 
     imageService.delete(image);
 
@@ -84,7 +84,7 @@ public class ImageServiceTest extends BaseTest {
 
   @Test(expected = EntityNotFoundException.class)
   public void testItDeletesAnImageById() {
-    Image image = imageUtils.saveRandomImageOnDb();
+    ImageEntity image = imageUtils.saveRandomImageOnDb();
 
     imageService.deleteById(image.getId());
 
@@ -101,7 +101,7 @@ public class ImageServiceTest extends BaseTest {
   @Test
   public void testItDeletesAllById() {
     long MAX_IMAGE_SIZE = 3;
-    List<Image> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
+    List<ImageEntity> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 
     imageService.deleteAllById(getIdsFromImages(images));
   }
@@ -109,12 +109,12 @@ public class ImageServiceTest extends BaseTest {
   @Test
   public void testItDeletesAllImages() {
     long MAX_IMAGE_SIZE = 3;
-    List<Image> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
+    List<ImageEntity> images = imageUtils.saveRandomImagesOnDb(MAX_IMAGE_SIZE);
 
     imageService.deleteAll(images);
   }
 
-  private List<Long> getIdsFromImages(List<Image> images) {
+  private List<Long> getIdsFromImages(List<ImageEntity> images) {
     List<Long> imagesIds = new ArrayList<>();
     images.forEach((image) -> imagesIds.add(image.getId()));
     return imagesIds;

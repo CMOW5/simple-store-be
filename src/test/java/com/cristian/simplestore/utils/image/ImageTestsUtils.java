@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.business.services.image.ImageServiceImpl;
-import com.cristian.simplestore.persistence.entities.Image;
+import com.cristian.simplestore.persistence.entities.ImageEntity;
 
 @Component
 public class ImageTestsUtils {
@@ -18,13 +18,13 @@ public class ImageTestsUtils {
   @Autowired
   ImageFileFactory imageBuilder;
 
-  public Image saveRandomImageOnDb() {
+  public ImageEntity saveRandomImageOnDb() {
     MultipartFile imageFile = this.imageBuilder.createMockMultipartImage();
     return this.imageService.save(imageFile);
   }
 
-  public List<Image> saveRandomImagesOnDb(long numberOfImages) {
-    List<Image> savedImages = new ArrayList<>();
+  public List<ImageEntity> saveRandomImagesOnDb(long numberOfImages) {
+    List<ImageEntity> savedImages = new ArrayList<>();
 
     for (int i = 0; i < numberOfImages; i++) {
       savedImages.add(this.saveRandomImageOnDb());

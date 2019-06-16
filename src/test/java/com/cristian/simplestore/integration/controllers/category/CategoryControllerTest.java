@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.integration.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.integration.controllers.category.request.AuthenticatedCategoryRequest;
-import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.category.CategoryFormUtils;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
@@ -37,7 +37,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
     @Test
     public void testItFindsAllCategories() throws JsonParseException, JsonMappingException, IOException {
         int MAX_CATEGORIES_SIZE = 4;
-        List<Category> categories = categoryGenerator.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
+        List<CategoryEntity> categories = categoryGenerator.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
 
         JsonResponse response = categoryRequest.sendFindAllCategoriesRequest();
 
@@ -49,7 +49,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
     @Test
     public void testItFindsACategoryById() throws JsonParseException, JsonMappingException, IOException {
-        Category category = categoryGenerator.saveRandomCategoryOnDb();
+        CategoryEntity category = categoryGenerator.saveRandomCategoryOnDb();
 
         JsonResponse response = categoryRequest.sendFindCategoryByIdRequest(category.getId());
 
@@ -83,7 +83,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
     @Test
     public void testItUpdatesACategory() throws JsonParseException, JsonMappingException, IOException {
-        Category categoryToUpdate = categoryGenerator.saveRandomCategoryOnDb();     
+        CategoryEntity categoryToUpdate = categoryGenerator.saveRandomCategoryOnDb();     
         MultiPartFormBuilder form = categoryFormUtils.generateRandomCategoryUpdateRequestForm();
 
         JsonResponse response = categoryRequest.sendCategoryUpdateRequest(categoryToUpdate.getId(), form);
@@ -108,7 +108,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
     }
 
     public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
-        Category category = categoryGenerator.saveRandomCategoryOnDb();
+        CategoryEntity category = categoryGenerator.saveRandomCategoryOnDb();
 
         JsonResponse response = categoryRequest.sendCategoryDeleteRequest(category.getId());
 
@@ -120,7 +120,7 @@ public class CategoryControllerTest extends BaseIntegrationTest {
 
     private void assertThatDtoisEqualToForm(CategoryResponse categoryDto, MultiPartFormBuilder form) {
         assertThat(categoryDto.getName()).isEqualTo(form.get("name"));
-        assertThat(((Integer) categoryDto.getParentCategory().get("id")).longValue())
+        assertThat((categoryDto.getParentCategory().getId()))
                 .isEqualTo(form.get("parentCategory"));
     }
 }
