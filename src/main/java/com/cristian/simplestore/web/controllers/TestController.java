@@ -42,9 +42,9 @@ public class TestController {
   public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
     List<CategoryEntity> entities = categoryService.findAll();
-    List<CategoryResponse> categories = CategoryResponse.of(entities);
+    List<CategoryResponse> categories = CategoryResponse.from(entities);
     List<ProductEntity> entitiesp = productService.findAll();
-    List<ProductResponse> products = ProductResponse.of(entitiesp);
+    List<ProductResponse> products = ProductResponse.from(entitiesp);
     return response.status(HttpStatus.OK).content(products).build();
   }
 }

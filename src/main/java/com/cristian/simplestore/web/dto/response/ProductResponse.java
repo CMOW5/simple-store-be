@@ -32,7 +32,7 @@ public class ProductResponse {
 
   private Long stock;
   
-  public static ProductResponse of(ProductEntity entity) {
+  public static ProductResponse from(ProductEntity entity) {
     ProductResponse product = null;
     
     if (entity != null) {
@@ -45,18 +45,18 @@ public class ProductResponse {
       product.inSale = entity.isInSale();
       product.active = entity.isActive();
       product.stock = entity.getStock();
-      product.category = ParentCategory.of(entity.getCategory());
-      product.images = ImageResponse.of(entity.getImages());
+      product.category = ParentCategory.from(entity.getCategory());
+      product.images = ImageResponse.from(entity.getImages());
     }
     
     return product;
   }
   
-  public static List<ProductResponse> of(List<ProductEntity> entities) {
+  public static List<ProductResponse> from(List<ProductEntity> entities) {
     List<ProductResponse> products = new ArrayList<>();
     
     for (ProductEntity entity: entities) {
-      products.add(of(entity));
+      products.add(from(entity));
     }
     
     return products;

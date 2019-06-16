@@ -23,7 +23,7 @@ public class TestCategoryResponseDto extends BaseTest {
   @Test
   public void convertEntityToDto() {
 	CategoryEntity category = categoryGenerator.new Builder().randomName().randomImage().randomParent().save(); 
-    CategoryResponse categoryDto = CategoryResponse.of(category);
+    CategoryResponse categoryDto = CategoryResponse.from(category);
 
     assertThatCategoryAndDtoDataAreEqual(category, categoryDto);
   }

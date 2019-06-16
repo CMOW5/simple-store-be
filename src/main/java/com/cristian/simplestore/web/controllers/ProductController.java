@@ -39,7 +39,7 @@ public class ProductController {
   public ResponseEntity<?> findAllProducts(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
     Page<ProductEntity> paginatedResult = productService.findAll(page, size);
-    List<ProductResponse> products = ProductResponse.of(paginatedResult.getContent());
+    List<ProductResponse> products = ProductResponse.from(paginatedResult.getContent());
     CustomPaginator paginator = CustomPaginator.of(paginatedResult, page, size, request);
     return new ApiResponse().status(HttpStatus.OK).content(products).paginator(paginator).build();
   }
@@ -47,21 +47,21 @@ public class ProductController {
   @GetMapping("/{id}")
   public ResponseEntity<?> findProductById(@PathVariable long id) {
     ProductEntity productEntity = productService.findById(id);
-    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.of(productEntity))
+    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.from(productEntity))
         .build();
   }
 
   @PostMapping
   public ResponseEntity<?> create(@Valid ProductCreateRequest form) {
     ProductEntity createdProduct = productService.create(form);
-    return new ApiResponse().status(HttpStatus.CREATED).content(ProductResponse.of(createdProduct))
+    return new ApiResponse().status(HttpStatus.CREATED).content(ProductResponse.from(createdProduct))
         .build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@PathVariable long id, @Valid ProductUpdateRequest form) {
     ProductEntity updatedProduct = productService.update(form);
-    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.of(updatedProduct))
+    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.from(updatedProduct))
         .build();
 
   }

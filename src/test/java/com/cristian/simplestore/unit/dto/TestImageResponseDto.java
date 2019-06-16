@@ -23,7 +23,7 @@ public class TestImageResponseDto extends BaseTest {
   @Test
   public void convertEntityToDto() {
     ImageEntity image = imageUtils.saveRandomImageOnDb();
-    ImageResponse imageDto = ImageResponse.of(image);
+    ImageResponse imageDto = ImageResponse.from(image);
 
     assertThatImageAndDtoDataAreEqual(image, imageDto);
   }

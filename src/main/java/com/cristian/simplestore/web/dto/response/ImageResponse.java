@@ -16,7 +16,7 @@ public class ImageResponse  {
 
   private String url;
 
-  public static ImageResponse of(ImageEntity entity) {
+  public static ImageResponse from(ImageEntity entity) {
     ImageResponse image = null;
     
     if (entity != null) {
@@ -26,11 +26,11 @@ public class ImageResponse  {
     return image;
   }
   
-  public static List<ImageResponse> of(List<ImageEntity> entities) {
+  public static List<ImageResponse> from(List<ImageEntity> entities) {
     List<ImageResponse> images = new ArrayList<>();
     
     for (ImageEntity entity : entities) {
-      images.add(of(entity));
+      images.add(from(entity));
     }
     
     return images;

@@ -38,7 +38,7 @@ public class CategoryController {
   public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
     Page<CategoryEntity> paginatedResult = categoryService.findAll(page, size);
-    List<CategoryResponse> categoriesResponse = CategoryResponse.of(paginatedResult.getContent());
+    List<CategoryResponse> categoriesResponse = CategoryResponse.from(paginatedResult.getContent());
     CustomPaginator paginator = CustomPaginator.of(paginatedResult, page, size, request);
     return new ApiResponse().status(HttpStatus.OK).content(categoriesResponse).paginator(paginator).build();
   }
@@ -47,19 +47,19 @@ public class CategoryController {
   @GetMapping(value = "/{id}")
   public ResponseEntity<?> findCategoryById(@PathVariable long id) {
     CategoryEntity foundCategory = categoryService.findById(id);
-    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.of(foundCategory)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.from(foundCategory)).build();
   }
 
   @PostMapping
   public ResponseEntity<?> create(@Valid CategoryCreateRequest form) {
     CategoryEntity createdCategory = categoryService.create(form);
-    return new ApiResponse().status(HttpStatus.CREATED).content(CategoryResponse.of(createdCategory)).build();
+    return new ApiResponse().status(HttpStatus.CREATED).content(CategoryResponse.from(createdCategory)).build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@Valid CategoryUpdateRequest form) {
     CategoryEntity updatedCategory = categoryService.update(form);
-    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.of(updatedCategory)).build();
+    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.from(updatedCategory)).build();
   }
 
   @DeleteMapping("/{id}")

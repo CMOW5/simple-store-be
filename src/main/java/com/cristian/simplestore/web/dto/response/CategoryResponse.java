@@ -28,22 +28,22 @@ public class CategoryResponse {
     this.parentCategory = parentCategory;
   }
 
-  public static CategoryResponse of(CategoryEntity entity) {
+  public static CategoryResponse from(CategoryEntity entity) {
     CategoryResponse category = null;
 
     if (entity != null) {
-      category = new CategoryResponse(entity.getId(), entity.getName(), ImageResponse.of(entity.getImage()),
-          ParentCategory.of(entity.getParentCategory()));
+      category = new CategoryResponse(entity.getId(), entity.getName(), ImageResponse.from(entity.getImage()),
+          ParentCategory.from(entity.getParentCategory()));
     }
 
     return category;
   }
   
-  public static List<CategoryResponse> of(List<CategoryEntity> entities) {
+  public static List<CategoryResponse> from(List<CategoryEntity> entities) {
     List<CategoryResponse> categories = new ArrayList<>();
     
     for (CategoryEntity entity: entities) {
-      categories.add(of(entity));
+      categories.add(from(entity));
     }
     
     return categories;
@@ -56,7 +56,7 @@ public class CategoryResponse {
     private long id;
     private String name;
 
-    static ParentCategory of(CategoryEntity entity) {
+    static ParentCategory from(CategoryEntity entity) {
       ParentCategory parent = null;
 
       if (entity != null) {

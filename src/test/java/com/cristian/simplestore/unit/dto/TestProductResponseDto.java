@@ -23,7 +23,7 @@ public class TestProductResponseDto extends BaseTest {
   @Test
   public void convertEntityToDto() {
     ProductEntity productEntity = productGenerator.saveRandomProductOnDB();
-    ProductResponse productDto = ProductResponse.of(productEntity);
+    ProductResponse productDto = ProductResponse.from(productEntity);
 
     assertThatImageAndDtoDataAreEqual(productEntity, productDto);
   }
