@@ -1,7 +1,6 @@
-package com.cristian.simplestore.web.dto.response;
+package com.cristian.simplestore.web.dto.response.user;
 
 import com.cristian.simplestore.persistence.entities.User;
-import com.cristian.simplestore.web.dto.response.user.UserResponse;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

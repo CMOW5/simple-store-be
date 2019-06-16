@@ -3,11 +3,11 @@ package com.cristian.simplestore.web.dto.request;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
 import com.cristian.simplestore.web.validators.annotations.ExistsDb;
 
 @ExistsDb(table = "categories", columnName = "name", columnValueField = "name")
-public class TestForm implements Request<Category> {
+public class TestForm implements Request<CategoryEntity> {
 
   @NotNull
   @Size(min = 2, max = 200)
@@ -18,7 +18,7 @@ public class TestForm implements Request<Category> {
   private String description;
 
   @NotNull
-  private Category parentCategory;
+  private CategoryEntity parentCategory;
 
   @NotNull
   private MultipartFile image;
@@ -31,11 +31,11 @@ public class TestForm implements Request<Category> {
     this.name = name;
   }
 
-  public Category getParentCategory() {
+  public CategoryEntity getParentCategory() {
     return parentCategory;
   }
 
-  public void setParentCategory(Category parentCategory) {
+  public void setParentCategory(CategoryEntity parentCategory) {
     this.parentCategory = parentCategory;
   }
 
@@ -48,8 +48,8 @@ public class TestForm implements Request<Category> {
   }
 
   @Override
-  public Category getModel() {
-    Category category = new Category();
+  public CategoryEntity getModel() {
+    CategoryEntity category = new CategoryEntity();
     category.setName(name);
     category.setParentCategory(parentCategory);
     return category;

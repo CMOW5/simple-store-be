@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.product.ProductService;
-import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
 import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 import com.cristian.simplestore.web.dto.response.ProductResponse;
@@ -29,7 +29,7 @@ import com.cristian.simplestore.web.utils.response.ApiResponse;
 public class ProductController {
 
   private final ProductService productService;
-  
+
   @Autowired
   public ProductController(ProductService productService) {
     this.productService = productService;
@@ -38,28 +38,31 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<?> findAllProducts(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
-    Page<Product> paginatedResult = productService.findAll(page, size);
-    List<ProductResponse> products = ProductResponse.from(paginatedResult.getContent());
+    Page<ProductEntity> paginatedResult = productService.findAll(page, size);
+    List<ProductResponse> products = ProductResponse.of(paginatedResult.getContent());
     CustomPaginator paginator = CustomPaginator.of(paginatedResult, page, size, request);
     return new ApiResponse().status(HttpStatus.OK).content(products).paginator(paginator).build();
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<?> findProductById(@PathVariable long id) {
-    Product product = productService.findById(id);
-    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.from(product)).build();
+    ProductEntity productEntity = productService.findById(id);
+    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.of(productEntity))
+        .build();
   }
 
   @PostMapping
   public ResponseEntity<?> create(@Valid ProductCreateRequest form) {
-    Product createdProduct = productService.create(form);
-    return new ApiResponse().status(HttpStatus.CREATED).content(ProductResponse.from(createdProduct)).build();
+    ProductEntity createdProduct = productService.create(form);
+    return new ApiResponse().status(HttpStatus.CREATED).content(ProductResponse.of(createdProduct))
+        .build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@PathVariable long id, @Valid ProductUpdateRequest form) {
-    Product updatedProduct = productService.update(form);
-    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.from(updatedProduct)).build();
+    ProductEntity updatedProduct = productService.update(form);
+    return new ApiResponse().status(HttpStatus.OK).content(ProductResponse.of(updatedProduct))
+        .build();
 
   }
 

@@ -2,9 +2,9 @@ package com.cristian.simplestore.web.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.entities.Image;
-import com.cristian.simplestore.persistence.entities.Product;
+import java.util.Objects;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
+import com.cristian.simplestore.web.dto.response.CategoryResponse.ParentCategory;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,44 +26,56 @@ public class ProductResponse {
 
   private boolean active;
 
-  private ParentCategoryResponse category;
+  private ParentCategory category;
 
   private List<ImageResponse> images = new ArrayList<>();
 
   private Long stock;
-
-  public ProductResponse(Product product) {
-    this.id = product.getId();
-    this.name = product.getName();
-    this.description = product.getDescription();
-    this.price = product.getPrice();
-    this.priceSale = product.getPriceSale();
-    this.inSale = product.isInSale();
-    this.active = product.isActive();
-    this.stock = product.getStock();
-    mapParentCategory(product.getCategory());
-    mapImages(product.getImages());
-  }
   
-  public static ProductResponse from(Product product) {
-	  return new ProductResponse(product);
-  }
-  
-  public static List<ProductResponse> from(List<Product> products) {
-	  List<ProductResponse> dtos = new ArrayList<>();
-	  products.forEach(product -> dtos.add(from(product)));
-	  return dtos;
-  }
-
-  private void mapImages(List<Image> images) {
-    if (images != null) {
-      for (Image image : images) {
-        this.images.add(new ImageResponse(image));
-      }
+  public static ProductResponse of(ProductEntity entity) {
+    ProductResponse product = null;
+    
+    if (entity != null) {
+      product = new ProductResponse();
+      product.id = entity.getId();
+      product.name = entity.getName();
+      product.description = entity.getDescription();
+      product.price = entity.getPrice();
+      product.priceSale = entity.getPriceSale();
+      product.inSale = entity.isInSale();
+      product.active = entity.isActive();
+      product.stock = entity.getStock();
+      product.category = ParentCategory.of(entity.getCategory());
+      product.images = ImageResponse.of(entity.getImages());
     }
+    
+    return product;
+  }
+  
+  public static List<ProductResponse> of(List<ProductEntity> entities) {
+    List<ProductResponse> products = new ArrayList<>();
+    
+    for (ProductEntity entity: entities) {
+      products.add(of(entity));
+    }
+    
+    return products;
   }
 
-  private void mapParentCategory(Category category) {
-    this.category = ParentCategoryResponse.build(category);
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ProductResponse product = (ProductResponse) o;
+    return Objects.equals(name, product.name) && Objects.equals(id, product.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, id);
   }
 }

@@ -1,59 +1,70 @@
 package com.cristian.simplestore.web.dto.response;
 
+
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.entities.Image;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
-public class CategoryResponse implements ResponseEntityDto<Category> {
+@Data
+public class CategoryResponse {
 
   private Long id;
 
   private String name;
 
-  private Map<String, Object> parentCategory;
+  private ParentCategory parentCategory;
 
   private ImageResponse image;
 
-  @JsonIgnore
-  private Category parentCategoryObject;
-
-  public CategoryResponse(Category category) {
-    id = category.getId();
-    name = category.getName();
-    mapImage(category.getImage());
-    mapParentCategory(category.getParentCategory());
+  public CategoryResponse(Long id, String name, ImageResponse image, ParentCategory parentCategory) {
+    this.id = id;
+    this.name = name;
+    this.image = image;
+    this.parentCategory = parentCategory;
   }
 
-  private void mapParentCategory(Category parentCategory) {
-    if (parentCategory != null) {
-      this.parentCategory = new LinkedHashMap<>();
-      this.parentCategory.put("id", parentCategory.getId());
-      this.parentCategory.put("name", parentCategory.getName());
-      this.parentCategoryObject = parentCategory;
+  public static CategoryResponse of(CategoryEntity entity) {
+    CategoryResponse category = null;
+
+    if (entity != null) {
+      category = new CategoryResponse(entity.getId(), entity.getName(), ImageResponse.of(entity.getImage()),
+          ParentCategory.of(entity.getParentCategory()));
     }
-  }
 
-  private void mapImage(Image image) {
-    this.image = ImageResponse.build(image);
+    return category;
   }
   
-  public static CategoryResponse from(Category category) {
-	return new CategoryResponse(category);
+  public static List<CategoryResponse> of(List<CategoryEntity> entities) {
+    List<CategoryResponse> categories = new ArrayList<>();
+    
+    for (CategoryEntity entity: entities) {
+      categories.add(of(entity));
+    }
+    
+    return categories;
   }
 
-  public static List<CategoryResponse> from(List<Category> categories) {
-    List<CategoryResponse> dtos = new ArrayList<>();
-    categories.forEach(category -> dtos.add(from(category)));
-    return dtos;
+  @Data
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class ParentCategory {
+    private long id;
+    private String name;
+
+    static ParentCategory of(CategoryEntity entity) {
+      ParentCategory parent = null;
+
+      if (entity != null) {
+        parent = new ParentCategory(entity.getId(), entity.getName());
+      }
+
+      return parent;
+    }
   }
 
   @Override
@@ -64,8 +75,8 @@ public class CategoryResponse implements ResponseEntityDto<Category> {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CategoryResponse categoryDto = (CategoryResponse) o;
-    return Objects.equals(name, categoryDto.name) && Objects.equals(id, categoryDto.id);
+    CategoryResponse category = (CategoryResponse) o;
+    return Objects.equals(name, category.name) && Objects.equals(id, category.id);
   }
 
   @Override

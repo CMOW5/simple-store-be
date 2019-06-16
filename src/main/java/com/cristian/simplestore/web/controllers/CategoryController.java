@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.category.CategoryService;
-import com.cristian.simplestore.persistence.entities.Category;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 import com.cristian.simplestore.web.dto.response.CategoryResponse;
@@ -37,8 +37,8 @@ public class CategoryController {
   @GetMapping
   public ResponseEntity<?> findAllCategories(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
-    Page<Category> paginatedResult = categoryService.findAll(page, size);
-    List<CategoryResponse> categoriesResponse = CategoryResponse.from(paginatedResult.getContent());
+    Page<CategoryEntity> paginatedResult = categoryService.findAll(page, size);
+    List<CategoryResponse> categoriesResponse = CategoryResponse.of(paginatedResult.getContent());
     CustomPaginator paginator = CustomPaginator.of(paginatedResult, page, size, request);
     return new ApiResponse().status(HttpStatus.OK).content(categoriesResponse).paginator(paginator).build();
   }
@@ -46,20 +46,20 @@ public class CategoryController {
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<?> findCategoryById(@PathVariable long id) {
-    Category foundCategory = categoryService.findById(id);
-    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.from(foundCategory)).build();
+    CategoryEntity foundCategory = categoryService.findById(id);
+    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.of(foundCategory)).build();
   }
 
   @PostMapping
   public ResponseEntity<?> create(@Valid CategoryCreateRequest form) {
-    Category createdCategory = categoryService.create(form);
-    return new ApiResponse().status(HttpStatus.CREATED).content(CategoryResponse.from(createdCategory)).build();
+    CategoryEntity createdCategory = categoryService.create(form);
+    return new ApiResponse().status(HttpStatus.CREATED).content(CategoryResponse.of(createdCategory)).build();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<?> update(@Valid CategoryUpdateRequest form) {
-    Category updatedCategory = categoryService.update(form);
-    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.from(updatedCategory)).build();
+    CategoryEntity updatedCategory = categoryService.update(form);
+    return new ApiResponse().status(HttpStatus.OK).content(CategoryResponse.of(updatedCategory)).build();
   }
 
   @DeleteMapping("/{id}")

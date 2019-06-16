@@ -2,7 +2,7 @@ package com.cristian.simplestore.web.controllers;
 
 import com.cristian.simplestore.web.dto.request.user.LoginRequest;
 import com.cristian.simplestore.web.dto.request.user.SignUpRequest;
-import com.cristian.simplestore.web.dto.response.LoginResponse;
+import com.cristian.simplestore.web.dto.response.user.LoginResponse;
 import com.cristian.simplestore.web.dto.response.user.UserResponse;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 import com.cristian.simplestore.business.services.auth.AuthService;

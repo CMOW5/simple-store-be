@@ -6,15 +6,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.persistence.entities.Category;
-import com.cristian.simplestore.persistence.entities.Product;
+import com.cristian.simplestore.persistence.entities.CategoryEntity;
+import com.cristian.simplestore.persistence.entities.ProductEntity;
 import com.cristian.simplestore.web.dto.request.Request;
 import com.cristian.simplestore.web.validators.annotations.ExistsDb;
 import lombok.Data;
 
 @ExistsDb(table = "products", columnName = "name", columnValueField = "name")
 @Data
-public class ProductCreateRequest implements Request<Product> {
+public class ProductCreateRequest implements Request<ProductEntity> {
 
   @NotNull
   @Size(min = 2, max = 100)
@@ -33,7 +33,7 @@ public class ProductCreateRequest implements Request<Product> {
 
   private boolean active;
 
-  private Category category;
+  private CategoryEntity category;
 
   private List<MultipartFile> images = new ArrayList<>();
 
@@ -44,16 +44,16 @@ public class ProductCreateRequest implements Request<Product> {
   }
 
   @Override
-  public Product getModel() {
-    Product product = new Product();
-    product.setName(name);
-    product.setDescription(description);
-    product.setPrice(price);
-    product.setPriceSale(priceSale);
-    product.setInSale(inSale);
-    product.setActive(active);
-    product.setCategory(category);
-    product.setStock(stock);
-    return product;
+  public ProductEntity getModel() {
+    ProductEntity productEntity = new ProductEntity();
+    productEntity.setName(name);
+    productEntity.setDescription(description);
+    productEntity.setPrice(price);
+    productEntity.setPriceSale(priceSale);
+    productEntity.setInSale(inSale);
+    productEntity.setActive(active);
+    productEntity.setCategory(category);
+    productEntity.setStock(stock);
+    return productEntity;
   }
 }
