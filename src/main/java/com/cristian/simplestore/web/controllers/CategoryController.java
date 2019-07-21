@@ -25,8 +25,8 @@ import com.cristian.simplestore.web.pagination.CustomPaginator;
 import com.cristian.simplestore.web.pagination.CustomPaginatorImpl;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
-@RestController
-@RequestMapping("/api/admin/categories")
+// @RestController
+// @RequestMapping("/api/admin/categories")
 public class CategoryController {
 
   @Autowired

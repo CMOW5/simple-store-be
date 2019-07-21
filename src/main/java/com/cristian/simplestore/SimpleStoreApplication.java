@@ -5,11 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.config.properties.AuthProperties;
 import com.cristian.simplestore.config.properties.StorageConfig;
-import com.cristian.simplestore.persistence.database.seeders.CategorySeeder;
-import com.cristian.simplestore.persistence.database.seeders.ProductSeeder;
+import com.cristian.simplestore.domain.services.storage.ImageStorageService;
 
 @SpringBootApplication
 @EnableConfigurationProperties({StorageConfig.class, AuthProperties.class})
@@ -19,8 +17,20 @@ public class SimpleStoreApplication {
     SpringApplication.run(SimpleStoreApplication.class, args);
   }
 
+  // @Bean
+  // public CommandLineRunner demo(CategorySeeder categorySeeder, ProductSeeder productSeeder,
+  // ImageStorageService storageService) {
+  // return args -> {
+  // // categorySeeder.seed(100);
+  // // productSeeder.seed(200);
+  // // storageService.init();
+  // };
+  //
+  // }
+
   @Bean
-  public CommandLineRunner demo(CategorySeeder categorySeeder, ProductSeeder productSeeder, ImageStorageService storageService) {
+  public CommandLineRunner demo(
+      ImageStorageService storageService) {
     return args -> {
       // categorySeeder.seed(100);
       // productSeeder.seed(200);

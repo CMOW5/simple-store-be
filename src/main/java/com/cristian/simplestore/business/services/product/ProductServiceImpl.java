@@ -18,7 +18,7 @@ import com.cristian.simplestore.web.dto.request.product.ProductCreateRequest;
 import com.cristian.simplestore.web.dto.request.product.ProductUpdateRequest;
 
 
-@Service
+// @Service
 public class ProductServiceImpl implements ProductService {
 
   @Autowired

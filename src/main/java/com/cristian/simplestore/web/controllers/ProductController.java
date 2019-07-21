@@ -26,8 +26,8 @@ import com.cristian.simplestore.web.pagination.CustomPaginatorImpl;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
-@RestController
-@RequestMapping("/api/admin/products")
+// @RestController
+// @RequestMapping("/api/admin/products")
 public class ProductController {
 
   @Autowired

@@ -21,7 +21,7 @@ import com.cristian.simplestore.web.pagination.CustomPaginatorImpl;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
 
-@RestController
+// @RestController
 public class TestController {
 
   private ApiResponse response = new ApiResponse();

@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@RestController
-@RequestMapping("/api/auth")
+// @RestController
+// @RequestMapping("/api/auth")
 public class AuthController {
   
   @Autowired

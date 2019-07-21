@@ -10,8 +10,8 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import com.cristian.simplestore.web.utils.response.ApiError;
 import com.cristian.simplestore.web.utils.response.ApiResponse;
 
-@ControllerAdvice
-@ResponseBody
+// @ControllerAdvice
+// @ResponseBody
 public class MaxFileUploadInterceptor {
 
   @ExceptionHandler(MaxUploadSizeExceededException.class)

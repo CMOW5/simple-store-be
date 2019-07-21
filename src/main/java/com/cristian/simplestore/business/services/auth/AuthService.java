@@ -18,7 +18,7 @@ import com.cristian.simplestore.web.dto.request.user.SignUpRequest;
 import com.cristian.simplestore.web.dto.response.LoginResponse;
 import com.cristian.simplestore.web.exceptions.BadRequestException;
 
-@Service
+// @Service
 public class AuthService {
 
   @Autowired

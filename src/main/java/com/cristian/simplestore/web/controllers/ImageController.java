@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
 
-@RestController
+// @RestController
 public class ImageController {
 
   @Autowired

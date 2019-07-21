@@ -15,7 +15,7 @@ import com.cristian.simplestore.persistence.entities.Image;
 import com.cristian.simplestore.persistence.repositories.ImageRepository;
 
 
-@Service
+// @Service
 public class ImageServiceImpl implements ImageService {
 
   @Autowired

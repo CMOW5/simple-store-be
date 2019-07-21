@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import com.cristian.simplestore.business.services.storage.ImageStorageService;
 import com.cristian.simplestore.persistence.entities.Image;
 
-@Component
+// @Component
 public class ImageEntityEventListener implements PostDeleteEventListener {
 
   private static final long serialVersionUID = -5065124746231626624L;

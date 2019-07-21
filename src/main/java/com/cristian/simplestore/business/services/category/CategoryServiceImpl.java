@@ -17,7 +17,7 @@ import com.cristian.simplestore.persistence.repositories.CategoryRepository;
 import com.cristian.simplestore.web.dto.request.category.CategoryCreateRequest;
 import com.cristian.simplestore.web.dto.request.category.CategoryUpdateRequest;
 
-@Service
+// @Service
 public class CategoryServiceImpl implements CategoryService {
 
   @Autowired

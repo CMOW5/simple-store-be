@@ -20,7 +20,7 @@ import com.cristian.simplestore.business.services.storage.exceptions.StorageFile
 import com.cristian.simplestore.config.properties.StorageConfig;
 
 
-@Service
+// @Service
 public class ImageStorageService implements StorageService {
 
   private final Path rootLocation;
