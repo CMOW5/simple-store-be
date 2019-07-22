@@ -22,9 +22,9 @@ import com.cristian.simplestore.security.oauth2.HttpCookieOAuth2AuthorizationReq
 import com.cristian.simplestore.security.oauth2.OAuth2AuthenticationFailureHandler;
 import com.cristian.simplestore.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+// @Configuration
+// @EnableWebSecurity
+// @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired

@@ -7,8 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 // @Profile("test")
-// @Configuration
-// @EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 @SuppressWarnings("unused")
 public class DisableSecurity extends WebSecurityConfigurerAdapter {
 
