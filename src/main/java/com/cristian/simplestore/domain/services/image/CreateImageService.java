@@ -7,20 +7,21 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.domain.models.Image;
 import com.cristian.simplestore.domain.ports.repository.ImageRepository;
+import com.cristian.simplestore.domain.services.storage.StorageService;
 
 public class CreateImageService {
 
   private final ImageRepository imageRepository;
-  // private final StorageService imageStorageService;
+  private final StorageService imageStorageService;
 
-  public CreateImageService(ImageRepository imageRepository) {
+  public CreateImageService(ImageRepository imageRepository, StorageService storageService) {
     this.imageRepository = imageRepository;
-    // imageStorageService = storageService;
+    imageStorageService = storageService;
   }
 
   public Image create(MultipartFile file) {
-    // String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
-    Image image = new Image(generateImageName(file));
+    String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
+    Image image = new Image(imageNameWithPath);
     return imageRepository.save(image);
   }
 

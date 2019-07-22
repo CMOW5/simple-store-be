@@ -6,73 +6,75 @@ import java.util.Objects;
 
 public class Category {
 
-    private String name;
+  private Long id;
+  
+  private String name;
 
-    private Category parent;
+  private Category parent;
 
-    private List<Product> products = new ArrayList<>();
+  private List<Product> products = new ArrayList<>();
 
-    private Image image;
+  private Image image;
 
-    public Category(String name, Image image, Category parent) {
-        this.name = name;
-        this.image = image;
-        this.parent = parent;
-    }
+  public Category(String name, Image image, Category parent) {
+    this.name = name;
+    this.image = image;
+    this.parent = parent;
+  }
 
-    public void addProduct(Product product) {
-        products.add(product);
-        product.setCategory(this);
-    }
+  public void addProduct(Product product) {
+    products.add(product);
+    product.setCategory(this);
+  }
 
-    public String getName() {
-      return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public Image getImage() {
-      return image;
-    }
+  public Image getImage() {
+    return image;
+  }
 
-    public Category getParent() {
-      return parent;
-    }
+  public Category getParent() {
+    return parent;
+  }
 
-    /**
-     * verify if the given category is a sub category of the current category
-     * 
-     * @param category
-     * @return true if the given category is a sub category of the current object
-     */
-//    public boolean hasSubcategory(Category category) {
-//        if (category == null)
-//            return false;
-//
-//        Category currentCategory = category;
-//
-//        while (currentCategory.getParentCategory() != null) {
-//            if (currentCategory.getParentCategory().getId() == id) {
-//                return true;
-//            }
-//            currentCategory = currentCategory.getParentCategory();
-//        }
-//        return false;
-//    }
+  /**
+   * verify if the given category is a sub category of the current category
+   * 
+   * @param category
+   * @return true if the given category is a sub category of the current object
+   */
+  // public boolean hasSubcategory(Category category) {
+  // if (category == null)
+  // return false;
+  //
+  // Category currentCategory = category;
+  //
+  // while (currentCategory.getParentCategory() != null) {
+  // if (currentCategory.getParentCategory().getId() == id) {
+  // return true;
+  // }
+  // currentCategory = currentCategory.getParentCategory();
+  // }
+  // return false;
+  // }
 
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass()) {
-//            return false;
-//        }
-//        Category category = (Category) o;
-//        return Objects.equals(name, category.name) && Objects.equals(id, category.id);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(name, id);
-//    }
+  // @Override
+  // public boolean equals(Object o) {
+  // if (this == o) {
+  // return true;
+  // }
+  // if (o == null || getClass() != o.getClass()) {
+  // return false;
+  // }
+  // Category category = (Category) o;
+  // return Objects.equals(name, category.name) && Objects.equals(id, category.id);
+  // }
+  //
+  // @Override
+  // public int hashCode() {
+  // return Objects.hash(name, id);
+  // }
 }

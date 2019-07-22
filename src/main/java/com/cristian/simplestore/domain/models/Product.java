@@ -3,6 +3,8 @@ package com.cristian.simplestore.domain.models;
 import java.util.List;
 
 public class Product {
+  private Long id;
+  
   private String name;
   
   private String description;

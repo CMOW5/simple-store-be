@@ -19,7 +19,7 @@ import com.cristian.simplestore.config.properties.StorageConfig;
 import com.cristian.simplestore.domain.services.storage.exceptions.StorageException;
 import com.cristian.simplestore.domain.services.storage.exceptions.StorageFileNotFoundException;
 
-@Service
+// @Service
 public class FileSystemStorageService implements StorageService {
 
   private final Path rootLocation;
