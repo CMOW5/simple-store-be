@@ -26,12 +26,19 @@ public class ImageEntity implements Serializable {
   public ImageEntity(String name) {
     this.name = name;
   }
+  
+  public ImageEntity(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
   public static ImageEntity fromDomain(Image image) {
-    return new ImageEntity(image.getName());
+    if (image == null) return null;
+    return new ImageEntity(image.getId(), image.getName());
   }
 
   public static Image toDomain(ImageEntity entity) {
-    return new Image(entity.getName());
+    if (entity == null) return null;
+    return new Image(entity.getId(), entity.getName());
   }
 }

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import com.cristian.simplestore.domain.services.category.CreateCategoryService;
 import com.cristian.simplestore.domain.services.image.CreateImageService;
 import com.cristian.simplestore.domain.services.product.CreateProductService;
+import com.cristian.simplestore.domain.services.storage.StorageService;
 import com.cristian.simplestore.infrastructure.adapters.repository.CategoryRepositoryJpa;
 import com.cristian.simplestore.infrastructure.adapters.repository.CategoryRepositoryJpaInterface;
 import com.cristian.simplestore.infrastructure.adapters.repository.ImageRepositoryJpa;
@@ -26,7 +27,10 @@ public class BeanServices {
   }
   
   @Bean
-  public CreateImageService createImageService(ImageRepositoryJpaInterface jpaRepo) {
-    return new CreateImageService(new ImageRepositoryJpa(jpaRepo));
+  public CreateImageService createImageService(ImageRepositoryJpaInterface jpaRepo, StorageService storageService) {
+    ImageRepositoryJpa imageRepository = new ImageRepositoryJpa(jpaRepo);
+    // StorageService storageService = new Ima
+    return new CreateImageService(imageRepository, storageService);
+
   }
 }

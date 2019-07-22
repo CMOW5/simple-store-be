@@ -61,4 +61,9 @@ public class CategoryRepositoryJpa implements CategoryRepository {
     return CategoryEntity.toDomain(entities);
   }
 
+  @Override
+  public void deleteAll() {
+    jpaRepo.deleteAll();
+  }
+
 }

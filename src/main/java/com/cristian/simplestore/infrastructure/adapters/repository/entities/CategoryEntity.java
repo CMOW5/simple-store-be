@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import com.cristian.simplestore.domain.models.Category;
+import com.cristian.simplestore.domain.models.Image;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,10 +30,15 @@ public class CategoryEntity {
 
   @ManyToOne
   private CategoryEntity parent;
+  
+  @ManyToOne
+  @JoinColumn(name = "image_id")
+  private ImageEntity image;
 
-  public CategoryEntity(String name, CategoryEntity parent) {
+  public CategoryEntity(String name, CategoryEntity parent, ImageEntity image) {
     this.name = name;
     this.parent = parent;
+    this.image = image;
   }
 
   public static CategoryEntity fromDomain(Category category) {
@@ -39,7 +46,8 @@ public class CategoryEntity {
       return null;
     String name = category.getName();
     CategoryEntity parentEntity = fromDomain(category.getParent());
-    return new CategoryEntity(name, parentEntity);
+    ImageEntity imageEntity = ImageEntity.fromDomain(category.getImage()); 
+    return new CategoryEntity(name, parentEntity, imageEntity);
   }
 
   public static Category toDomain(CategoryEntity entity) {
@@ -47,7 +55,8 @@ public class CategoryEntity {
       return null;
     String name = entity.getName();
     Category parent = toDomain(entity.getParent());
-    return new Category(name, null, parent);
+    Image image = ImageEntity.toDomain(entity.getImage());
+    return new Category(name, image, parent);
   }
 
   public static List<Category> toDomain(List<CategoryEntity> entities) {

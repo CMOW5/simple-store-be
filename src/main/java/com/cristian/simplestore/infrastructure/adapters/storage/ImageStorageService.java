@@ -1,4 +1,4 @@
-package com.cristian.simplestore.domain.services.storage;
+package com.cristian.simplestore.infrastructure.adapters.storage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageException;
 import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
 import com.cristian.simplestore.config.properties.StorageConfig;
+import com.cristian.simplestore.domain.services.storage.StorageService;
 
 
 @Service
