@@ -23,7 +23,7 @@ public class CreateProductService {
   }
 
   private void validateExistance(Product product) {
-    if (productRepository.exists(product)) {
+    if (productRepository.existsByName(product.getName())) {
       throw new EntityExistsException();
     }
   }

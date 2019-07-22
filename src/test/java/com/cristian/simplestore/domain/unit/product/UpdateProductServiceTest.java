@@ -21,7 +21,7 @@ public class UpdateProductServiceTest {
     ProductRepository productRepo = mock(ProductRepository.class);
     
     when(productRepo.find(toUpdateProduct)).thenReturn(Optional.of(storedProduct));
-    when(productRepo.update((Product)notNull())).thenReturn(toUpdateProduct);
+    when(productRepo.save((Product)notNull())).thenReturn(toUpdateProduct);
     UpdateProductService service = new UpdateProductService(productRepo);
     
     // act 

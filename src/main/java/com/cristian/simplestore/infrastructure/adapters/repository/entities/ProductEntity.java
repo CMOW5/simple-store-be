@@ -75,6 +75,7 @@ public class ProductEntity implements Serializable {
 
   public static ProductEntity fromDomain(Product product) {
     ProductEntity entity = new ProductEntity();
+    entity.id = product.getId();
     entity.name = product.getName();
     entity.description = product.getDescription();
     entity.price = product.getPrice();
@@ -88,6 +89,7 @@ public class ProductEntity implements Serializable {
   }
 
   public static Product toDomain(ProductEntity entity) {
+	Long id = entity.getId(); 
     String name = entity.getName();
     String description = entity.getDescription();
     double price = entity.getPrice();
@@ -99,7 +101,7 @@ public class ProductEntity implements Serializable {
     long stock = entity.getStock();
     // entity.images = 
     List<Image> images = new ArrayList<>();
-    return new Product(name, description, price, priceSale, inSale, active, category, images, stock);
+    return new Product(id, name, description, price, priceSale, inSale, active, category, images, stock);
   }
 
   public static List<Product> toDomain(List<ProductEntity> entities) {

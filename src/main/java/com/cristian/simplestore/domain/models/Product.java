@@ -3,80 +3,86 @@ package com.cristian.simplestore.domain.models;
 import java.util.List;
 
 public class Product {
-  private Long id;
-  
-  private String name;
-  
-  private String description;
-  
-  private double price;
-  
-  private double priceSale;
-  
-  private boolean inSale;
-  
-  private boolean active;
-  
-  private Category category;
-  
-  private List<Image> images;
-  
-  private long stock;
-  
-  public Product(String name, String description, double price, double priceSale, boolean inSale,
-      boolean active, Category category, List<Image> images, long stock) {
-    this.name = name;
-    this.description = description;
-    this.price = price;
-    this.priceSale = priceSale;
-    this.inSale = inSale;
-    this.active = active;
-    this.category = category;
-    this.images = images;
-    this.stock = stock;
-  }
+	private Long id;
 
-  public void setCategory(Category category) {
-    this.category = category;
-  }
-  
-  public Long getId() {
-    return id;
-  }
+	private String name;
 
-  public String getName() {
-    return name;
-  }
+	private String description;
 
-  public String getDescription() {
-    return description;
-  }
+	private double price;
 
-  public double getPrice() {
-    return price;
-  }
+	private double priceSale;
 
-  public double getPriceSale() {
-    return priceSale;
-  }
+	private boolean inSale;
 
-  public boolean isInSale() {
-    return inSale;
-  }
+	private boolean active;
 
-  public boolean isActive() {
-    return active;
-  }
+	private Category category;
 
-  public Category getCategory() {
-    return category;
-  }
+	private List<Image> images;
 
-  public List<Image> getImages() {
-    return images;
-  }
+	private long stock;
 
-  public long getStock() {
-    return stock;
-  }
+	public Product(Long id, String name, String description, double price, double priceSale, boolean inSale,
+			boolean active, Category category, List<Image> images, long stock) {
+		this(name, description, price, priceSale, inSale, active, category, images, stock);
+		this.id = id;
+	}
+
+	public Product(String name, String description, double price, double priceSale, boolean inSale, boolean active,
+			Category category, List<Image> images, long stock) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.priceSale = priceSale;
+		this.inSale = inSale;
+		this.active = active;
+		this.category = category;
+		this.images = images;
+		this.stock = stock;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public double getPriceSale() {
+		return priceSale;
+	}
+
+	public boolean isInSale() {
+		return inSale;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public long getStock() {
+		return stock;
+	}
 }

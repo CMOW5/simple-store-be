@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.adapters.repository;
+package com.cristian.simplestore.infrastructure.adapters.repository.image;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.cristian.simplestore.infrastructure.adapters.repository.entities.ImageEntity;

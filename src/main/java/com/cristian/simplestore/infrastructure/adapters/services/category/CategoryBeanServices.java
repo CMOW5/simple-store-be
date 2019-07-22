@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import com.cristian.simplestore.domain.services.category.CreateCategoryService;
 import com.cristian.simplestore.domain.services.category.ReadCategoryService;
 import com.cristian.simplestore.domain.services.category.UpdateCategoryService;
-import com.cristian.simplestore.infrastructure.adapters.repository.CategoryRepositoryJpa;
-import com.cristian.simplestore.infrastructure.adapters.repository.CategoryRepositoryJpaInterface;
+import com.cristian.simplestore.infrastructure.adapters.repository.category.CategoryRepositoryJpa;
+import com.cristian.simplestore.infrastructure.adapters.repository.category.CategoryRepositoryJpaInterface;
 
 @Configuration
 public class CategoryBeanServices {

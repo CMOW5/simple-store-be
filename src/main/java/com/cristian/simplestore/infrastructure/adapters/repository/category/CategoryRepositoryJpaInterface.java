@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.adapters.repository;
+package com.cristian.simplestore.infrastructure.adapters.repository.category;
 
 import java.util.Optional;
 

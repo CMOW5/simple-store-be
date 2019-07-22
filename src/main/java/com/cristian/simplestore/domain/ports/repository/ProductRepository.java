@@ -5,17 +5,18 @@ import java.util.Optional;
 import com.cristian.simplestore.domain.models.Product;
 
 public interface ProductRepository {
+	Optional<Product> find(Product product);
 
-  Product save(Product product);
+	Optional<Product> findById(Long id);
 
-  boolean exists(Product product);
+	List<Product> findAll();
 
-  Optional<Product> find(Product product);
+	boolean exists(Product product);
 
-  List<Product> findAll();
+	boolean existsByName(String name);
 
-  void delete(Product product);
+	Product save(Product product);
 
-  Product update(Product product);
+	void delete(Product product);
 
 }
