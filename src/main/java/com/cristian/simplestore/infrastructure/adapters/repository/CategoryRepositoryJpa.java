@@ -21,8 +21,7 @@ public class CategoryRepositoryJpa implements CategoryRepository {
   @Override
   public Category save(Category category) {
     CategoryEntity entity = CategoryEntity.fromDomain(category);
-    CategoryEntity savedEntity = jpaRepo.save(entity);
-    return CategoryEntity.toDomain(savedEntity);
+    return CategoryEntity.toDomain(jpaRepo.save(entity));
   }
 
   @Override
@@ -35,7 +34,6 @@ public class CategoryRepositoryJpa implements CategoryRepository {
     CategoryEntity entity = jpaRepo.findByName(category.getName());
     Category foundCategory = CategoryEntity.toDomain(entity);
     return Optional.ofNullable(foundCategory);
-
   }
 
   @Override
