@@ -8,11 +8,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class CreateCategoryCommand {
-
+  
   private String name;
   
   private MultipartFile image;
   
   private Category parent;
 
+  public CreateCategoryCommand(String name, MultipartFile image, Category parent) {
+    this.name = name;
+    this.image = image;
+    this.parent = parent;
+  }
+  
 }
