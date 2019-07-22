@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import com.cristian.simplestore.config.properties.AuthProperties;
 import com.cristian.simplestore.config.properties.StorageConfig;
-import com.cristian.simplestore.domain.services.storage.ImageStorageService;
+import com.cristian.simplestore.infrastructure.adapters.storage.ImageStorageService;
 
 @SpringBootApplication
 @EnableConfigurationProperties({StorageConfig.class, AuthProperties.class})
