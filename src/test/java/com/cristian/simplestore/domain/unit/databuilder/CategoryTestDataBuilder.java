@@ -7,9 +7,15 @@ import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.models.Image;
 
 public class CategoryTestDataBuilder {
+	Long id = 999L;
     String name = "default cat name";
     Image image;
     Category parentCategory;
+    
+    public CategoryTestDataBuilder id(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public CategoryTestDataBuilder name(String name) {
         this.name = name;
@@ -27,7 +33,7 @@ public class CategoryTestDataBuilder {
     }
 
     public Category build() {
-        return new Category(name, image, parentCategory);
+        return new Category(id, name, image, parentCategory);
     }
     
     public static List<Category> createCategories(int size) {

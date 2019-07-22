@@ -6,14 +6,11 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 import static org.mockito.ArgumentMatchers.*;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.domain.models.Product;
 import com.cristian.simplestore.domain.ports.repository.ProductRepository;
 import com.cristian.simplestore.domain.services.product.UpdateProductService;
 import com.cristian.simplestore.domain.unit.databuilder.ProductTestDataBuilder;
 
-@RunWith(SpringRunner.class)
 public class UpdateProductServiceTest {
   
   @Test

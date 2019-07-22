@@ -11,6 +11,8 @@ public interface CategoryRepository {
 
   Optional<Category> find(Category category);
   
+  Optional<Category> findById(Long id);
+  
   List<Category> findAll();
 
   Category update(Category storedCategory);
@@ -18,4 +20,6 @@ public interface CategoryRepository {
   void delete(Category category);
 
   void deleteAll();
+
+  boolean existsByName(String name);
 }

@@ -4,14 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
 import com.cristian.simplestore.domain.services.category.CreateCategoryService;
 import com.cristian.simplestore.domain.unit.databuilder.CategoryTestDataBuilder;
 
-@RunWith(SpringRunner.class)
 public class CreateCategoryServiceTest {
   
   @Test

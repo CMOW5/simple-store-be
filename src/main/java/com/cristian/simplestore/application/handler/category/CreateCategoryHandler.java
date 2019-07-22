@@ -27,9 +27,10 @@ public class CreateCategoryHandler {
   }
   
   private Category mapCommandToCategory(CreateCategoryCommand command) {
+	// TODO: validate data
     String name = command.getName();
     Category parent = command.getParent();
-    Image image = createImageService.create(command.getImage());
+    Image image = createImageService.execute(command.getImage());
     return new Category(name, image, parent);
   }
 }

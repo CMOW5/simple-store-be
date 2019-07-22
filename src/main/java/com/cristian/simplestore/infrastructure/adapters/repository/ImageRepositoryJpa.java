@@ -22,4 +22,9 @@ public class ImageRepositoryJpa implements ImageRepository {
     return ImageEntity.toDomain(savedEntity);
   }
 
+	@Override
+	public void delete(Image image) {
+		jpaRepo.delete(ImageEntity.fromDomain(image));
+	}
+
 }

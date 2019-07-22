@@ -47,8 +47,13 @@ public class Category {
   public Category getParent() {
     return parent;
   }
-
-  /**
+  
+//  public void setImage(Image image) {
+//	this.image = image;
+//  }
+  
+ 
+/**
    * verify if the given category is a sub category of the current category
    * 
    * @param category

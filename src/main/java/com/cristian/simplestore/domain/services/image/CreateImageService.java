@@ -19,7 +19,7 @@ public class CreateImageService {
     imageStorageService = storageService;
   }
 
-  public Image create(MultipartFile file) {
+  public Image execute(MultipartFile file) {
     String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
     Image image = new Image(imageNameWithPath);
     return imageRepository.save(image);
@@ -31,6 +31,6 @@ public class CreateImageService {
   }
 
   public List<Image> create(List<MultipartFile> files) {
-    return files.stream().map((file) -> create(file)).collect(Collectors.toList());
+    return files.stream().map((file) -> execute(file)).collect(Collectors.toList());
   }
 }
