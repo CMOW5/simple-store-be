@@ -12,9 +12,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Component
-public abstract class CategoryRequest extends TestRequest {
+public class CategoryRequest extends TestRequest {
 
-	private static String ADMIN_CATEGORIES_BASE_URL = "/api/admin/categories";
+	private static String ADMIN_CATEGORIES_BASE_URL = "/api/hex/admin/categories";
 
 	@Autowired
 	public CategoryRequest(RequestSender requestSender) {
