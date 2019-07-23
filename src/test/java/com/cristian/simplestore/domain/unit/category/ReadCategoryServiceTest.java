@@ -24,7 +24,7 @@ public class ReadCategoryServiceTest {
     ReadCategoryService service = new ReadCategoryService(categoryRepo);
     
     // act 
-    Optional<Category> foundCategory = service.execute(category);
+    Optional<Category> foundCategory = service.find(category);
     
     // assert
     assertTrue(foundCategory.isPresent());
@@ -39,7 +39,7 @@ public class ReadCategoryServiceTest {
     ReadCategoryService service = new ReadCategoryService(categoryRepo);
     
     // act 
-    List<Category> foundCategories = service.execute();
+    List<Category> foundCategories = service.findAll();
     
     // assert
     assertThat(foundCategories.size()).isEqualTo(20);

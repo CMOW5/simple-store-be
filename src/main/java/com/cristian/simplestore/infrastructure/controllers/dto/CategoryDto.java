@@ -1,5 +1,8 @@
 package com.cristian.simplestore.infrastructure.controllers.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.cristian.simplestore.domain.models.Category;
 
 import lombok.Data;
@@ -24,5 +27,9 @@ public class CategoryDto {
 		dto.image = ImageDto.fromDomain(category.getImage());
 		dto.parent = fromDomain(category.getParent());
 		return dto;
+	}
+
+	public static List<CategoryDto> fromDomain(List<Category> foundCategories) {
+		return foundCategories.stream().map(CategoryDto::fromDomain).collect(Collectors.toList());
 	}
 }

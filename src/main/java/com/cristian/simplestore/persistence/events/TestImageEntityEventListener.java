@@ -8,11 +8,10 @@ import org.hibernate.event.spi.PostDeleteEvent;
 import org.hibernate.event.spi.PostDeleteEventListener;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.persister.entity.EntityPersister;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.cristian.simplestore.infrastructure.adapters.repository.entities.ImageEntity;
+import com.cristian.simplestore.infrastructure.adapters.storage.ImageStorageService;
 
 @Component
 public class TestImageEntityEventListener implements PostDeleteEventListener {
@@ -21,9 +20,9 @@ public class TestImageEntityEventListener implements PostDeleteEventListener {
 
   @Autowired
   private EntityManagerFactory entityManagerFactory;
-
-  Logger logger = LoggerFactory.getLogger(TestImageEntityEventListener.class);
-
+  
+  @Autowired
+  ImageStorageService imageStorageService;
   
   @PostConstruct
   private void init() {
@@ -43,10 +42,13 @@ public class TestImageEntityEventListener implements PostDeleteEventListener {
     final Object entity = event.getEntity();
     if (entity instanceof ImageEntity) {
     	ImageEntity image = (ImageEntity) entity;
-    	logger.error("An ERROR Message = image with id deleted = " + image.getId());
+    	imageStorageService.delete(image.getName());
+//    	logger.error("An ERROR Message = image with id deleted = " + image.getId());
 //      if (!image.isUrl()) {
 //        imageStorageService.delete(image.getName());
 //      }
     }
   }
+  
+  
 }

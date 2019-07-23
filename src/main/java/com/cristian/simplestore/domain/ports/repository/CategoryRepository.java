@@ -2,6 +2,7 @@ package com.cristian.simplestore.domain.ports.repository;
 
 import java.util.List;
 import java.util.Optional;
+
 import com.cristian.simplestore.domain.models.Category;
 
 public interface CategoryRepository {
@@ -15,11 +16,11 @@ public interface CategoryRepository {
   
   List<Category> findAll();
 
-  Category update(Category storedCategory);
-
   void delete(Category category);
 
   void deleteAll();
 
   boolean existsByName(String name);
+
+  void deleteById(Long id);
 }

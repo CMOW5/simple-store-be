@@ -5,14 +5,18 @@ import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
 
 public class DeleteCategoryService {
 
-  private final CategoryRepository categoryRepository;
-  
-  public DeleteCategoryService(CategoryRepository categoryRepository) {
-    this.categoryRepository = categoryRepository;
-  }
+	private final CategoryRepository categoryRepository;
 
-  public void execute(Category category) {
-    categoryRepository.delete(category);
-  }
+	public DeleteCategoryService(CategoryRepository categoryRepository) {
+		this.categoryRepository = categoryRepository;
+	}
+
+	public void execute(Category category) {
+		categoryRepository.delete(category);
+	}
+
+	public void execute(Long id) {
+		categoryRepository.deleteById(id);
+	}
 
 }

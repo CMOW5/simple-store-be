@@ -12,7 +12,6 @@ import com.cristian.simplestore.domain.models.Image;
 import com.cristian.simplestore.domain.services.category.ReadCategoryService;
 import com.cristian.simplestore.domain.services.category.UpdateCategoryService;
 import com.cristian.simplestore.domain.services.image.CreateImageService;
-import com.cristian.simplestore.domain.services.image.DeleteImageService;
 
 @Component
 public class UpdateCategoryHandler {
@@ -20,19 +19,17 @@ public class UpdateCategoryHandler {
 	private final ReadCategoryService readCategoryService;
 	private final UpdateCategoryService updateCategoryService;
 	private final CreateImageService createImageService;
-	private final DeleteImageService deleteImageService;
 
 	@Autowired
 	public UpdateCategoryHandler(UpdateCategoryService service, CreateImageService createImageService,
-			ReadCategoryService readCategoryService, DeleteImageService deleteImageService) {
+			ReadCategoryService readCategoryService) {
 		this.updateCategoryService = service;
 		this.createImageService = createImageService;
 		this.readCategoryService = readCategoryService;
-		this.deleteImageService = deleteImageService;
 	}
 
 	public Category execute(UpdateCategoryCommand command) {
-		Category storedCategory = readCategoryService.execute(command.getId())
+		Category storedCategory = readCategoryService.findById(command.getId())
 				.orElseThrow(() -> new EntityNotFoundException("The category with the given id was not found"));
 
 		// TODO: validate data
@@ -73,6 +70,6 @@ public class UpdateCategoryHandler {
 
 	private Image updateImage(Image image, MultipartFile newImageFile) {
 		// deleteImageService.execute(image);
-		return createImageService.execute(newImageFile);
+		return createImageService.create(newImageFile);
 	}
 }

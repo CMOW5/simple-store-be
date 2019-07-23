@@ -21,19 +21,14 @@ public class CategoryRepositoryJpa implements CategoryRepository {
 	}
 
 	@Override
-	public Category save(Category category) {
-		CategoryEntity entity = CategoryEntity.fromDomain(category);
-		return CategoryEntity.toDomain(jpaRepo.save(entity));
-	}
-
-	@Override
-	public boolean exists(Category category) {
-		return find(category).isPresent();
-	}
-
-	@Override
 	public Optional<Category> find(Category category) {
 		return findById(category.getId());
+	}
+	
+	@Override
+	public List<Category> findAll() {
+		List<CategoryEntity> entities = jpaRepo.findAll();
+		return CategoryEntity.toDomain(entities);
 	}
 	
 	@Override
@@ -41,11 +36,21 @@ public class CategoryRepositoryJpa implements CategoryRepository {
 		Optional<CategoryEntity> entity = jpaRepo.findById(id);
 		return entity.isPresent() ? Optional.of(CategoryEntity.toDomain(entity.get())) : Optional.empty();
 	}
-
-	@Override // TODO: same as save
-	public Category update(Category category) {
-		CategoryEntity updatedEntity = jpaRepo.save(CategoryEntity.fromDomain(category));
-		return CategoryEntity.toDomain(updatedEntity);
+	
+	@Override
+	public boolean exists(Category category) {
+		return find(category).isPresent();
+	}
+	
+	@Override
+	public boolean existsByName(String name) {
+		return jpaRepo.findByName(name).isPresent();
+	}
+	
+	@Override
+	public Category save(Category category) {
+		CategoryEntity entity = CategoryEntity.fromDomain(category);
+		return CategoryEntity.toDomain(jpaRepo.save(entity));
 	}
 
 	@Override
@@ -55,18 +60,12 @@ public class CategoryRepositoryJpa implements CategoryRepository {
 	}
 
 	@Override
-	public List<Category> findAll() {
-		List<CategoryEntity> entities = jpaRepo.findAll();
-		return CategoryEntity.toDomain(entities);
+	public void deleteById(Long id) {
+		jpaRepo.deleteById(id);
 	}
-
+	
 	@Override
 	public void deleteAll() {
 		jpaRepo.deleteAll();
-	}
-
-	@Override
-	public boolean existsByName(String name) {
-		return jpaRepo.findByName(name).isPresent();
 	}
 }

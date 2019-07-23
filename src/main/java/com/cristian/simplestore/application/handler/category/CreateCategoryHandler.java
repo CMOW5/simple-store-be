@@ -30,7 +30,7 @@ public class CreateCategoryHandler {
 	// TODO: validate data
     String name = command.getName();
     Category parent = command.getParent();
-    Image image = createImageService.execute(command.getImage());
+    Image image = createImageService.create(command.getImage());
     return new Category(name, image, parent);
   }
 }

@@ -21,7 +21,7 @@ public class UpdateCategoryServiceTest {
     CategoryRepository categoryRepo = mock(CategoryRepository.class);
     
     when(categoryRepo.find(newCategoryData)).thenReturn(Optional.of(storedCategory));
-    when(categoryRepo.update((Category)notNull())).thenReturn(newCategoryData);
+    when(categoryRepo.save((Category)notNull())).thenReturn(newCategoryData);
     UpdateCategoryService service = new UpdateCategoryService(categoryRepo);
     
     // act 

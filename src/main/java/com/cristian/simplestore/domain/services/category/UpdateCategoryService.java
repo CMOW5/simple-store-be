@@ -12,6 +12,6 @@ public class UpdateCategoryService {
   }
 
   public Category execute(Category category) {
-    return categoryRepository.update(category);
+    return categoryRepository.save(category);
   }
 }
