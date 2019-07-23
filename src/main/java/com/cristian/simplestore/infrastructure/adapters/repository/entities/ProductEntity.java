@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,8 +28,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "products")
 @Data
 @NoArgsConstructor
-public class ProductEntity implements Serializable {
-  private static final long serialVersionUID = 8372995282951530629L;
+public class ProductEntity {
+  // private static final long serialVersionUID = 8372995282951530629L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,6 +52,9 @@ public class ProductEntity implements Serializable {
   private boolean active;
 
   private Long stock;
+  
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ImageEntity> images;
 
   @CreationTimestamp
   private LocalDateTime createdDate;
@@ -84,7 +90,7 @@ public class ProductEntity implements Serializable {
     entity.active = product.isActive();
     // entity.category = CategoryEntity.fromDomain(product.getCategory());
     entity.stock = product.getStock();
-    // entity.images = 
+    entity.images = ImageEntity.fromDomain(product.getImages()); 
     return entity;
   }
 
@@ -99,8 +105,7 @@ public class ProductEntity implements Serializable {
     Category category = null;
     // entity.category = CategoryEntity.fromDomain(product.getCategory());
     long stock = entity.getStock();
-    // entity.images = 
-    List<Image> images = new ArrayList<>();
+    List<Image> images = ImageEntity.toDomain(entity.getImages());
     return new Product(id, name, description, price, priceSale, inSale, active, category, images, stock);
   }
 

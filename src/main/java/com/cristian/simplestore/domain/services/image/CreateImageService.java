@@ -22,7 +22,8 @@ public class CreateImageService {
   public Image execute(MultipartFile file) {
     String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
     Image image = new Image(imageNameWithPath);
-    return imageRepository.save(image);
+    return image;
+    // return imageRepository.save(image);
   }
 
   private String generateImageName(MultipartFile file) {

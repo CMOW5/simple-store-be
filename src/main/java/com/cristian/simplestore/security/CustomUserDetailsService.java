@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.cristian.simplestore.persistence.entities.User;
 import com.cristian.simplestore.persistence.repositories.UserRepository;
+import com.cristian.simplestore.persistence.repositories.userrepoimpl;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
   @Autowired
-  UserRepository userRepository;
+  // TODO: change to userrepositoru
+  userrepoimpl userRepository;
 
   @Override
   @Transactional

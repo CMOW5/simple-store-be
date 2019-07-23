@@ -3,6 +3,8 @@ package com.cristian.simplestore.infrastructure.adapters.repository.entities;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.models.Image;
@@ -32,7 +35,7 @@ public class CategoryEntity {
   @ManyToOne
   private CategoryEntity parent;
 
-  @ManyToOne
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "image_id")
   private ImageEntity image;
 

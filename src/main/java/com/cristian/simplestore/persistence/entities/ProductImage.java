@@ -9,8 +9,8 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "product_image")
+//@Entity
+//@Table(name = "product_image")
 @Data
 @NoArgsConstructor
 public class ProductImage implements Serializable {

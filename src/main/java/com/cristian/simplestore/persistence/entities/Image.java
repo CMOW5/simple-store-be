@@ -18,9 +18,9 @@ import org.springframework.util.StringUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Scope("prototype")
-@Table(name = "images")
+// @Entity
+// @Scope("prototype")
+// @Table(name = "images")
 @Data
 @NoArgsConstructor
 public class Image implements Serializable {

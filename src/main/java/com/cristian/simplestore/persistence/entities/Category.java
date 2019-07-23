@@ -16,8 +16,8 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "categories")
+//@Entity
+//@Table(name = "categories")
 @NoArgsConstructor
 @Data
 public class Category {

@@ -6,10 +6,14 @@ import org.springframework.stereotype.Repository;
 import com.cristian.simplestore.persistence.entities.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository {// extends JpaRepository<User, Long> {
 
-  Optional<User> findByEmail(String email);
+	Optional<User> findByEmail(String email);
 
-  Boolean existsByEmail(String email);
+	Boolean existsByEmail(String email);
+
+	User save(User existingUser); // TODO: DELETE THIS
+
+	Optional<User> findById(Long id); // TODO: delete this
 
 }

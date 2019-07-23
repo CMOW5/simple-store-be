@@ -1,6 +1,7 @@
 package com.cristian.simplestore.domain.models;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Product {
 	private Long id;
@@ -42,10 +43,6 @@ public class Product {
 		this.stock = stock;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -78,11 +75,46 @@ public class Product {
 		return category;
 	}
 
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	public List<Image> getImages() {
 		return images;
 	}
 
 	public long getStock() {
 		return stock;
+	}
+
+	public void addImages(List<Image> images) {
+		this.images.addAll(images);
+	}
+
+	public void removeImages(List<Image> images) {
+		this.images.removeAll(images);
+	}
+	
+	public void removeImagesById(List<Long> imagesIds) {
+		imagesIds.forEach((id) -> {
+			this.images.removeIf((image) -> image.getId() == id);
+		});
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Product product = (Product) o;
+		return Objects.equals(name, product.name) && Objects.equals(id, product.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, id);
 	}
 }

@@ -22,8 +22,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "products")
+//@Entity
+//@Table(name = "products")
 @Data
 @NoArgsConstructor
 public class Product implements Serializable {

@@ -72,7 +72,7 @@ public class UpdateCategoryHandler {
 	}
 
 	private Image updateImage(Image image, MultipartFile newImageFile) {
-		deleteImageService.execute(image);
+		// deleteImageService.execute(image);
 		return createImageService.execute(newImageFile);
 	}
 }
