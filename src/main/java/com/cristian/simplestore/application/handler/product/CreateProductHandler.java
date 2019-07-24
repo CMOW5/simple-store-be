@@ -3,6 +3,7 @@ package com.cristian.simplestore.application.handler.product;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ public class CreateProductHandler {
 		this.readCategoryService = readCategoryService;
 	}
 
+	@Transactional
 	public Product execute(CreateProductCommand command) {
 		Product product = mapCommandToProduct(command);
 		return createProductService.execute(product);

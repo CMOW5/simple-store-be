@@ -1,6 +1,7 @@
 package com.cristian.simplestore.application.handler.category;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,6 +19,7 @@ public class DeleteCategoryHandler {
 		this.deleteCategoryService = deleteCategoryService;
 	}
 	
+	@Transactional
 	public void execute(Long id) {
 		try {
 			deleteCategoryService.execute(id);

@@ -3,6 +3,7 @@ package com.cristian.simplestore.application.handler.product;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class UpdateProductHandler {
 		this.readCategoryService = readCategoryService;
 	}
 
+	@Transactional
 	public Product execute(UpdateProductCommand command) {
 		Product storedProduct = readProductService.execute(command.getId())
 				.orElseThrow(() -> new EntityNotFoundException("The product with the given id was not found"));

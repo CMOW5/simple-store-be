@@ -1,6 +1,7 @@
 package com.cristian.simplestore.application.handler.category;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ public class UpdateCategoryHandler {
 		this.readCategoryService = readCategoryService;
 	}
 
+	@Transactional
 	public Category execute(UpdateCategoryCommand command) {
 		Category storedCategory = readCategoryService.findById(command.getId())
 				.orElseThrow(() -> new EntityNotFoundException("The category with the given id was not found"));
@@ -40,10 +42,12 @@ public class UpdateCategoryHandler {
 		Category category = new Category(id, name, image, parent);
 		return updateCategoryService.execute(category);
 	}
-	
+
 	private Category resolveNewParent(Category storedCategory, Long newParentId) {
-		Category newParent = readCategoryService.findById(newParentId).orElseThrow(() -> new EntityNotFoundException());
-		
+		Category newParent = newParentId != null
+				? readCategoryService.findById(newParentId).orElseThrow(() -> new EntityNotFoundException())
+				: null;
+
 		if (storedCategory.hasSubcategory(newParent)) {
 			return resolveCategoryCircularReference(storedCategory, newParent);
 		} else if (storedCategory.equals(newParent)) {
@@ -52,15 +56,15 @@ public class UpdateCategoryHandler {
 			return newParent;
 		}
 	}
-	
+
 	/**
-	 * here we avoid circular references between the category
-	 * to update and its sub categories. for instance
-	 * null -> A -> B -> C to C -> A -> B -> C is not allowed,
-     * the result will be: null -> C -> A -> B
+	 * here we avoid circular references between the category to update and its sub
+	 * categories. for instance null -> A -> B -> C to C -> A -> B -> C is not
+	 * allowed, the result will be: null -> C -> A -> B
 	 */
 	private Category resolveCategoryCircularReference(Category storedCategory, Category newParent) {
-		newParent = new Category(newParent.getId(), newParent.getName(), newParent.getImage(), storedCategory.getParent());
+		newParent = new Category(newParent.getId(), newParent.getName(), newParent.getImage(),
+				storedCategory.getParent());
 		// is this necessary or will it update after passing it to category to update?
 		return updateCategoryService.execute(newParent);
 	}
