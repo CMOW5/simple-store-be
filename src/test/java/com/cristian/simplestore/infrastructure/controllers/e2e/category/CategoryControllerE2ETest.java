@@ -65,16 +65,16 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
         assertThat(foundCategory.getId()).isEqualTo(category.getId());
     }
 
-//    @Test
-//    public void testItDoesNotFindACategoryById() throws JsonParseException, JsonMappingException, IOException {
-//        Long nonExistentCategoryId = 1L;
-//        
-//        RequestEntity<?> request = CategoryRequestFactory.createFindCategoryByIdRequest(nonExistentCategoryId).build();
-//        JsonResponse response = requestSender.send(request);
-//        
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-//    }
-//
+    @Test
+    public void testItDoesNotFindACategoryById() throws JsonParseException, JsonMappingException, IOException {
+        Long nonExistentCategoryId = 1L;
+        
+        RequestEntity<?> request = CategoryRequestFactory.createFindCategoryByIdRequest(nonExistentCategoryId).build();
+        JsonResponse response = requestSender.send(request);
+        
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
     @Test
     public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
         MultiPartFormBuilder form = categoryFormUtils.generateRandomCategoryCreateRequestForm();
@@ -105,20 +105,20 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
         assertThatDtoisEqualToForm(updatedCategory, form);
         assertThat(updatedCategory.getImage().getId()).isNotEqualTo(categoryToUpdate.getImage().getId());
     }
-//
-//    @Test
-//    public void testItReturnsNotFoundWhenUpdating() throws JsonParseException, JsonMappingException, IOException {
-//        Long nonExistentCategoryId = 1L;
-//
-//        MultiPartFormBuilder form = new MultiPartFormBuilder();
-//        form.add("name", "some name");
-//        
-//        RequestEntity<?> request = CategoryRequestFactory.createCategoryUpdateRequest(nonExistentCategoryId, form).build();
-//        JsonResponse response = requestSender.send(request);
-//
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-//    }
-//
+
+    @Test
+    public void testItReturnsNotFoundWhenUpdating() throws JsonParseException, JsonMappingException, IOException {
+        Long nonExistentCategoryId = 1L;
+
+        MultiPartFormBuilder form = new MultiPartFormBuilder();
+        form.add("name", "some name");
+        
+        RequestEntity<?> request = CategoryRequestFactory.createCategoryUpdateRequest(nonExistentCategoryId, form).build();
+        JsonResponse response = requestSender.send(request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
     @Test
     public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
         Category category = categoryGenerator.saveRandomCategoryOnDb();
@@ -128,9 +128,8 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
         
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
-// TODO
-//        response = requestSender.send(request);
-//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        response = requestSender.send(request);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     private void assertThatDtoisEqualToForm(CategoryDto categoryDto, MultiPartFormBuilder form) {

@@ -5,14 +5,18 @@ import com.cristian.simplestore.domain.ports.repository.ProductRepository;
 
 public class DeleteProductService {
 
-  ProductRepository productRepository;
+	ProductRepository productRepository;
 
-  public DeleteProductService(ProductRepository productRepository) {
-    this.productRepository = productRepository;
-  }
+	public DeleteProductService(ProductRepository productRepository) {
+		this.productRepository = productRepository;
+	}
 
-  public void execute(Product product) {
-    productRepository.delete(product);
-  }
+	public void execute(Product product) {
+		productRepository.delete(product);
+	}
+
+	public void execute(Long id) {
+		productRepository.deleteById(id);
+	}
 
 }

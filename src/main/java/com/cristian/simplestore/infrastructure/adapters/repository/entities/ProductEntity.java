@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
@@ -55,6 +56,9 @@ public class ProductEntity {
   
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ImageEntity> images;
+  
+  @ManyToOne
+  private CategoryEntity category;
 
   @CreationTimestamp
   private LocalDateTime createdDate;
@@ -88,7 +92,7 @@ public class ProductEntity {
     entity.priceSale = product.getPriceSale();
     entity.inSale = product.isInSale();
     entity.active = product.isActive();
-    // entity.category = CategoryEntity.fromDomain(product.getCategory());
+    entity.category = CategoryEntity.fromDomain(product.getCategory());
     entity.stock = product.getStock();
     entity.images = ImageEntity.fromDomain(product.getImages()); 
     return entity;
@@ -102,8 +106,7 @@ public class ProductEntity {
     double priceSale = entity.getPriceSale();
     boolean inSale = entity.isInSale();
     boolean active = entity.isActive();
-    Category category = null;
-    // entity.category = CategoryEntity.fromDomain(product.getCategory());
+    Category category = CategoryEntity.toDomain(entity.getCategory());
     long stock = entity.getStock();
     List<Image> images = ImageEntity.toDomain(entity.getImages());
     return new Product(id, name, description, price, priceSale, inSale, active, category, images, stock);

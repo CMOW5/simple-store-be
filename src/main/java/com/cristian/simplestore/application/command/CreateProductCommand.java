@@ -3,7 +3,6 @@ package com.cristian.simplestore.application.command;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.domain.models.Category;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +22,7 @@ public class CreateProductCommand {
 
   private boolean active;
 
-  private Category category;
+  private Long categoryId;
 
   private List<MultipartFile> images = new ArrayList<>();
 

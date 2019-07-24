@@ -10,6 +10,7 @@ import com.cristian.simplestore.application.command.UpdateProductCommand;
 import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.models.Image;
 import com.cristian.simplestore.domain.models.Product;
+import com.cristian.simplestore.domain.services.category.ReadCategoryService;
 import com.cristian.simplestore.domain.services.image.CreateImageService;
 import com.cristian.simplestore.domain.services.product.ReadProductService;
 import com.cristian.simplestore.domain.services.product.UpdateProductService;
@@ -20,13 +21,15 @@ public class UpdateProductHandler {
 	private final ReadProductService readProductService;
 	private final UpdateProductService updateProductService;
 	private final CreateImageService createImageService;
+	private final ReadCategoryService readCategoryService;
 
 	@Autowired
 	public UpdateProductHandler(ReadProductService readProductService, UpdateProductService updateProductService,
-			CreateImageService createImageService) {
+			CreateImageService createImageService, ReadCategoryService readCategoryService) {
 		this.readProductService = readProductService;
 		this.updateProductService = updateProductService;
 		this.createImageService = createImageService;
+		this.readCategoryService = readCategoryService;
 	}
 
 	public Product execute(UpdateProductCommand command) {
@@ -40,7 +43,7 @@ public class UpdateProductHandler {
 		double priceSale = command.getPriceSale();
 		boolean inSale = command.isInSale();
 		boolean active = command.isActive();
-		Category category = command.getCategory();
+		Category category = readCategoryService.findById(command.getCategoryId()).orElseThrow(() -> new EntityNotFoundException());
 		long stock = command.getStock();
 
 		List<Image> newImages = createImageService.create(command.getImages());

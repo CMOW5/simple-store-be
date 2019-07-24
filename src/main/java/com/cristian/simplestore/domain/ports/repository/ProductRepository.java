@@ -19,4 +19,6 @@ public interface ProductRepository {
 
 	void delete(Product product);
 
+	void deleteById(Long id);
+
 }

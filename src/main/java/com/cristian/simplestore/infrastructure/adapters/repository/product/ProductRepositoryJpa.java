@@ -58,4 +58,9 @@ public class ProductRepositoryJpa implements ProductRepository {
 	public void delete(Product product) {
 		jpaRepo.delete(ProductEntity.fromDomain(product));
 	}
+
+	@Override
+	public void deleteById(Long id) {
+		jpaRepo.deleteById(id);
+	}
 }

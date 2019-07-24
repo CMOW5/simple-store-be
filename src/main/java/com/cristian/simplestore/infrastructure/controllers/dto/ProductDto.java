@@ -1,6 +1,7 @@
 package com.cristian.simplestore.infrastructure.controllers.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.cristian.simplestore.domain.models.Product;
 
@@ -43,5 +44,9 @@ public class ProductDto {
 		dto.category = CategoryDto.fromDomain(product.getCategory());
 		dto.images = ImageDto.fromDomain(product.getImages());
 		return dto;
+	}
+
+	public static Object fromDomain(List<Product> products) {
+		return products.stream().map(ProductDto::fromDomain).collect(Collectors.toList());
 	}
 }

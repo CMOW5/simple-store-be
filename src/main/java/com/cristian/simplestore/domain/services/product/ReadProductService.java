@@ -24,5 +24,4 @@ public class ReadProductService {
 	public Optional<Product> execute(Long id) {
 		return productRepository.findById(id);
 	}
-
 }

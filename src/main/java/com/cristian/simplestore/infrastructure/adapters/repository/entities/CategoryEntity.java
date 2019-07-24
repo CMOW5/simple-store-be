@@ -1,5 +1,6 @@
 package com.cristian.simplestore.infrastructure.adapters.repository.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import com.cristian.simplestore.domain.models.Category;
@@ -38,6 +40,9 @@ public class CategoryEntity {
   @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "image_id")
   private ImageEntity image;
+  
+  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ProductEntity> products = new ArrayList<>();
 
   public CategoryEntity(Long id, String name, CategoryEntity parent, ImageEntity image) {
     this(name, parent, image);
