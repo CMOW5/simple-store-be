@@ -15,10 +15,11 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.business.services.storage.exceptions.StorageException;
-import com.cristian.simplestore.business.services.storage.exceptions.StorageFileNotFoundException;
-import com.cristian.simplestore.config.properties.StorageConfig;
+
 import com.cristian.simplestore.domain.services.storage.StorageService;
+import com.cristian.simplestore.infrastructure.adapters.storage.exception.StorageException;
+import com.cristian.simplestore.infrastructure.adapters.storage.exception.StorageFileNotFoundException;
+import com.cristian.simplestore.infrastructure.config.properties.StorageConfig;
 
 @Service
 public class ImageStorageService implements StorageService {

@@ -10,7 +10,7 @@ import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 
 public class CategoryRequestFactory {
   
-  private static String ADMIN_CATEGORIES_BASE_URL = "/api/hex/admin/categories";
+  private static String ADMIN_CATEGORIES_BASE_URL = "/api/admin/categories";
    
   public static RequestEntityBuilder createFindAllCategoriesRequest() {
     String url = ADMIN_CATEGORIES_BASE_URL;

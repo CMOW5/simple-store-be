@@ -1,7 +1,7 @@
 package com.cristian.simplestore.infrastructure.adapters.repository.entities;
 
-import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ImageEntity {
-	// private static final long serialVersionUID = 3603066326555414036L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,5 +52,22 @@ public class ImageEntity {
 
 	public static List<ImageEntity> fromDomain(List<Image> images) {
 		return images.stream().map(ImageEntity::fromDomain).collect(Collectors.toList());
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ImageEntity image = (ImageEntity) o;
+		return Objects.equals(name, image.name) && Objects.equals(id, image.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, id);
 	}
 }

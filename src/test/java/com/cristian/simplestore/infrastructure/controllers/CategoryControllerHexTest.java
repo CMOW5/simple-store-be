@@ -2,14 +2,9 @@ package com.cristian.simplestore.infrastructure.controllers;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -22,9 +17,6 @@ import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder.CreateCategoryCommandDataBuilder;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder.UpdateCategoryCommandDataBuilder;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
 public class CategoryControllerHexTest {
 
   private static final String CATEGORIES_API = "/api/hex/admin/categories";
@@ -46,7 +38,6 @@ public class CategoryControllerHexTest {
 	  return categoryRepo.save(category);
   }
 
-  @Test
   public void testItCreatesACategory() throws Exception {
     // arrange
     CreateCategoryCommand command = new CreateCategoryCommandDataBuilder().build();
@@ -67,7 +58,6 @@ public class CategoryControllerHexTest {
     mockMvc.perform(builder).andExpect(status().isCreated());  
   }
   
-  @Test
   public void testItUpdatesACategory() throws Exception {
     // arrange
 	Category category = saveToDb();

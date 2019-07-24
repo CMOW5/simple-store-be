@@ -10,7 +10,7 @@ import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 
 public class ProductRequestFactory {
 
-	private static String ADMIN_PRODUCTS_BASE_URL = "/api/hex/admin/products";
+	private static String ADMIN_PRODUCTS_BASE_URL = "/api/admin/products";
 
 	
     public static RequestEntityBuilder createFindAllProductsRequest() {

@@ -1,8 +1,6 @@
 package com.cristian.simplestore.infrastructure.adapters.repository.entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,89 +28,88 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ProductEntity {
-  // private static final long serialVersionUID = 8372995282951530629L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-  @Column(unique = true, nullable = false)
-  private String name;
+	@Column(unique = true, nullable = false)
+	private String name;
 
-  private String description;
+	private String description;
 
-  @Column(nullable = false)
-  private double price;
+	@Column(nullable = false)
+	private double price;
 
-  private double priceSale;
+	private double priceSale;
 
-  @ColumnDefault("false")
-  private boolean inSale;
+	@ColumnDefault("false")
+	private boolean inSale;
 
-  @ColumnDefault("true")
-  private boolean active;
+	@ColumnDefault("true")
+	private boolean active;
 
-  private Long stock;
-  
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<ImageEntity> images;
-  
-  @ManyToOne
-  private CategoryEntity category;
+	private Long stock;
 
-  @CreationTimestamp
-  private LocalDateTime createdDate;
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ImageEntity> images;
 
-  @UpdateTimestamp
-  private LocalDateTime updatedDate;
-  
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ProductEntity product = (ProductEntity) o;
-    return Objects.equals(name, product.name) && Objects.equals(id, product.id);
-  }
+	@ManyToOne
+	private CategoryEntity category;
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(name, id);
-  }
+	@CreationTimestamp
+	private LocalDateTime createdDate;
 
-  public static ProductEntity fromDomain(Product product) {
-    ProductEntity entity = new ProductEntity();
-    entity.id = product.getId();
-    entity.name = product.getName();
-    entity.description = product.getDescription();
-    entity.price = product.getPrice();
-    entity.priceSale = product.getPriceSale();
-    entity.inSale = product.isInSale();
-    entity.active = product.isActive();
-    entity.category = CategoryEntity.fromDomain(product.getCategory());
-    entity.stock = product.getStock();
-    entity.images = ImageEntity.fromDomain(product.getImages()); 
-    return entity;
-  }
+	@UpdateTimestamp
+	private LocalDateTime updatedDate;
 
-  public static Product toDomain(ProductEntity entity) {
-	Long id = entity.getId(); 
-    String name = entity.getName();
-    String description = entity.getDescription();
-    double price = entity.getPrice();
-    double priceSale = entity.getPriceSale();
-    boolean inSale = entity.isInSale();
-    boolean active = entity.isActive();
-    Category category = CategoryEntity.toDomain(entity.getCategory());
-    long stock = entity.getStock();
-    List<Image> images = ImageEntity.toDomain(entity.getImages());
-    return new Product(id, name, description, price, priceSale, inSale, active, category, images, stock);
-  }
+	public static ProductEntity fromDomain(Product product) {
+		ProductEntity entity = new ProductEntity();
+		entity.id = product.getId();
+		entity.name = product.getName();
+		entity.description = product.getDescription();
+		entity.price = product.getPrice();
+		entity.priceSale = product.getPriceSale();
+		entity.inSale = product.isInSale();
+		entity.active = product.isActive();
+		entity.category = CategoryEntity.fromDomain(product.getCategory());
+		entity.stock = product.getStock();
+		entity.images = ImageEntity.fromDomain(product.getImages());
+		return entity;
+	}
 
-  public static List<Product> toDomain(List<ProductEntity> entities) {
-    return entities.stream().map(ProductEntity::toDomain).collect(Collectors.toList());
-  }
+	public static Product toDomain(ProductEntity entity) {
+		Long id = entity.getId();
+		String name = entity.getName();
+		String description = entity.getDescription();
+		double price = entity.getPrice();
+		double priceSale = entity.getPriceSale();
+		boolean inSale = entity.isInSale();
+		boolean active = entity.isActive();
+		Category category = CategoryEntity.toDomain(entity.getCategory());
+		long stock = entity.getStock();
+		List<Image> images = ImageEntity.toDomain(entity.getImages());
+		return new Product(id, name, description, price, priceSale, inSale, active, category, images, stock);
+	}
+
+	public static List<Product> toDomain(List<ProductEntity> entities) {
+		return entities.stream().map(ProductEntity::toDomain).collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ProductEntity product = (ProductEntity) o;
+		return Objects.equals(name, product.name) && Objects.equals(id, product.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, id);
+	}
 }

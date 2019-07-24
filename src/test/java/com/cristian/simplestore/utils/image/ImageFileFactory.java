@@ -21,7 +21,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.config.properties.StorageConfig;
+import com.cristian.simplestore.infrastructure.config.properties.StorageConfig;
 
 @Component
 public class ImageFileFactory {
