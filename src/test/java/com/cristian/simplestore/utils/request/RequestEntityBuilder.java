@@ -1,4 +1,4 @@
-package com.cristian.simplestore.utils;
+package com.cristian.simplestore.utils.request;
 
 import java.net.URI;
 import java.net.URISyntaxException;

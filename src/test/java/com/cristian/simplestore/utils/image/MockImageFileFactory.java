@@ -1,8 +1,8 @@
-package com.cristian.simplestore.infrastructure.controllers.databuilder;
+package com.cristian.simplestore.utils.image;
 
 import org.springframework.mock.web.MockMultipartFile;
 
-public class ImageFileFactory {
+public class MockImageFileFactory {
 
   private static String DEFAULT_PARAM_NAME = "image";
   private static String DEFAULT_IMAGE_NAME = "imagename";

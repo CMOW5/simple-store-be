@@ -1,15 +1,16 @@
-package com.cristian.simplestore.infrastructure.controllers.databuilder;
+package com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder;
 
 import org.springframework.web.multipart.MultipartFile;
 import com.cristian.simplestore.application.command.CreateCategoryCommand;
 import com.cristian.simplestore.domain.models.Category;
+import com.cristian.simplestore.utils.image.MockImageFileFactory;
 
 public class CreateCategoryCommandDataBuilder {
   private String name = "default category name";
   
-  private MultipartFile image = ImageFileFactory.createMockMultiPartFile();
+  private MultipartFile image = MockImageFileFactory.createMockMultiPartFile();
   
-  private Category parent;
+  private Long parentId;
   
   public CreateCategoryCommandDataBuilder name(String name) {
     this.name = name;
@@ -22,11 +23,11 @@ public class CreateCategoryCommandDataBuilder {
   }
   
   public CreateCategoryCommandDataBuilder parent(Category parent) {
-    this.parent = parent;
+    this.parentId = parent.getId();
     return this;
   }
   
   public CreateCategoryCommand build() {
-    return new CreateCategoryCommand(name, image, parent);
+    return new CreateCategoryCommand(name, image, parentId);
   }
 }

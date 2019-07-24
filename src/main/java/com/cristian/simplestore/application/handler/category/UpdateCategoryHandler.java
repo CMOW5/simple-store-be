@@ -35,13 +35,15 @@ public class UpdateCategoryHandler {
 		// TODO: validate data
 		Long id = command.getId();
 		String name = command.getName();
-		Category parent = resolveNewParent(storedCategory, command.getParent());
+		Category parent = resolveNewParent(storedCategory, command.getParentId());
 		Image image = resolveNewImage(storedCategory, command.getImage());
 		Category category = new Category(id, name, image, parent);
 		return updateCategoryService.execute(category);
 	}
 	
-	private Category resolveNewParent(Category storedCategory, Category newParent) {
+	private Category resolveNewParent(Category storedCategory, Long newParentId) {
+		Category newParent = readCategoryService.findById(newParentId).orElseThrow(() -> new EntityNotFoundException());
+		
 		if (storedCategory.hasSubcategory(newParent)) {
 			return resolveCategoryCircularReference(storedCategory, newParent);
 		} else if (storedCategory.equals(newParent)) {

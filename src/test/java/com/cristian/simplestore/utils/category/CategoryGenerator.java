@@ -1,4 +1,4 @@
-package com.cristian.simplestore.utils;
+package com.cristian.simplestore.utils.category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,27 +10,25 @@ import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.models.Image;
 import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
 import com.cristian.simplestore.domain.services.image.CreateImageService;
-import com.cristian.simplestore.infrastructure.controllers.databuilder.ImageFileFactory;
+import com.cristian.simplestore.utils.image.MockImageFileFactory;
 import com.github.javafaker.Faker;
 
 @Component
 public class CategoryGenerator {
 	
 	private Faker faker = new Faker();
-	private ImageTestUtils imageUtils;
 	private CategoryRepository categoryRepository;
 	private CreateImageService createImageService;
 
 	@Autowired
-	private CategoryGenerator(CategoryRepository categoryRepository, ImageTestUtils imageUtils, CreateImageService createImageService) {
+	private CategoryGenerator(CategoryRepository categoryRepository, CreateImageService createImageService) {
 		this.categoryRepository = categoryRepository;
-		this.imageUtils = imageUtils;
 		this.createImageService = createImageService;
 	}
 	
 	public Category generateRandomCategory() {
-		// return new Builder().randomName().randomImage().randomParent().build();
-		return new Builder().randomName().randomImage().build();
+		return new Builder().randomName().randomImage().randomParent().build();
+		// return new Builder().randomName().randomImage().build();
 	}
 	
 	public String generateRandomCategoryName() {
@@ -65,8 +63,7 @@ public class CategoryGenerator {
 		}
 		
 		public Builder randomImage() {
-			// this.image = imageUtils.saveRandomImageOnDb();
-			this.image = createImageService.create(ImageFileFactory.createMockMultiPartFile());
+			this.image = createImageService.create(MockImageFileFactory.createMockMultiPartFile());
 			return this;
 		}
 		

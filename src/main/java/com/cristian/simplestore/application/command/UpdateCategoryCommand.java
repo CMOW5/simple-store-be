@@ -1,7 +1,6 @@
 package com.cristian.simplestore.application.command;
 
 import org.springframework.web.multipart.MultipartFile;
-import com.cristian.simplestore.domain.models.Category;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,5 +16,5 @@ public class UpdateCategoryCommand {
 
 	private MultipartFile image;
 
-	private Category parent;
+	private Long parentId;
 }

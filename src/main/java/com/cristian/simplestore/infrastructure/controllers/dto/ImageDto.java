@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ImageDto {
+	 private Long id;
 	 private String name;
 	 
 	 public static ImageDto fromDomain(Image image) {
 		 if (image == null) return null;
 		 ImageDto dto = new ImageDto();
+		 dto.id = image.getId();
 		 dto.name = image.getName();
 		 return dto;
 	 }

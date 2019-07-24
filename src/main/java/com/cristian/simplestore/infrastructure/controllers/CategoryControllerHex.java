@@ -56,13 +56,12 @@ public class CategoryControllerHex {
 	}
 
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(CreateCategoryCommand command) {
 		Category createdCategory = createCategoryHandler.execute(command);
-		return new ApiResponse().status(HttpStatus.OK).content(CategoryDto.fromDomain(createdCategory)).build();
+		return new ApiResponse().status(HttpStatus.CREATED).content(CategoryDto.fromDomain(createdCategory)).build();
 	}
 
-	@PutMapping
+	@PutMapping("/{id}")
 	public ResponseEntity<?> update(UpdateCategoryCommand command) {
 		Category updatedCategory = updateCategoryHandler.execute(command);
 		return new ApiResponse().status(HttpStatus.OK).content(CategoryDto.fromDomain(updatedCategory)).build();
