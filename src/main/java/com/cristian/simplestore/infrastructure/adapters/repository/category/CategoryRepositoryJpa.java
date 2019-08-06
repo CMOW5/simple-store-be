@@ -13,10 +13,10 @@ import com.cristian.simplestore.infrastructure.adapters.repository.entities.Cate
 @Repository
 public class CategoryRepositoryJpa implements CategoryRepository {
 
-	private CategoryRepositoryJpaInterface jpaRepo;
+	private CategoryRepositorySpringJpa jpaRepo;
 
 	@Autowired
-	public CategoryRepositoryJpa(CategoryRepositoryJpaInterface jpaRepo) {
+	public CategoryRepositoryJpa(CategoryRepositorySpringJpa jpaRepo) {
 		this.jpaRepo = jpaRepo;
 	}
 

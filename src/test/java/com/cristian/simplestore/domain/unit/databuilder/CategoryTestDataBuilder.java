@@ -10,30 +10,39 @@ public class CategoryTestDataBuilder {
 	Long id = 999L;
     String name = "default cat name";
     Image image;
-    Category parentCategory;
+    Category parent;
+    Category category;
+    
+    public CategoryTestDataBuilder() {
+    	this.category = new Category(id, name, image, parent);
+    }
     
     public CategoryTestDataBuilder id(Long id) {
         this.id = id;
+        this.category = new Category(id, name, image, parent);
         return this;
     }
 
     public CategoryTestDataBuilder name(String name) {
         this.name = name;
+        this.category = new Category(id, name, image, parent);
         return this;
     }
 
     public CategoryTestDataBuilder image(Image image) {
         this.image = image;
+        this.category = new Category(id, name, image, parent);
         return this;
     }
 
-    public CategoryTestDataBuilder parent(Category category) {
-        this.parentCategory = category;
+    public CategoryTestDataBuilder parent(Category parent) {
+        this.parent = parent;
+        this.category.setParent(parent);
         return this;
     }
 
     public Category build() {
-        return new Category(id, name, image, parentCategory);
+        return category;
     }
     
     public static List<Category> createCategories(int size) {

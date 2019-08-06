@@ -1,6 +1,7 @@
 package com.cristian.simplestore.infrastructure.adapters.repository.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -52,7 +53,7 @@ public class ProductEntity {
 	private Long stock;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ImageEntity> images;
+	private List<ImageEntity> images = new ArrayList<>();
 
 	@ManyToOne
 	private CategoryEntity category;

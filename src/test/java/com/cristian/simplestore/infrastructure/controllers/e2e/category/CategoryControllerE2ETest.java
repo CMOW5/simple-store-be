@@ -1,6 +1,7 @@
 package com.cristian.simplestore.infrastructure.controllers.e2e.category;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.util.List;
 import org.junit.Test;
@@ -21,8 +22,6 @@ import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.utils.request.JsonRequestSender;
 import com.cristian.simplestore.utils.request.JsonResponse;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -38,9 +37,9 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
     private JsonRequestSender requestSender;
     
     @Test
-    public void testItFindsAllCategories() throws JsonParseException, JsonMappingException, IOException {
-        int MAX_CATEGORIES_SIZE = 4;
-        List<Category> categories = categoryGenerator.saveRandomCategoriesOnDb(MAX_CATEGORIES_SIZE);
+    public void testItFindsAllCategories() throws IOException {
+        int categoriesSize = 4;
+        List<Category> categories = categoryGenerator.saveRandomCategoriesOnDb(categoriesSize);
 
         RequestEntity<?> request = CategoryRequestFactory.createFindAllCategoriesRequest().build();
         JsonResponse response = requestSender.send(request);
@@ -52,13 +51,13 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testItFindsACategoryById() throws JsonParseException, JsonMappingException, IOException {
+    public void testItFindsACategoryById() throws IOException {
         Category category = categoryGenerator.saveRandomCategoryOnDb();
 
         RequestEntity<?> request = CategoryRequestFactory.createFindCategoryByIdRequest(category.getId()).build();
         JsonResponse response = requestSender.send(request);
         
-        CategoryDto foundCategory = (CategoryDto) response.getContent(CategoryDto.class);
+        CategoryDto foundCategory = response.getContent(CategoryDto.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(foundCategory.getName()).isEqualTo(category.getName());
@@ -66,7 +65,7 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testItDoesNotFindACategoryById() throws JsonParseException, JsonMappingException, IOException {
+    public void testItDoesNotFindACategoryById() {
         Long nonExistentCategoryId = 1L;
         
         RequestEntity<?> request = CategoryRequestFactory.createFindCategoryByIdRequest(nonExistentCategoryId).build();
@@ -76,14 +75,13 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testItCreatesACategory() throws JsonParseException, JsonMappingException, IOException {
+    public void testItCreatesACategory() throws IOException {
         MultiPartFormBuilder form = categoryFormUtils.generateRandomCategoryCreateRequestForm();
         
         RequestEntity<?> request = CategoryRequestFactory.createCategoryCreateRequest(form).build();
         JsonResponse response = requestSender.send(request);
         
-        CategoryDto createdCategory = (CategoryDto) response
-                .getContent(CategoryDto.class);
+        CategoryDto createdCategory = response.getContent(CategoryDto.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThatDtoisEqualToForm(createdCategory, form);
@@ -91,15 +89,14 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testItUpdatesACategory() throws JsonParseException, JsonMappingException, IOException {
+    public void testItUpdatesACategory() throws IOException {
         Category categoryToUpdate = categoryGenerator.saveRandomCategoryOnDb();     
         MultiPartFormBuilder form = categoryFormUtils.generateRandomCategoryUpdateRequestForm();
         
         RequestEntity<?> request = CategoryRequestFactory.createCategoryUpdateRequest(categoryToUpdate.getId(), form).build();
         JsonResponse response = requestSender.send(request);
         
-        CategoryDto updatedCategory = (CategoryDto) response
-                .getContent(CategoryDto.class);
+        CategoryDto updatedCategory = response.getContent(CategoryDto.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThatDtoisEqualToForm(updatedCategory, form);
@@ -107,7 +104,7 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testItReturnsNotFoundWhenUpdating() throws JsonParseException, JsonMappingException, IOException {
+    public void testItReturnsNotFoundWhenUpdating() {
         Long nonExistentCategoryId = 1L;
 
         MultiPartFormBuilder form = new MultiPartFormBuilder();
@@ -120,7 +117,7 @@ public class CategoryControllerE2ETest extends BaseIntegrationTest {
     }
 
     @Test
-    public void testItDeletesACategory() throws JsonParseException, JsonMappingException, IOException {
+    public void testItDeletesACategory() {
         Category category = categoryGenerator.saveRandomCategoryOnDb();
         
         RequestEntity<?> request = CategoryRequestFactory.createCategoryDeleteRequest(category.getId()).build();

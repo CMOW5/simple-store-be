@@ -28,7 +28,6 @@ public class CategoryGenerator {
 	
 	public Category generateRandomCategory() {
 		return new Builder().randomName().randomImage().randomParent().build();
-		// return new Builder().randomName().randomImage().build();
 	}
 	
 	public String generateRandomCategoryName() {
@@ -83,11 +82,14 @@ public class CategoryGenerator {
 		}
 		
 		public Category build() {
-			return new Category(name, image, parent);
+			return new Category(name, parent, image);
 		}
 		
 		public Category save() {
-			return categoryRepository.save(build());
+			Category category = build();
+			return categoryRepository.save(category);
+			//Category savedCat = categoryRepository.save(category);
+			//return new Category(savedCat.getId(), savedCat.getName(), savedCat.getImage(), savedCat.getParent());
 		}
 	}
 }

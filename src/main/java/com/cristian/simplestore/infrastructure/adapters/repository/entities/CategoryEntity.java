@@ -3,6 +3,7 @@ package com.cristian.simplestore.infrastructure.adapters.repository.entities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -33,7 +34,7 @@ public class CategoryEntity {
 
 	@Column(nullable = false, unique = true)
 	private String name;
-
+	
 	@ManyToOne
 	private CategoryEntity parent;
 
@@ -43,18 +44,18 @@ public class CategoryEntity {
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductEntity> products = new ArrayList<>();
-
+		
 	public CategoryEntity(Long id, String name, CategoryEntity parent, ImageEntity image) {
 		this(name, parent, image);
 		this.id = id;
 	}
-
+	
 	public CategoryEntity(String name, CategoryEntity parent, ImageEntity image) {
 		this.name = name;
 		this.parent = parent;
 		this.image = image;
 	}
-
+	
 	public static CategoryEntity fromDomain(Category category) {
 		if (category == null)
 			return null;
@@ -63,6 +64,10 @@ public class CategoryEntity {
 		CategoryEntity parentEntity = fromDomain(category.getParent());
 		ImageEntity imageEntity = ImageEntity.fromDomain(category.getImage());
 		return new CategoryEntity(id, name, parentEntity, imageEntity);
+	}
+	
+	public static Set<CategoryEntity> fromDomain(List<Category> categories) {
+		return categories.stream().map(CategoryEntity::fromDomain).collect(Collectors.toSet());
 	}
 
 	public static Category toDomain(CategoryEntity entity) {
