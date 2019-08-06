@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.handler.product;
+package com.cristian.simplestore.application.product.handler;
 
 import java.util.List;
 import java.util.Optional;

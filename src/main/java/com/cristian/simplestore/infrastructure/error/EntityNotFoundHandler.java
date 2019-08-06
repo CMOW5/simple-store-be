@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cristian.simplestore.infrastructure.controllers.dto.ApiResponse;
 
-@ControllerAdvice
-@ResponseBody
+ @ControllerAdvice
+ @ResponseBody
 public class EntityNotFoundHandler {
 
 	@ExceptionHandler(EntityNotFoundException.class)

@@ -10,8 +10,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
-import com.cristian.simplestore.application.command.CreateCategoryCommand;
-import com.cristian.simplestore.application.command.UpdateCategoryCommand;
+import com.cristian.simplestore.application.category.command.CreateCategoryCommand;
+import com.cristian.simplestore.application.category.command.UpdateCategoryCommand;
 import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder.CreateCategoryCommandDataBuilder;

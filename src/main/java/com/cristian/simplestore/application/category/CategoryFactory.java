@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.services;
+package com.cristian.simplestore.application.category;
 
 import javax.persistence.EntityNotFoundException;
 

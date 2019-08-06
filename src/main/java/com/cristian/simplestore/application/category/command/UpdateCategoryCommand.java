@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.command;
+package com.cristian.simplestore.application.category.command;
 
 import org.springframework.web.multipart.MultipartFile;
 

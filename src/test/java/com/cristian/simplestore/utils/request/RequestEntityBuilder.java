@@ -14,7 +14,7 @@ public class RequestEntityBuilder {
   private HttpMethod method;
   private HttpHeaders headers;
   private Map<?, ?> body;
-  private Map<String, String> requestParams = new HashMap<String, String>();
+  private Map<String, String> requestParams = new HashMap<>();
    
   public RequestEntityBuilder() {}
   

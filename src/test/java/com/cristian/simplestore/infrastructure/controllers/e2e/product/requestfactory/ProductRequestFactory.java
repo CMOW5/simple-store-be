@@ -8,11 +8,12 @@ import org.springframework.util.MultiValueMap;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.request.RequestEntityBuilder;
 
-public class ProductRequestFactory {
+public final class ProductRequestFactory {
 
-	private static String ADMIN_PRODUCTS_BASE_URL = "/api/admin/products";
-
+	private static final String ADMIN_PRODUCTS_BASE_URL = "/api/admin/products";
 	
+	private ProductRequestFactory() {}
+
     public static RequestEntityBuilder createFindAllProductsRequest() {
         String url = ADMIN_PRODUCTS_BASE_URL;
         return new RequestEntityBuilder().url(url).httpMethod(HttpMethod.GET);

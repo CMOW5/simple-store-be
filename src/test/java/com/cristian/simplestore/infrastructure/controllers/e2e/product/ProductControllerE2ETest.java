@@ -29,7 +29,7 @@ import com.cristian.simplestore.utils.request.JsonResponse;
 public class ProductControllerE2ETest extends BaseIntegrationTest {
 
   private static final String IMAGES_KEY = "images";
-	
+  	
   @Autowired
   private ProductGenerator productsGenerator;
   
@@ -46,7 +46,7 @@ public class ProductControllerE2ETest extends BaseIntegrationTest {
 
     RequestEntity<?> request = ProductRequestFactory.createFindAllProductsRequest().build();
     JsonResponse response = requestSender.send(request);
-    
+        
     List<?> foundProducts =
         (List<?>) response.getContent(List.class);
 

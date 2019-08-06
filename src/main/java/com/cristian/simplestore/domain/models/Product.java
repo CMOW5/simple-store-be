@@ -96,9 +96,7 @@ public class Product {
 	}
 	
 	public void removeImagesById(List<Long> imagesIds) {
-		imagesIds.forEach((id) -> {
-			this.images.removeIf((image) -> image.getId() == id);
-		});
+		imagesIds.forEach(imageId -> this.images.removeIf(image -> image.getId() == imageId));
 	}
 
 	@Override

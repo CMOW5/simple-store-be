@@ -3,7 +3,6 @@ package com.cristian.simplestore.domain.integration.category;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,12 +12,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.services.category.ReadCategoryService;
 import com.cristian.simplestore.domain.services.category.UpdateCategoryService;
+import com.cristian.simplestore.infrastructure.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
-public class UpdateCategoryServiceTest {
+public class UpdateCategoryServiceTest extends BaseIntegrationTest {
 	
 	@Autowired
     private CategoryGenerator categoryGenerator;

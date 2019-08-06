@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.command;
+package com.cristian.simplestore.application.product.command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CreateProductCommand {
-
+public class UpdateProductCommand {
+  private Long id;	
+	
   private String name;
   
   private String description;
@@ -25,6 +26,8 @@ public class CreateProductCommand {
   private Long categoryId;
 
   private List<MultipartFile> images = new ArrayList<>();
+  
+  private List<Long> imagesIdsToDelete = new ArrayList<>();
 
   private Long stock;
 }

@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.handler.product;
+package com.cristian.simplestore.application.product.handler;
 
 import java.util.List;
 
@@ -7,7 +7,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.cristian.simplestore.application.command.UpdateProductCommand;
+
+import com.cristian.simplestore.application.product.command.UpdateProductCommand;
 import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.domain.models.Image;
 import com.cristian.simplestore.domain.models.Product;

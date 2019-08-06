@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.handler.product;
+package com.cristian.simplestore.application.category.handler;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -7,22 +7,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.domain.services.product.DeleteProductService;
+import com.cristian.simplestore.domain.services.category.DeleteCategoryService;
 
 @Component
-public class DeleteProductHandler {
+public class DeleteCategoryHandler {
 
-	private final DeleteProductService deleteProductService;
-
+	private final DeleteCategoryService deleteCategoryService;
+	
 	@Autowired
-	public DeleteProductHandler(DeleteProductService deleteProductService) {
-		this.deleteProductService = deleteProductService;
+	public DeleteCategoryHandler(DeleteCategoryService deleteCategoryService) {
+		this.deleteCategoryService = deleteCategoryService;
 	}
-
+	
 	@Transactional
 	public void execute(Long id) {
 		try {
-			deleteProductService.execute(id);
+			deleteCategoryService.execute(id);
 		} catch (EmptyResultDataAccessException exception) {
 			throw new EntityNotFoundException("The product with the given id was not found");
 		}	
