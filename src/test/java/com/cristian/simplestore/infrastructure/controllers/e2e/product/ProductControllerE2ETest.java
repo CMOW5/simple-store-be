@@ -23,13 +23,13 @@ import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.product.ProductGenerator;
 import com.cristian.simplestore.utils.request.JsonRequestSender;
 import com.cristian.simplestore.utils.request.JsonResponse;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ProductControllerE2ETest extends BaseIntegrationTest {
 
+  private static final String IMAGES_KEY = "images";
+	
   @Autowired
   private ProductGenerator productsGenerator;
   
@@ -40,10 +40,9 @@ public class ProductControllerE2ETest extends BaseIntegrationTest {
   private JsonRequestSender requestSender;
       
   @Test
-  public void testItFindsAllProducts()
-      throws JsonParseException, JsonMappingException, IOException {
-    int MAX_PRODUCTS_SIZE = 4;
-    List<Product> productEntities = productsGenerator.saveRandomProductsOnDB(MAX_PRODUCTS_SIZE);
+  public void testItFindsAllProducts() throws IOException {
+    int maxProductsSize = 4;
+    List<Product> productEntities = productsGenerator.saveRandomProductsOnDB(maxProductsSize);
 
     RequestEntity<?> request = ProductRequestFactory.createFindAllProductsRequest().build();
     JsonResponse response = requestSender.send(request);
@@ -56,23 +55,20 @@ public class ProductControllerE2ETest extends BaseIntegrationTest {
   }
   
   @Test
-  public void testItFindsAProductById()
-      throws JsonParseException, JsonMappingException, IOException {
-    Product Product = productsGenerator.saveRandomProductOnDB();
+  public void testItFindsAProductById() throws IOException {
+    Product product = productsGenerator.saveRandomProductOnDB();
 
-    RequestEntity<?> request = ProductRequestFactory.createFindProductByIdRequest(Product.getId()).build();
+    RequestEntity<?> request = ProductRequestFactory.createFindProductByIdRequest(product.getId()).build();
     JsonResponse response = requestSender.send(request);
     
-    ProductDto foundProduct = (ProductDto) response
-        .getContent(ProductDto.class);
+    ProductDto foundProduct = response.getContent(ProductDto.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    assertThatProductDtoIsEqualToProduct(foundProduct, Product);
+    assertThatProductDtoIsEqualToProduct(foundProduct, product);
   }
   
   @Test
-  public void testItDoesNotFindAProductById()
-      throws JsonParseException, JsonMappingException, IOException {
+  public void testItDoesNotFindAProductById() {
     Long nonExistentProductId = 1L;
     
     RequestEntity<?> request = ProductRequestFactory.createFindProductByIdRequest(nonExistentProductId).build();
@@ -82,60 +78,55 @@ public class ProductControllerE2ETest extends BaseIntegrationTest {
   }
   
   @Test
-  public void testItCreatesAProduct() throws JsonParseException, JsonMappingException, IOException {
+  public void testItCreatesAProduct() throws IOException {
     MultiPartFormBuilder form = productsFormUtils.generateRandomProductCreateRequestForm();
 
     RequestEntity<?> request = ProductRequestFactory.createProductCreateRequest(form).build();
     JsonResponse response = requestSender.send(request);
 
-    ProductDto createdProduct = (ProductDto) response
-        .getContent(ProductDto.class);
+    ProductDto createdProduct = response.getContent(ProductDto.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     assertThatProductDtoIsEqualToProduct(createdProduct, form);
     assertThat(createdProduct.getImages().size())
-        .isEqualTo(((List<?>) form.getAll("images")).size());
+        .isEqualTo((form.getAll(IMAGES_KEY)).size());
   }
   
   @Test
-  public void testItUpdatesAProduct() throws JsonParseException, JsonMappingException, IOException {
+  public void testItUpdatesAProduct() throws IOException {
     Product productToUpdate = productsGenerator.saveRandomProductOnDB();
     MultiPartFormBuilder form = productsFormUtils.generateRandomProductUpdateRequestForm();
 
     RequestEntity<?> request = ProductRequestFactory.createProductUpdateRequest(productToUpdate.getId(), form).build();
     JsonResponse response = requestSender.send(request);
     
-    ProductDto updatedProduct = (ProductDto) response
-        .getContent(ProductDto.class);
+    ProductDto updatedProduct = response.getContent(ProductDto.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThatProductDtoIsEqualToProduct(updatedProduct, form);
     assertThat(updatedProduct.getImages().size()).isEqualTo(
-        ((List<?>) form.getAll("images")).size() + productToUpdate.getImages().size());
+        (form.getAll(IMAGES_KEY)).size() + productToUpdate.getImages().size());
   }
   
   @Test
-  public void testItUpdatesAProductImages()
-      throws JsonParseException, JsonMappingException, IOException {
-    Product Product = productsGenerator.saveRandomProductOnDB();
+  public void testItUpdatesAProductImages() throws IOException {
+    Product product = productsGenerator.saveRandomProductOnDB();
     MultiPartFormBuilder form = productsFormUtils.generateRandomProductUpdateRequestForm();
-    form.add("imagesIdsToDelete", getIdsFromImages(Product.getImages()));
+    form.add("imagesIdsToDelete", getIdsFromImages(product.getImages()));
 
-    RequestEntity<?> request = ProductRequestFactory.createProductUpdateRequest(Product.getId(), form).build();
+    RequestEntity<?> request = ProductRequestFactory.createProductUpdateRequest(product.getId(), form).build();
     JsonResponse response = requestSender.send(request);
     
-    ProductDto updatedProduct = (ProductDto) response
-        .getContent(ProductDto.class);
+    ProductDto updatedProduct = response.getContent(ProductDto.class);
 
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     assertThatProductDtoIsEqualToProduct(updatedProduct, form);
     assertThat(updatedProduct.getImages().size())
-        .isEqualTo(((List<?>) form.getAll("images")).size());
+        .isEqualTo((form.getAll(IMAGES_KEY)).size());
   }
   
   @Test
-  public void testItReturnsNotFoundWhenUpdating()
-      throws JsonParseException, JsonMappingException, IOException {
+  public void testItReturnsNotFoundWhenUpdating() {
     Long nonExistentId = 1L;
 
     MultiPartFormBuilder form = new MultiPartFormBuilder();
@@ -148,10 +139,10 @@ public class ProductControllerE2ETest extends BaseIntegrationTest {
   }
   
   @Test
-  public void testItDeletesAProduct() throws JsonParseException, JsonMappingException, IOException {
-    Product Product = productsGenerator.saveRandomProductOnDB();
+  public void testItDeletesAProduct() {
+    Product product = productsGenerator.saveRandomProductOnDB();
 
-    RequestEntity<?> request = ProductRequestFactory.createProductDeleteRequest(Product.getId()).build();
+    RequestEntity<?> request = ProductRequestFactory.createProductDeleteRequest(product.getId()).build();
     JsonResponse response = requestSender.send(request);
     
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
@@ -161,14 +152,14 @@ public class ProductControllerE2ETest extends BaseIntegrationTest {
   }
   
   private void assertThatProductDtoIsEqualToProduct(ProductDto expectedProduct,
-      Product Product) {
-    assertThat(expectedProduct.getName()).isEqualTo(Product.getName());
-    assertThat(expectedProduct.getDescription()).isEqualTo(Product.getDescription());
-    assertThat(expectedProduct.getPrice()).isEqualTo(Product.getPrice());
-    assertThat(expectedProduct.getPriceSale()).isEqualTo(Product.getPriceSale());
-    assertThat(expectedProduct.isInSale()).isEqualTo(Product.isInSale());
-    assertThat(expectedProduct.isActive()).isEqualTo(Product.isActive());
-    assertThat(expectedProduct.getStock()).isEqualTo(Product.getStock());
+      Product product) {
+    assertThat(expectedProduct.getName()).isEqualTo(product.getName());
+    assertThat(expectedProduct.getDescription()).isEqualTo(product.getDescription());
+    assertThat(expectedProduct.getPrice()).isEqualTo(product.getPrice());
+    assertThat(expectedProduct.getPriceSale()).isEqualTo(product.getPriceSale());
+    assertThat(expectedProduct.isInSale()).isEqualTo(product.isInSale());
+    assertThat(expectedProduct.isActive()).isEqualTo(product.isActive());
+    assertThat(expectedProduct.getStock()).isEqualTo(product.getStock());
   }
 
   private void assertThatProductDtoIsEqualToProduct(ProductDto expectedProduct,
@@ -185,7 +176,7 @@ public class ProductControllerE2ETest extends BaseIntegrationTest {
 
   private List<Long> getIdsFromImages(List<Image> images) {
     List<Long> imagesIds = new ArrayList<>();
-    images.forEach((image) -> imagesIds.add(image.getId()));
+    images.forEach(image -> imagesIds.add(image.getId()));
     return imagesIds;
   }
 }
