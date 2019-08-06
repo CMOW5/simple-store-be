@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.error;
+package com.cristian.simplestore.infrastructure.web.error;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cristian.simplestore.infrastructure.controllers.dto.ApiResponse;
+import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 
  @ControllerAdvice
  @ResponseBody

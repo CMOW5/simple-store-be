@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.controllers.dto;
+package com.cristian.simplestore.infrastructure.web.dto;
 
 import org.springframework.validation.FieldError;
 import lombok.Data;

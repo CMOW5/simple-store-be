@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.controllers;
+package com.cristian.simplestore.infrastructure.web.controllers;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ import com.cristian.simplestore.application.category.handler.DeleteCategoryHandl
 import com.cristian.simplestore.application.category.handler.ReadCategoryHandler;
 import com.cristian.simplestore.application.category.handler.UpdateCategoryHandler;
 import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.infrastructure.controllers.dto.ApiResponse;
-import com.cristian.simplestore.infrastructure.controllers.dto.CategoryDto;
+import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
+import com.cristian.simplestore.infrastructure.web.dto.CategoryDto;
 
 @RestController
 @RequestMapping("/api/admin/categories")

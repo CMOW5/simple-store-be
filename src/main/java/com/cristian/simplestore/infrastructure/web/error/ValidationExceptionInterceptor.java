@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.error;
+package com.cristian.simplestore.infrastructure.web.error;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -7,7 +7,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.cristian.simplestore.infrastructure.controllers.dto.ApiResponse;
+import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 
 // @ControllerAdvice(basePackages = "com.cristian.simplestore.web.controllers")
 // @ResponseBody

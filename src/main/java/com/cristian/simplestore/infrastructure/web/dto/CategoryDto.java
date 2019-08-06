@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.controllers.dto;
+package com.cristian.simplestore.infrastructure.web.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -15,9 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cristian.simplestore.domain.models.Category;
 import com.cristian.simplestore.infrastructure.controllers.BaseIntegrationTest;
-import com.cristian.simplestore.infrastructure.controllers.dto.CategoryDto;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder.CategoryFormUtils;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.requestfactory.CategoryRequestFactory;
+import com.cristian.simplestore.infrastructure.web.dto.CategoryDto;
 import com.cristian.simplestore.utils.MultiPartFormBuilder;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.utils.request.JsonRequestSender;

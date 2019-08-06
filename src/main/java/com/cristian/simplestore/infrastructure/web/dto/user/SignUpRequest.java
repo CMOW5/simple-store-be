@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.controllers.dto.user;
+package com.cristian.simplestore.infrastructure.web.dto.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.controllers.dto.user;
+package com.cristian.simplestore.infrastructure.web.dto.user;
 
 import com.cristian.simplestore.infrastructure.adapters.repository.entities.UserEntity;
 
