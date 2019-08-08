@@ -1,6 +1,7 @@
 package com.cristian.simplestore.infrastructure.adapters.repository.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -37,6 +38,9 @@ public class CategoryEntity {
 	
 	@ManyToOne
 	private CategoryEntity parent;
+	
+	@OneToMany(cascade = CascadeType.REMOVE)
+	private Set<CategoryEntity> subcategories = new HashSet<>();
 
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "image_id")
