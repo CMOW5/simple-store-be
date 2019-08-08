@@ -1,7 +1,6 @@
-package com.cristian.simplestore.domain.services.category;
+package com.cristian.simplestore.domain.category.services;
 
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
 
 public class DeleteCategoryService {
 
@@ -9,10 +8,6 @@ public class DeleteCategoryService {
 
 	public DeleteCategoryService(CategoryRepository categoryRepository) {
 		this.categoryRepository = categoryRepository;
-	}
-
-	public void execute(Category category) {
-		categoryRepository.delete(category);
 	}
 
 	public void execute(Long id) {

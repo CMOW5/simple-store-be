@@ -1,9 +1,8 @@
-package com.cristian.simplestore.domain.services.category;
+package com.cristian.simplestore.domain.category;
 
 import javax.persistence.EntityExistsException;
 
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
 
 public class CategoryValidator {
 

@@ -9,7 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import com.cristian.simplestore.domain.models.Image;
+
+import com.cristian.simplestore.domain.image.Image;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,27 +25,27 @@ public class ImageEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String name;
+	private String fileName;
 
 	public ImageEntity(String name) {
-		this.name = name;
+		this.fileName = name;
 	}
 
 	public ImageEntity(Long id, String name) {
 		this.id = id;
-		this.name = name;
+		this.fileName = name;
 	}
 
 	public static ImageEntity fromDomain(Image image) {
 		if (image == null)
 			return null;
-		return new ImageEntity(image.getId(), image.getName());
+		return new ImageEntity(image.getId(), image.getFileName());
 	}
 
 	public static Image toDomain(ImageEntity entity) {
 		if (entity == null)
 			return null;
-		return new Image(entity.getId(), entity.getName());
+		return new Image(entity.getId(), entity.getFileName());
 	}
 	
 	public static List<Image> toDomain(List<ImageEntity> images) {
@@ -63,11 +65,11 @@ public class ImageEntity {
 			return false;
 		}
 		ImageEntity image = (ImageEntity) o;
-		return Objects.equals(name, image.name) && Objects.equals(id, image.id);
+		return Objects.equals(fileName, image.fileName) && Objects.equals(id, image.id);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, id);
+		return Objects.hash(fileName, id);
 	}
 }

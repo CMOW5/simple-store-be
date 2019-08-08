@@ -7,9 +7,10 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Test;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
-import com.cristian.simplestore.domain.services.category.ReadCategoryService;
+
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
+import com.cristian.simplestore.domain.category.services.ReadCategoryService;
 import com.cristian.simplestore.domain.unit.databuilder.CategoryTestDataBuilder;
 
 public class ReadCategoryServiceTest {

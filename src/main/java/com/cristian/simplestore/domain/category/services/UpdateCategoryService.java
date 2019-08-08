@@ -1,32 +1,28 @@
-package com.cristian.simplestore.domain.services.category;
+package com.cristian.simplestore.domain.category.services;
 
 import javax.persistence.EntityNotFoundException;
 
-import org.springframework.web.multipart.MultipartFile;
-
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
-import com.cristian.simplestore.domain.services.image.CreateImageService;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.exceptions.CategoryNotFoundException;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
+import com.cristian.simplestore.domain.image.Image;
 
 public class UpdateCategoryService {
 
 	private final CategoryRepository categoryRepository;
-	private final CreateImageService createImageService;
 
-	public UpdateCategoryService(CategoryRepository categoryRepository, CreateImageService createImageService) {
+	public UpdateCategoryService(CategoryRepository categoryRepository) {
 		this.categoryRepository = categoryRepository;
-		this.createImageService = createImageService;
 	}
 	
-	public Category execute(Long id, String newName, Long newParentId, MultipartFile newImageFile) {
+	public Category execute(Long id, String name, Long parentId, Image image) {
 		Category storedCategory = categoryRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("The category with the given id was not found"));
+				.orElseThrow(() -> new CategoryNotFoundException(id));
 		
-		Category newParent = resolveNewParent(storedCategory, newParentId);
-		Image newImage = resolveNewImage(storedCategory, newImageFile);
+		Category newParent = resolveNewParent(storedCategory, parentId);
+		Image newImage = image != null ? image : storedCategory.getImage();
 				
-		return categoryRepository.save(new Category(storedCategory.getId(), newName, newImage, newParent));
+		return categoryRepository.save(new Category(storedCategory.getId(), name, newImage, newParent));
 	}
 	
 	private Category resolveNewParent(Category storedCategory, Long newParentId) {
@@ -53,13 +49,5 @@ public class UpdateCategoryService {
 				storedCategory.getParent());
 		// is this necessary or will it update after passing it to category to update?
 		return categoryRepository.save(newParent);
-	}
-	
-	private Image resolveNewImage(Category storedCategory, MultipartFile newImageFile) {
-		if (newImageFile == null) {
-			return storedCategory.getImage();
-		} else {
-			return createImageService.create(newImageFile);
-		}
 	}
 }

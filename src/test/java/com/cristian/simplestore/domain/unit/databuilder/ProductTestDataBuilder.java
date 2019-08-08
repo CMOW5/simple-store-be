@@ -3,9 +3,10 @@ package com.cristian.simplestore.domain.unit.databuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.models.Product;
+
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.product.Product;
 
 public class ProductTestDataBuilder {
   private String name;

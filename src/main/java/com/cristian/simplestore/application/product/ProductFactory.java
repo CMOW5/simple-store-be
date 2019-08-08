@@ -7,23 +7,23 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cristian.simplestore.application.image.ImageFactory;
 import com.cristian.simplestore.application.product.command.CreateProductCommand;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.models.Product;
-import com.cristian.simplestore.domain.services.category.ReadCategoryService;
-import com.cristian.simplestore.domain.services.image.CreateImageService;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.services.ReadCategoryService;
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.product.Product;
 
 @Component
 public final class ProductFactory {
 	
-	private final CreateImageService createImageService;
+	private final ImageFactory imageFactory;
 	private final ReadCategoryService readCategoryService;
 	
 	@Autowired
-	public ProductFactory(ReadCategoryService readCategoryService, CreateImageService createImageService) {
+	public ProductFactory(ReadCategoryService readCategoryService, ImageFactory imageFactory) {
 		this.readCategoryService = readCategoryService;
-		this.createImageService = createImageService;
+		this.imageFactory = imageFactory;
 	}
 
 	public Product create(CreateProductCommand command) {
@@ -37,7 +37,7 @@ public final class ProductFactory {
 		Category category = readCategoryService.findById(command.getCategoryId())
 				.orElseThrow(() -> new EntityNotFoundException());
 		long stock = command.getStock();
-		List<Image> images = createImageService.create(command.getImages());
+		List<Image> images = imageFactory.create(command.getImages());
 		return new Product(name, description, price, priceSale, inSale, active, category, images, stock);
 	}
 

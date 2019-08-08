@@ -3,7 +3,7 @@ package com.cristian.simplestore.infrastructure.web.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.cristian.simplestore.domain.models.Product;
+import com.cristian.simplestore.domain.product.Product;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

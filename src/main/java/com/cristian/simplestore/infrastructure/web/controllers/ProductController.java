@@ -22,7 +22,7 @@ import com.cristian.simplestore.application.product.handler.CreateProductHandler
 import com.cristian.simplestore.application.product.handler.DeleteProductHandler;
 import com.cristian.simplestore.application.product.handler.ReadProductHandler;
 import com.cristian.simplestore.application.product.handler.UpdateProductHandler;
-import com.cristian.simplestore.domain.models.Product;
+import com.cristian.simplestore.domain.product.Product;
 import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.dto.ProductDto;
 

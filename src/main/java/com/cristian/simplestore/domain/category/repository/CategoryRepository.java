@@ -1,9 +1,9 @@
-package com.cristian.simplestore.domain.ports.repository;
+package com.cristian.simplestore.domain.category.repository;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.cristian.simplestore.domain.models.Category;
+import com.cristian.simplestore.domain.category.Category;
 
 public interface CategoryRepository {
   Category save(Category category);

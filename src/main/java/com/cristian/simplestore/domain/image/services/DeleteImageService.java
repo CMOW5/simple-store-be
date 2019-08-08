@@ -1,19 +1,18 @@
-package com.cristian.simplestore.domain.services.image;
+package com.cristian.simplestore.domain.image.services;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.ports.repository.ImageRepository;
+
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.image.repository.ImageRepository;
 
 public class DeleteImageService {
 
 	private final ImageRepository imageRepository;
-	// private final StorageService imageStorageService;
 
 	public DeleteImageService(ImageRepository imageRepository) {
 		this.imageRepository = imageRepository;
-		//this.imageStorageService = storageService;
 	}
 
 	public void execute(Image image) {

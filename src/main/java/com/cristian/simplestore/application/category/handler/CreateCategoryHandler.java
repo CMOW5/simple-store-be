@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 import com.cristian.simplestore.application.category.CategoryFactory;
 import com.cristian.simplestore.application.category.command.CreateCategoryCommand;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.services.category.CreateCategoryService;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.services.CreateCategoryService;
 
 @Component
 public class CreateCategoryHandler {

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.domain.models.Product;
-import com.cristian.simplestore.domain.services.product.ReadProductService;
+import com.cristian.simplestore.domain.product.Product;
+import com.cristian.simplestore.domain.product.service.ReadProductService;
 
 @Component
 public class ReadProductHandler {

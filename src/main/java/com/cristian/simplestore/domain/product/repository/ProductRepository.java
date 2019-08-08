@@ -1,8 +1,9 @@
-package com.cristian.simplestore.domain.ports.repository;
+package com.cristian.simplestore.domain.product.repository;
 
 import java.util.List;
 import java.util.Optional;
-import com.cristian.simplestore.domain.models.Product;
+
+import com.cristian.simplestore.domain.product.Product;
 
 public interface ProductRepository {
 	Optional<Product> find(Product product);

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.services.category.ReadCategoryService;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.services.ReadCategoryService;
 
 @Component
 public class ReadCategoryHandler {

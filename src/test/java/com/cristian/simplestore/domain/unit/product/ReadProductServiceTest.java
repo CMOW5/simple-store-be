@@ -7,9 +7,10 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 import org.junit.Test;
-import com.cristian.simplestore.domain.models.Product;
-import com.cristian.simplestore.domain.ports.repository.ProductRepository;
-import com.cristian.simplestore.domain.services.product.ReadProductService;
+
+import com.cristian.simplestore.domain.product.Product;
+import com.cristian.simplestore.domain.product.repository.ProductRepository;
+import com.cristian.simplestore.domain.product.service.ReadProductService;
 import com.cristian.simplestore.domain.unit.databuilder.ProductTestDataBuilder;
 
 public class ReadProductServiceTest {

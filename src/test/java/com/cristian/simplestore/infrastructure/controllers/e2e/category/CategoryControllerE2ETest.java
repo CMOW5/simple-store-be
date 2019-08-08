@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cristian.simplestore.domain.models.Category;
+import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.infrastructure.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder.CategoryFormUtils;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.requestfactory.CategoryRequestFactory;

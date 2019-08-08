@@ -3,7 +3,7 @@ package com.cristian.simplestore.infrastructure.controllers.e2e.category.databui
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cristian.simplestore.application.category.command.UpdateCategoryCommand;
-import com.cristian.simplestore.domain.models.Category;
+import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.utils.image.MockImageFileFactory;
 
 import lombok.Data;

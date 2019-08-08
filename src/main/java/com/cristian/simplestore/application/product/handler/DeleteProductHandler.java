@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.domain.services.product.DeleteProductService;
+import com.cristian.simplestore.domain.product.service.DeleteProductService;
 
 @Component
 public class DeleteProductHandler {

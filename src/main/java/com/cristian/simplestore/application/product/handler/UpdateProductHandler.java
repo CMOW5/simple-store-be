@@ -8,30 +8,30 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cristian.simplestore.application.image.ImageFactory;
 import com.cristian.simplestore.application.product.command.UpdateProductCommand;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.models.Product;
-import com.cristian.simplestore.domain.services.category.ReadCategoryService;
-import com.cristian.simplestore.domain.services.image.CreateImageService;
-import com.cristian.simplestore.domain.services.product.ReadProductService;
-import com.cristian.simplestore.domain.services.product.UpdateProductService;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.services.ReadCategoryService;
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.product.Product;
+import com.cristian.simplestore.domain.product.service.ReadProductService;
+import com.cristian.simplestore.domain.product.service.UpdateProductService;
 
 @Component
 public class UpdateProductHandler {
 
 	private final ReadProductService readProductService;
 	private final UpdateProductService updateProductService;
-	private final CreateImageService createImageService;
 	private final ReadCategoryService readCategoryService;
+	private final ImageFactory imageFactory;
 
 	@Autowired
-	public UpdateProductHandler(ReadProductService readProductService, UpdateProductService updateProductService,
-			CreateImageService createImageService, ReadCategoryService readCategoryService) {
+	public UpdateProductHandler(ReadProductService readProductService, UpdateProductService updateProductService, 
+			ReadCategoryService readCategoryService, ImageFactory imageFactory) {
 		this.readProductService = readProductService;
 		this.updateProductService = updateProductService;
-		this.createImageService = createImageService;
 		this.readCategoryService = readCategoryService;
+		this.imageFactory = imageFactory;
 	}
 
 	@Transactional
@@ -49,7 +49,7 @@ public class UpdateProductHandler {
 		Category category = readCategoryService.findById(command.getCategoryId()).orElseThrow(() -> new EntityNotFoundException());
 		long stock = command.getStock();
 
-		List<Image> newImages = createImageService.create(command.getImages());
+		List<Image> newImages = imageFactory.create(command.getImages());
 		storedProduct.addImages(newImages);
 		storedProduct.removeImagesById(command.getImagesIdsToDelete());
 		

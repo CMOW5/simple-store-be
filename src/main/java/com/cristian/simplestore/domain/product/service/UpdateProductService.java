@@ -1,7 +1,7 @@
-package com.cristian.simplestore.domain.services.product;
+package com.cristian.simplestore.domain.product.service;
 
-import com.cristian.simplestore.domain.models.Product;
-import com.cristian.simplestore.domain.ports.repository.ProductRepository;
+import com.cristian.simplestore.domain.product.Product;
+import com.cristian.simplestore.domain.product.repository.ProductRepository;
 
 public class UpdateProductService {
 

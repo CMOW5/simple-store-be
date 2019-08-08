@@ -3,10 +3,10 @@ package com.cristian.simplestore.infrastructure.adapters.services.product;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.cristian.simplestore.domain.services.product.CreateProductService;
-import com.cristian.simplestore.domain.services.product.DeleteProductService;
-import com.cristian.simplestore.domain.services.product.ReadProductService;
-import com.cristian.simplestore.domain.services.product.UpdateProductService;
+import com.cristian.simplestore.domain.product.service.CreateProductService;
+import com.cristian.simplestore.domain.product.service.DeleteProductService;
+import com.cristian.simplestore.domain.product.service.ReadProductService;
+import com.cristian.simplestore.domain.product.service.UpdateProductService;
 import com.cristian.simplestore.infrastructure.adapters.repository.product.ProductRepositoryJpa;
 import com.cristian.simplestore.infrastructure.adapters.repository.product.ProductRepositoryJpaInterface;
 

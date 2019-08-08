@@ -22,7 +22,7 @@ import com.cristian.simplestore.application.category.handler.CreateCategoryHandl
 import com.cristian.simplestore.application.category.handler.DeleteCategoryHandler;
 import com.cristian.simplestore.application.category.handler.ReadCategoryHandler;
 import com.cristian.simplestore.application.category.handler.UpdateCategoryHandler;
-import com.cristian.simplestore.domain.models.Category;
+import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.dto.CategoryDto;
 

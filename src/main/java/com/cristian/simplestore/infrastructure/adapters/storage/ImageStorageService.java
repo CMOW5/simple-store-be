@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.domain.services.storage.StorageService;
+import com.cristian.simplestore.domain.storage.StorageService;
 import com.cristian.simplestore.infrastructure.adapters.storage.exception.StorageException;
 import com.cristian.simplestore.infrastructure.adapters.storage.exception.StorageFileNotFoundException;
 import com.cristian.simplestore.infrastructure.config.properties.StorageConfig;

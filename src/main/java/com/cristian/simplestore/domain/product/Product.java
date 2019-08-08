@@ -1,7 +1,10 @@
-package com.cristian.simplestore.domain.models;
+package com.cristian.simplestore.domain.product;
 
 import java.util.List;
 import java.util.Objects;
+
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.image.Image;
 
 public class Product {
 	private Long id;

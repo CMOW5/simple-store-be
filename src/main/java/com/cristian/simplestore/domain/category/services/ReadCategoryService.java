@@ -1,10 +1,10 @@
-package com.cristian.simplestore.domain.services.category;
+package com.cristian.simplestore.domain.category.services;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
 
 public class ReadCategoryService {
 

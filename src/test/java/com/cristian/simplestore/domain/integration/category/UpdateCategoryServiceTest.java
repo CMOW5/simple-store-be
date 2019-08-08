@@ -9,9 +9,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.services.category.ReadCategoryService;
-import com.cristian.simplestore.domain.services.category.UpdateCategoryService;
+
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.services.ReadCategoryService;
+import com.cristian.simplestore.domain.category.services.UpdateCategoryService;
 import com.cristian.simplestore.infrastructure.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
 

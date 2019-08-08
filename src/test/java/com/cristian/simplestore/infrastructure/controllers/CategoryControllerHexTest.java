@@ -12,8 +12,8 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import com.cristian.simplestore.application.category.command.CreateCategoryCommand;
 import com.cristian.simplestore.application.category.command.UpdateCategoryCommand;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder.CreateCategoryCommandDataBuilder;
 import com.cristian.simplestore.infrastructure.controllers.e2e.category.databuilder.UpdateCategoryCommandDataBuilder;
 

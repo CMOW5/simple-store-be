@@ -4,9 +4,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import java.util.Optional;
 import org.junit.Test;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
-import com.cristian.simplestore.domain.services.category.DeleteCategoryService;
+
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
+import com.cristian.simplestore.domain.category.services.DeleteCategoryService;
 import com.cristian.simplestore.domain.unit.databuilder.CategoryTestDataBuilder;
 
 public class DeleteCategoryServiceTest {
@@ -21,7 +22,7 @@ public class DeleteCategoryServiceTest {
     DeleteCategoryService service = new DeleteCategoryService(categoryRepo);
     
     // act 
-    service.execute(category);
+    service.execute(category.getId());
   }
   
 }

@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.models.Product;
-import com.cristian.simplestore.domain.ports.repository.ProductRepository;
-import com.cristian.simplestore.domain.services.image.CreateImageService;
+import com.cristian.simplestore.application.image.ImageFactory;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.product.Product;
+import com.cristian.simplestore.domain.product.repository.ProductRepository;
 import com.cristian.simplestore.utils.category.CategoryGenerator;
 import com.cristian.simplestore.utils.image.MockImageFileFactory;
 import com.github.javafaker.Faker;
@@ -22,14 +22,14 @@ public class ProductGenerator {
 	private static int MAX_STOCK = 100000000;
 
 	private ProductRepository productRepository;
-	private CreateImageService createImageService;
+	private ImageFactory imageFactory;
 	private CategoryGenerator categoryGenerator;
 	private Faker faker = new Faker();
 
 	@Autowired
-	public ProductGenerator(ProductRepository productRepository ,CreateImageService createImageService, CategoryGenerator categoryGenerator) {
+	public ProductGenerator(ProductRepository productRepository, ImageFactory imageFactory, CategoryGenerator categoryGenerator) {
 		this.productRepository = productRepository;
-		this.createImageService = createImageService;
+		this.imageFactory = imageFactory;
 		this.categoryGenerator = categoryGenerator;
 	}
 
@@ -119,7 +119,7 @@ public class ProductGenerator {
 
 		public Builder randomImages(int size) {
 			for (int i = 0; i < size; i++) {
-				this.images.add(createImageService.create(MockImageFileFactory.createMockMultiPartFile()));
+				this.images.add(imageFactory.create(MockImageFileFactory.createMockMultiPartFile()));
 			}
 			return this;
 		}

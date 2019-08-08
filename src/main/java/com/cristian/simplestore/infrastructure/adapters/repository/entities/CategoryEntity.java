@@ -18,8 +18,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.models.Image;
+
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.image.Image;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

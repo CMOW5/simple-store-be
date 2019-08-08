@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.junit.Test;
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
-import com.cristian.simplestore.domain.services.category.CreateCategoryService;
+
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
+import com.cristian.simplestore.domain.category.services.CreateCategoryService;
 import com.cristian.simplestore.domain.unit.databuilder.CategoryTestDataBuilder;
 
 public class CreateCategoryServiceTest {

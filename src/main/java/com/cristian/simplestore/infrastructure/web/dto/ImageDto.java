@@ -3,7 +3,7 @@ package com.cristian.simplestore.infrastructure.web.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.cristian.simplestore.domain.models.Image;
+import com.cristian.simplestore.domain.image.Image;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class ImageDto {
 		 if (image == null) return null;
 		 ImageDto dto = new ImageDto();
 		 dto.id = image.getId();
-		 dto.name = image.getName();
+		 dto.name = image.getFileName();
 		 return dto;
 	 }
 

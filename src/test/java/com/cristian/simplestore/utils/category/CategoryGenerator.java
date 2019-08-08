@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.domain.models.Category;
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.ports.repository.CategoryRepository;
-import com.cristian.simplestore.domain.services.image.CreateImageService;
+import com.cristian.simplestore.application.image.ImageFactory;
+import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.category.repository.CategoryRepository;
+import com.cristian.simplestore.domain.image.Image;
 import com.cristian.simplestore.utils.image.MockImageFileFactory;
 import com.github.javafaker.Faker;
 
@@ -18,12 +18,12 @@ public class CategoryGenerator {
 	
 	private Faker faker = new Faker();
 	private CategoryRepository categoryRepository;
-	private CreateImageService createImageService;
+	private ImageFactory imageFactory;
 
 	@Autowired
-	private CategoryGenerator(CategoryRepository categoryRepository, CreateImageService createImageService) {
+	private CategoryGenerator(CategoryRepository categoryRepository, ImageFactory imageFactory) {
 		this.categoryRepository = categoryRepository;
-		this.createImageService = createImageService;
+		this.imageFactory = imageFactory;
 	}
 	
 	public Category generateRandomCategory() {
@@ -62,7 +62,7 @@ public class CategoryGenerator {
 		}
 		
 		public Builder randomImage() {
-			this.image = createImageService.create(MockImageFileFactory.createMockMultiPartFile());
+			this.image = imageFactory.create(MockImageFileFactory.createMockMultiPartFile());
 			return this;
 		}
 		

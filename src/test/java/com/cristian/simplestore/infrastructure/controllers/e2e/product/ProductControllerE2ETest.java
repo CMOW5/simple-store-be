@@ -13,8 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.models.Product;
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.product.Product;
 import com.cristian.simplestore.infrastructure.controllers.BaseIntegrationTest;
 import com.cristian.simplestore.infrastructure.controllers.e2e.product.databuilder.ProductFormUtils;
 import com.cristian.simplestore.infrastructure.controllers.e2e.product.requestfactory.ProductRequestFactory;

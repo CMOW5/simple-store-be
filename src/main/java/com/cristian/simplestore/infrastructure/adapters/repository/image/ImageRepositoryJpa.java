@@ -3,8 +3,8 @@ package com.cristian.simplestore.infrastructure.adapters.repository.image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.cristian.simplestore.domain.models.Image;
-import com.cristian.simplestore.domain.ports.repository.ImageRepository;
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.image.repository.ImageRepository;
 import com.cristian.simplestore.infrastructure.adapters.repository.entities.ImageEntity;
 
 @Repository

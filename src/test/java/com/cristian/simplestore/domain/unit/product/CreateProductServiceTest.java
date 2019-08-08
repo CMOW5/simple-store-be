@@ -4,9 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.junit.Test;
-import com.cristian.simplestore.domain.models.Product;
-import com.cristian.simplestore.domain.ports.repository.ProductRepository;
-import com.cristian.simplestore.domain.services.product.CreateProductService;
+
+import com.cristian.simplestore.domain.product.Product;
+import com.cristian.simplestore.domain.product.repository.ProductRepository;
+import com.cristian.simplestore.domain.product.service.CreateProductService;
 import com.cristian.simplestore.domain.unit.databuilder.ProductTestDataBuilder;
 
 public class CreateProductServiceTest {

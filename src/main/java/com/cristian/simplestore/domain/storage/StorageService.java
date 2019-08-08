@@ -1,4 +1,4 @@
-package com.cristian.simplestore.domain.services.storage;
+package com.cristian.simplestore.domain.storage;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;

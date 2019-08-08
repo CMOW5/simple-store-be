@@ -1,8 +1,11 @@
-package com.cristian.simplestore.domain.models;
+package com.cristian.simplestore.domain.category;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.domain.product.Product;
 
 public class Category {
 
