@@ -14,17 +14,20 @@ import com.cristian.simplestore.domain.image.Image;
 public class UpdateCategoryHandler {
 
 	private final UpdateCategoryService updateCategoryService;
-	private final ImageFactory ImageFactory;
+	private final ImageFactory imageFactory;
 
 	@Autowired
-	public UpdateCategoryHandler(UpdateCategoryService service, ImageFactory ImageFactory) {
+	public UpdateCategoryHandler(UpdateCategoryService service, ImageFactory imageFactory) {
 		this.updateCategoryService = service;
-		this.ImageFactory = ImageFactory;
+		this.imageFactory = imageFactory;
 	}
 
 	@Transactional
 	public Category execute(UpdateCategoryCommand command) {
-		Image newImage = ImageFactory.fromFile(command.getImage());
-		return updateCategoryService.execute(command.getId(), command.getName(), command.getParentId(), newImage);
+		Long id = command.getId();
+		String newName = command.getName();
+		Long newParentId = command.getParentId();
+		Image newImage = imageFactory.fromFile(command.getImage());
+		return updateCategoryService.execute(id, newName, newParentId, newImage);
 	}
 }

@@ -5,25 +5,28 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.application.category.CategoryFactory;
+import com.cristian.simplestore.application.image.ImageFactory;
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.category.services.CreateCategoryService;
+import com.cristian.simplestore.domain.image.Image;
 
 @Component
 public class CreateCategoryHandler {
 
 	private final CreateCategoryService createCategoryService;
-	private final CategoryFactory categoryFactory;
+	private final ImageFactory imageFactory;
 	
 	@Autowired
-	public CreateCategoryHandler(CreateCategoryService service, CategoryFactory categoryFactory) {
+	public CreateCategoryHandler(CreateCategoryService service, ImageFactory imageFactory) {
 		this.createCategoryService = service;
-		this.categoryFactory = categoryFactory;
+		this.imageFactory = imageFactory;
 	}
 
 	@Transactional
 	public Category execute(CreateCategoryCommand command) {
-		Category category = categoryFactory.create(command.getName(), command.getImage(), command.getParentId());
-		return createCategoryService.execute(category); // TODO: pass the data instead of the full Category?
+		String name = command.getName();
+		Long parentId = command.getParentId();
+		Image image = imageFactory.fromFile(command.getImage());
+		return createCategoryService.execute(name, image, parentId);
 	}
 }
