@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.category.command;
+package com.cristian.simplestore.application.category.create;
 
 import org.springframework.web.multipart.MultipartFile;
 import lombok.Data;

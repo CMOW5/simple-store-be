@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cristian.simplestore.application.category.command.CreateCategoryCommand;
-import com.cristian.simplestore.application.category.command.UpdateCategoryCommand;
-import com.cristian.simplestore.application.category.handler.CreateCategoryHandler;
-import com.cristian.simplestore.application.category.handler.DeleteCategoryHandler;
-import com.cristian.simplestore.application.category.handler.ReadCategoryHandler;
-import com.cristian.simplestore.application.category.handler.UpdateCategoryHandler;
+import com.cristian.simplestore.application.category.create.CreateCategoryCommand;
+import com.cristian.simplestore.application.category.create.CreateCategoryHandler;
+import com.cristian.simplestore.application.category.delete.DeleteCategoryHandler;
+import com.cristian.simplestore.application.category.read.ReadCategoryHandler;
+import com.cristian.simplestore.application.category.update.UpdateCategoryCommand;
+import com.cristian.simplestore.application.category.update.UpdateCategoryHandler;
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.dto.CategoryDto;

@@ -1,11 +1,10 @@
-package com.cristian.simplestore.application.category.handler;
+package com.cristian.simplestore.application.category.update;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cristian.simplestore.application.category.command.UpdateCategoryCommand;
 import com.cristian.simplestore.application.image.ImageFactory;
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.category.services.UpdateCategoryService;

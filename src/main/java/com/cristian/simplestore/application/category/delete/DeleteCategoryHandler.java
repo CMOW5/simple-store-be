@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.category.handler;
+package com.cristian.simplestore.application.category.delete;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;

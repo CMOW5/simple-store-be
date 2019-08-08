@@ -1,4 +1,4 @@
-package com.cristian.simplestore.application.category.handler;
+package com.cristian.simplestore.application.category.read;
 
 import java.util.List;
 import java.util.Optional;
