@@ -15,7 +15,7 @@ public class CreateCategoryService {
   }
 
   public Category execute(Category category) {
-	categoryValidator.validate(category);
+	categoryValidator.validate(category); // TODO: were to validate
     return categoryRepository.save(category);
   }
 }

@@ -9,7 +9,7 @@ public final class CategoryNotFoundException extends EntityNotFoundException {
 	 */
 	private static final long serialVersionUID = 2323038983027877004L;
 	
-	private static final String MESSAGE = "The category with id = %d does not exists";
+	private static final String MESSAGE = "The category with id = %d not found";
 
 	public CategoryNotFoundException(Long id) {
 		super(String.format(MESSAGE, id));

@@ -25,7 +25,7 @@ public class UpdateCategoryHandler {
 
 	@Transactional
 	public Category execute(UpdateCategoryCommand command) {
-		Image newImage = ImageFactory.create(command.getImage());
+		Image newImage = ImageFactory.fromFile(command.getImage());
 		return updateCategoryService.execute(command.getId(), command.getName(), command.getParentId(), newImage);
 	}
 }

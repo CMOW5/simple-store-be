@@ -25,7 +25,7 @@ public final class CategoryFactory {
 	}
 	
 	public Category create(String name, MultipartFile imageFile, Long parentId) {
-		Image image = imageFactory.create(imageFile);
+		Image image = imageFactory.fromFile(imageFile);
 		Category parent = null;
 		
 		if (parentId != null) {

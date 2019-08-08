@@ -62,7 +62,7 @@ public class CategoryGenerator {
 		}
 		
 		public Builder randomImage() {
-			this.image = imageFactory.create(MockImageFileFactory.createMockMultiPartFile());
+			this.image = imageFactory.fromFile(MockImageFileFactory.createMockMultiPartFile());
 			return this;
 		}
 		

@@ -119,7 +119,7 @@ public class ProductGenerator {
 
 		public Builder randomImages(int size) {
 			for (int i = 0; i < size; i++) {
-				this.images.add(imageFactory.create(MockImageFileFactory.createMockMultiPartFile()));
+				this.images.add(imageFactory.fromFile(MockImageFileFactory.createMockMultiPartFile()));
 			}
 			return this;
 		}

@@ -25,7 +25,7 @@ public class ImageTestUtils {
 
 	public Image saveRandomImageOnDb() {
 		MultipartFile imageFile = MockImageFileFactory.createMockMultiPartFile();
-		return this.imageRepository.save(imageFactory.create(imageFile));
+		return this.imageRepository.save(imageFactory.fromFile(imageFile));
 	}
 
 	public List<Image> saveRandomImagesOnDb(long numberOfImages) {

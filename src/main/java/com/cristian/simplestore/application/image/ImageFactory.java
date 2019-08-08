@@ -22,14 +22,19 @@ public final class ImageFactory {
 		imageStorageService = storageService;
 	}
 	
-	public Image create(MultipartFile file) {
-		if (file == null) return null;
-		String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
-		return new Image(imageNameWithPath);
+	public Image fromFile(MultipartFile file) {
+		Image image = null;
+		
+		if (file != null) {
+			String imageNameWithPath = imageStorageService.store(file, generateImageName(file));
+			image = new Image(imageNameWithPath);
+		}
+		
+		return image;
 	}
 
-	public List<Image> create(List<MultipartFile> files) {
-		return files.stream().map(file -> create(file)).collect(Collectors.toList());
+	public List<Image> fromFiles(List<MultipartFile> files) {
+		return files.stream().map(file -> fromFile(file)).collect(Collectors.toList());
 	}
 
 	private String generateImageName(MultipartFile file) {
