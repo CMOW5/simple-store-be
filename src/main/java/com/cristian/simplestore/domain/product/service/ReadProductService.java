@@ -3,6 +3,7 @@ package com.cristian.simplestore.domain.product.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.cristian.simplestore.domain.pagination.Paginated;
 import com.cristian.simplestore.domain.product.Product;
 import com.cristian.simplestore.domain.product.repository.ProductRepository;
 
@@ -24,5 +25,9 @@ public class ReadProductService {
 
 	public Optional<Product> execute(Long id) {
 		return productRepository.findById(id);
+	}
+
+	public Paginated<Product> execute(int page, int size) {
+		return productRepository.findAll(page, size);
 	}
 }

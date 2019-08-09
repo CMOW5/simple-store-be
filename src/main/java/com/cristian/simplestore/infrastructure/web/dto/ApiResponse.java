@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 
-import com.cristian.simplestore.infrastructure.pagination.CustomPaginator;
+import com.cristian.simplestore.domain.pagination.Paginator;
 
 public class ApiResponse {
 
@@ -74,7 +74,7 @@ public class ApiResponse {
     return this;
   }
   
-  public ApiResponse paginator(CustomPaginator paginator) {
+  public ApiResponse paginator(Paginator paginator) {
     this.attachments.put(PAGINATOR_KEY, paginator);
     return this;
   }

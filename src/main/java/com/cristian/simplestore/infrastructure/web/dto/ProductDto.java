@@ -46,7 +46,7 @@ public class ProductDto {
 		return dto;
 	}
 
-	public static Object fromDomain(List<Product> products) {
+	public static List<ProductDto> fromDomain(List<Product> products) {
 		return products.stream().map(ProductDto::fromDomain).collect(Collectors.toList());
 	}
 }

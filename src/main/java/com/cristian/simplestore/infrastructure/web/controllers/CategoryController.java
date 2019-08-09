@@ -3,6 +3,7 @@ package com.cristian.simplestore.infrastructure.web.controllers;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +25,8 @@ import com.cristian.simplestore.application.category.read.ReadCategoryHandler;
 import com.cristian.simplestore.application.category.update.UpdateCategoryCommand;
 import com.cristian.simplestore.application.category.update.UpdateCategoryHandler;
 import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.pagination.Paginated;
+import com.cristian.simplestore.domain.pagination.Paginator;
 import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.dto.CategoryDto;
 
@@ -45,9 +49,12 @@ public class CategoryController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> findAll() {
-		List<Category> foundCategories = readCategoryHandler.findAll();
-		return new ApiResponse().status(HttpStatus.OK).content(CategoryDto.fromDomain(foundCategories)).build();
+	public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size, HttpServletRequest request) {		
+		Paginated<Category> paginatedResult = readCategoryHandler.findAll(page, size);
+		Paginator paginator = RequestPaginator.of(paginatedResult.getPaginator(), request, size, page);
+		List<CategoryDto> categoriesDto = CategoryDto.fromDomain(paginatedResult.getContent());
+		return new ApiResponse().status(HttpStatus.OK).content(categoriesDto).paginator(paginator).build();
 	}
 
 	@GetMapping("/{id}")
@@ -67,7 +74,7 @@ public class CategoryController {
 		Category updatedCategory = updateCategoryHandler.execute(command);
 		return new ApiResponse().status(HttpStatus.OK).content(CategoryDto.fromDomain(updatedCategory)).build();
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {

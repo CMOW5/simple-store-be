@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cristian.simplestore.domain.pagination.Paginated;
 import com.cristian.simplestore.domain.product.Product;
 import com.cristian.simplestore.domain.product.service.ReadProductService;
 
@@ -25,6 +26,10 @@ public class ReadProductHandler {
 
 	public Optional<Product> findById(Long id) {
 		return readProductService.execute(id);
+	}
+
+	public Paginated<Product> findAll(int page, int size) {
+		return readProductService.execute(page, size);			
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.category.services.ReadCategoryService;
+import com.cristian.simplestore.domain.pagination.Paginated;
 
 @Component
 public class ReadCategoryHandler {
@@ -25,5 +26,9 @@ public class ReadCategoryHandler {
 	
 	public Optional<Category> findById(Long id) {
 		return readCategoryService.findById(id);
+	}
+
+	public Paginated<Category> findAll(int page, int size) {
+		return readCategoryService.findAll(page, size);
 	}
 }

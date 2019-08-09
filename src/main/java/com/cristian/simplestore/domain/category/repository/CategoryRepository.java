@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.cristian.simplestore.domain.category.Category;
+import com.cristian.simplestore.domain.pagination.Paginated;
 
 public interface CategoryRepository {
   Category save(Category category);
@@ -23,4 +24,6 @@ public interface CategoryRepository {
   boolean existsByName(String name);
 
   void deleteById(Long id);
+
+  Paginated<Category> findAll(int page, int size);
 }

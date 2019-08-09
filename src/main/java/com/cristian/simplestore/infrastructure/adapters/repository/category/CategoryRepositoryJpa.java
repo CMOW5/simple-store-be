@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.category.repository.CategoryRepository;
+import com.cristian.simplestore.domain.pagination.Paginated;
+import com.cristian.simplestore.infrastructure.adapters.pagination.SpringPaginated;
 import com.cristian.simplestore.infrastructure.adapters.repository.entities.CategoryEntity;
 
 @Repository
@@ -29,6 +33,13 @@ public class CategoryRepositoryJpa implements CategoryRepository {
 	public List<Category> findAll() {
 		List<CategoryEntity> entities = jpaRepo.findAll();
 		return CategoryEntity.toDomain(entities);
+	}
+	
+	@Override
+	public Paginated<Category> findAll(int page, int size) {
+		Page<CategoryEntity> paginated = jpaRepo.findAll(PageRequest.of(page, size));
+		List<Category> categories = CategoryEntity.toDomain(paginated.getContent());
+		return SpringPaginated.of(paginated, categories);
 	}
 	
 	@Override

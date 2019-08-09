@@ -3,6 +3,7 @@ package com.cristian.simplestore.domain.product.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.cristian.simplestore.domain.pagination.Paginated;
 import com.cristian.simplestore.domain.product.Product;
 
 public interface ProductRepository {
@@ -22,4 +23,5 @@ public interface ProductRepository {
 
 	void deleteById(Long id);
 
+	Paginated<Product> findAll(int page, int size);
 }
