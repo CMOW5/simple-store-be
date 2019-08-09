@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.validators;
+package com.cristian.simplestore.infrastructure.web.validators;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.BeanWrapperImpl;
 
-import com.cristian.simplestore.infrastructure.validators.annotations.ExistsDb;
+import com.cristian.simplestore.infrastructure.web.validators.annotations.ExistsDb;
 
 
 public class ExistsDbValidator implements ConstraintValidator<ExistsDb, Object> {

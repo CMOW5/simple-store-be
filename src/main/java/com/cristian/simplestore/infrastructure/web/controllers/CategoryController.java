@@ -27,6 +27,7 @@ import com.cristian.simplestore.application.category.update.UpdateCategoryHandle
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.pagination.Paginated;
 import com.cristian.simplestore.domain.pagination.Paginator;
+import com.cristian.simplestore.infrastructure.web.controllers.paginator.RequestPaginator;
 import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.dto.CategoryDto;
 

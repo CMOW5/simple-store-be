@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.web.controllers;
+package com.cristian.simplestore.infrastructure.web.controllers.paginator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,18 +8,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "currentPage", "currentPageUrl", "hasMorePages", "nextPage", "nextPageUrl", "hasPrevious",
 		"previousPage", "previousPageUrl", "pageSize", "pageCount" })
-class RequestPaginatorImpl implements RequestPaginator {
+class HttpRequestPaginator implements RequestPaginator {
 
 	private final Paginator paginator;
 	private final HttpServletRequest request;
 	private final int pageSize;
-	private final int currentPageNumber;
+	private final int currentPage;
 
-	public RequestPaginatorImpl(Paginator paginator, HttpServletRequest request, int pageSize, int currentPageNumber) {
+	public HttpRequestPaginator(Paginator paginator, HttpServletRequest request, int pageSize, int currentPage) {
 		this.paginator = paginator;
 		this.request = request;
 		this.pageSize = pageSize;
-		this.currentPageNumber = currentPageNumber;
+		this.currentPage = currentPage;
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ class RequestPaginatorImpl implements RequestPaginator {
 
 	@Override
 	public String getCurrentPageUrl() {
-		return buildUrlPath(currentPageNumber, pageSize);
+		return buildUrlPath(currentPage, pageSize);
 	}
 
 	@Override

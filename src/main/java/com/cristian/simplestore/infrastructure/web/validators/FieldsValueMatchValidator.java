@@ -1,10 +1,10 @@
-package com.cristian.simplestore.infrastructure.validators;
+package com.cristian.simplestore.infrastructure.web.validators;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.BeanWrapperImpl;
 
-import com.cristian.simplestore.infrastructure.validators.annotations.FieldsValueMatch;
+import com.cristian.simplestore.infrastructure.web.validators.annotations.FieldsValueMatch;
 
 public class FieldsValueMatchValidator implements ConstraintValidator<FieldsValueMatch, Object> {
 

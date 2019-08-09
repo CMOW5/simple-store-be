@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.web.controllers;
+package com.cristian.simplestore.infrastructure.web.controllers.paginator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +13,7 @@ public interface RequestPaginator extends Paginator {
 	
 	String getPath();
 
-	static RequestPaginator of(Paginator paginator, HttpServletRequest request, int size, int page) {
-		return new RequestPaginatorImpl(paginator, request, size, page);
+	static RequestPaginator of(Paginator paginator, HttpServletRequest request, int pageSize, int currentPage) {
+		return new HttpRequestPaginator(paginator, request, pageSize, currentPage);
 	}
 }

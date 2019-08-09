@@ -1,4 +1,4 @@
-package com.cristian.simplestore.infrastructure.validators.annotations;
+package com.cristian.simplestore.infrastructure.web.validators.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,18 +7,22 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.cristian.simplestore.infrastructure.validators.FieldsValueMatchValidator;
+import com.cristian.simplestore.infrastructure.web.validators.ExistsDbValidator;
 
-@Constraint(validatedBy = FieldsValueMatchValidator.class)
+@Constraint(validatedBy = ExistsDbValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldsValueMatch {
+public @interface ExistsDb {
 
-  String message() default "Fields values don't match!";
+  String message() default "the field already exists";
 
-  String field();
+  String table();
 
-  String fieldMatch();
+  String columnName();
+
+  String columnValueField();
+
+  String exceptIdColumn() default "";
 
   Class<?>[] groups() default {};
 
@@ -27,7 +31,6 @@ public @interface FieldsValueMatch {
   @Target({ElementType.TYPE})
   @Retention(RetentionPolicy.RUNTIME)
   @interface List {
-    FieldsValueMatch[] value();
+    ExistsDb[] value();
   }
 }
-

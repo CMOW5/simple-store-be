@@ -27,6 +27,7 @@ import com.cristian.simplestore.application.product.handler.UpdateProductHandler
 import com.cristian.simplestore.domain.pagination.Paginated;
 import com.cristian.simplestore.domain.pagination.Paginator;
 import com.cristian.simplestore.domain.product.Product;
+import com.cristian.simplestore.infrastructure.web.controllers.paginator.RequestPaginator;
 import com.cristian.simplestore.infrastructure.web.dto.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.dto.ProductDto;
 
