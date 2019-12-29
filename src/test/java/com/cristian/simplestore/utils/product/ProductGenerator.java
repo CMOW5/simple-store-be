@@ -50,7 +50,7 @@ public class ProductGenerator {
 	}
 	
 	public Product generateRandomProduct() {
-		return new Builder().randomName().randomDescription().randomPrice().randomPriceSale().randomCategory()
+		return new Builder().randomName().randomDescription().randomPrice().randomPriceSale()
 				.randomStock().randomImages(2).randomCategory().active().build();
 	}
 	

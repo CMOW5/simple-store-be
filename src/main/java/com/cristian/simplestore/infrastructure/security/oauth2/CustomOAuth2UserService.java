@@ -10,8 +10,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.cristian.simplestore.infrastructure.adapters.repository.entities.UserEntity;
-import com.cristian.simplestore.infrastructure.adapters.repository.user.UserRepositoryJpaInterface;
+import com.cristian.simplestore.infrastructure.database.user.UserEntity;
+import com.cristian.simplestore.infrastructure.database.user.UserRepositoryJpaInterface;
 import com.cristian.simplestore.infrastructure.security.UserPrincipal;
 import com.cristian.simplestore.infrastructure.security.oauth2.exceptions.OAuth2AuthenticationProcessingException;
 import com.cristian.simplestore.infrastructure.security.oauth2.user.OAuth2UserInfo;

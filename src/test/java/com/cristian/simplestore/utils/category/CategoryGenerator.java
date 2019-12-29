@@ -88,8 +88,6 @@ public class CategoryGenerator {
 		public Category save() {
 			Category category = build();
 			return categoryRepository.save(category);
-			//Category savedCat = categoryRepository.save(category);
-			//return new Category(savedCat.getId(), savedCat.getName(), savedCat.getImage(), savedCat.getParent());
 		}
 	}
 }

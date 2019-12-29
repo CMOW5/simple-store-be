@@ -14,20 +14,20 @@ public class ReadProductService {
 	public ReadProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
-
-	public Optional<Product> execute(Product product) {
-		return productRepository.find(product);
-	}
-
-	public List<Product> execute() {
-		return productRepository.findAll();
-	}
-
-	public Optional<Product> execute(Long id) {
+	
+	public Optional<Product> findById(Long id) {
 		return productRepository.findById(id);
 	}
 
-	public Paginated<Product> execute(int page, int size) {
+	public Optional<Product> find(Product product) {
+		return productRepository.find(product);
+	}
+
+	public List<Product> findAll() {
+		return productRepository.findAll();
+	}
+
+	public Paginated<Product> findAll(int page, int size) {
 		return productRepository.findAll(page, size);
 	}
 }

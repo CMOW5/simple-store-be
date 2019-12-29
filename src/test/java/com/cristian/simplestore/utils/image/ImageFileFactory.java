@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,12 +14,9 @@ import javax.imageio.ImageIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.cristian.simplestore.infrastructure.config.StorageConfig;
+import com.cristian.simplestore.infrastructure.config.properties.StorageConfig;
 
 @Component
 public class ImageFileFactory {
@@ -35,50 +30,26 @@ public class ImageFileFactory {
     this.defaultRootPath = Paths.get(storageConfig.getLocation());
   }
 
-  public MultipartFile createMockMultipartImage() {
-    byte[] fileBytes = createImageBytes();
-    String imageName = generateRandomName();
-
-    MultipartFile result =
-        new MockMultipartFile(imageName, imageName, MediaType.IMAGE_PNG_VALUE, fileBytes);
-
-    return result;
+  public Resource storeImageFileOnDisk() {
+    return storeImageFileOnDisk(this.defaultRootPath.toString(), this.generateRandomImageName());
   }
 
-  public Resource storeImageOnDisk() {
-    return storeImageOnDisk(this.defaultRootPath.toString(), this.generateRandomImageName());
+  public Resource storeImageFileOnDisk(String filename) {
+    return storeImageFileOnDisk(this.defaultRootPath.toString(), filename);
   }
 
-  public Resource storeImageOnDisk(String filename) {
-    return storeImageOnDisk(this.defaultRootPath.toString(), filename);
-  }
-
-  public Resource storeImageOnDisk(String path, String imageName) {
+  public Resource storeImageFileOnDisk(String path, String imageName) {
     String fullPath = path + "/" + imageName;
     File imageFile = createImageFile(fullPath);
     return new FileSystemResource(imageFile);
   }
 
-  public List<Resource> storeImagesOnDisk(int size) {
+  public List<Resource> storeImageFilesOnDisk(int size) {
     List<Resource> images = new ArrayList<>();
     for (int i = 0; i < size; i++) {
-      images.add(storeImageOnDisk());
+      images.add(storeImageFileOnDisk());
     }
     return images;
-  }
-
-  public byte[] createImageBytes() {
-    String fullPath = this.defaultRootPath.toString() + "/" + this.generateRandomImageName();
-    File tempFile = createImageFile(fullPath);
-    byte[] fileBytes = readFileToByteArray(tempFile);
-
-    try {
-      Files.delete(tempFile.toPath());
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return fileBytes;
   }
 
   public File createImageFile(String imagePath) {
@@ -123,23 +94,7 @@ public class ImageFileFactory {
     return file;
   }
 
-  private static byte[] readFileToByteArray(File file) {
-    FileInputStream fis = null;
-    // Creating a byte array using the length of the file
-    // file.length returns long which is cast to int
-    byte[] bArray = new byte[(int) file.length()];
-    try {
-      fis = new FileInputStream(file);
-      fis.read(bArray);
-      fis.close();
-
-    } catch (IOException ioExp) {
-      ioExp.printStackTrace();
-    }
-    return bArray;
-  }
-
-  public String generateRandomImageName() {
+  private String generateRandomImageName() {
     return this.generateRandomName() + this.defaultExtension;
   }
 

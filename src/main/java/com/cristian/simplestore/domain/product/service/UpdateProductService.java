@@ -5,13 +5,13 @@ import com.cristian.simplestore.domain.product.repository.ProductRepository;
 
 public class UpdateProductService {
 
-  private final ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-  public UpdateProductService(ProductRepository productRepository) {
-    this.productRepository = productRepository;
-  }
+	public UpdateProductService(ProductRepository productRepository) {
+		this.productRepository = productRepository;
+	}
 
-  public Product execute(Product product) {
-    return productRepository.save(product);
-  }
+	public Product update(Product product) {
+		return productRepository.save(product);
+	}
 }

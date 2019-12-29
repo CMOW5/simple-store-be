@@ -5,6 +5,7 @@ import javax.persistence.EntityExistsException;
 import com.cristian.simplestore.domain.product.Product;
 import com.cristian.simplestore.domain.product.repository.ProductRepository;
 
+
 public class CreateProductService {
 
   private final ProductRepository productRepository;
@@ -13,7 +14,7 @@ public class CreateProductService {
     this.productRepository = productRepository;
   }
 
-  public Product execute(Product product) {
+  public Product create(Product product) {
     validateProduct(product);
     return productRepository.save(product);
   }

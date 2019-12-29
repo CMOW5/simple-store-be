@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.cristian.simplestore.infrastructure.adapters.repository.entities.UserEntity;
+import com.cristian.simplestore.infrastructure.database.user.UserEntity;
 
 
 /**

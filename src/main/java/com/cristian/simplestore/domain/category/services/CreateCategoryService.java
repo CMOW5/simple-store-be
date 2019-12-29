@@ -1,7 +1,6 @@
 package com.cristian.simplestore.domain.category.services;
 
 import com.cristian.simplestore.domain.category.Category;
-import com.cristian.simplestore.domain.category.CategoryValidator;
 import com.cristian.simplestore.domain.category.exceptions.CategoryNotFoundException;
 import com.cristian.simplestore.domain.category.repository.CategoryRepository;
 import com.cristian.simplestore.domain.image.Image;
@@ -9,22 +8,18 @@ import com.cristian.simplestore.domain.image.Image;
 public class CreateCategoryService {
 
 	private final CategoryRepository categoryRepository;
-	private final CategoryValidator categoryValidator;
 
 	public CreateCategoryService(CategoryRepository categoryRepository) {
 		this.categoryRepository = categoryRepository;
-		this.categoryValidator = new CategoryValidator(categoryRepository);
 	}
 
-	public Category execute(Category category) {
-		categoryValidator.validate(category); // TODO: were to validate
+	public Category create(Category category) {
 		return categoryRepository.save(category);
 	}
 
-	public Category execute(String name, Image image, Long parentId) {
+	public Category create(String name, Image image, Long parentId) {
 		Category parent = findParent(parentId);
 		Category category = new Category(name, parent, image);
-		categoryValidator.validate(category); // TODO: were to validate
 		return categoryRepository.save(category);
 	}
 

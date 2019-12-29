@@ -11,11 +11,11 @@ public class DeleteProductService {
 		this.productRepository = productRepository;
 	}
 
-	public void execute(Product product) {
+	public void delete(Product product) {
 		productRepository.delete(product);
 	}
 
-	public void execute(Long id) {
+	public void deleteById(Long id) {
 		productRepository.deleteById(id);
 	}
 

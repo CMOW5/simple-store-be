@@ -15,7 +15,7 @@ public class UpdateCategoryService {
 		this.categoryRepository = categoryRepository;
 	}
 	
-	public Category execute(Long id, String name, Long parentId, Image image) {
+	public Category update(Long id, String name, Long parentId, Image image) {
 		Category storedCategory = categoryRepository.findById(id)
 				.orElseThrow(() -> new CategoryNotFoundException(id));
 		

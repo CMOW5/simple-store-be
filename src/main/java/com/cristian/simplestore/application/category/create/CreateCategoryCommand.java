@@ -1,23 +1,14 @@
 package com.cristian.simplestore.application.category.create;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.cristian.simplestore.application.category.CategoryCommand;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-public class CreateCategoryCommand {
-  
-  private String name;
-  
-  private MultipartFile image;
-  
-  private Long parentId;
+import lombok.EqualsAndHashCode;
 
-  public CreateCategoryCommand(String name, MultipartFile image, Long parentId) {
-    this.name = name;
-    this.image = image;
-    this.parentId = parentId;
-  }
-  
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+public class CreateCategoryCommand extends CategoryCommand { 
 }

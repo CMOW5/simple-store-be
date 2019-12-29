@@ -20,9 +20,9 @@ public class DeleteCategoryHandler {
 	}
 	
 	@Transactional
-	public void execute(Long id) {
+	public void deleteById(Long id) {
 		try {
-			deleteCategoryService.execute(id);
+			deleteCategoryService.deleteById(id);
 		} catch (EmptyResultDataAccessException exception) {
 			throw new EntityNotFoundException("The product with the given id was not found");
 		}	

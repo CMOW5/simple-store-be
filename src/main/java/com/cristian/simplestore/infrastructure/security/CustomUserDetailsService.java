@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cristian.simplestore.infrastructure.adapters.repository.entities.UserEntity;
-import com.cristian.simplestore.infrastructure.adapters.repository.user.UserRepositoryJpaInterface;
+import com.cristian.simplestore.infrastructure.database.user.UserEntity;
+import com.cristian.simplestore.infrastructure.database.user.UserRepositoryJpaInterface;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

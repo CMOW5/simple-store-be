@@ -10,7 +10,7 @@ public class DeleteCategoryService {
 		this.categoryRepository = categoryRepository;
 	}
 
-	public void execute(Long id) {
+	public void deleteById(Long id) {
 		categoryRepository.deleteById(id);
 	}
 

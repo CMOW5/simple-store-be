@@ -23,10 +23,10 @@ public class CreateCategoryHandler {
 	}
 
 	@Transactional
-	public Category execute(CreateCategoryCommand command) {
+	public Category create(CreateCategoryCommand command) {
 		String name = command.getName();
 		Long parentId = command.getParentId();
 		Image image = imageFactory.fromFile(command.getImage());
-		return createCategoryService.execute(name, image, parentId);
+		return createCategoryService.create(name, image, parentId);
 	}
 }

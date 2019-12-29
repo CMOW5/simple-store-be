@@ -23,11 +23,11 @@ public class UpdateCategoryHandler {
 	}
 
 	@Transactional
-	public Category execute(UpdateCategoryCommand command) {
+	public Category update(UpdateCategoryCommand command) {
 		Long id = command.getId();
 		String newName = command.getName();
 		Long newParentId = command.getParentId();
 		Image newImage = imageFactory.fromFile(command.getImage());
-		return updateCategoryService.execute(id, newName, newParentId, newImage);
+		return updateCategoryService.update(id, newName, newParentId, newImage);
 	}
 }

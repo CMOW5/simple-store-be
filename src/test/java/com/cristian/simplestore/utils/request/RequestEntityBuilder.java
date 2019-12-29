@@ -14,7 +14,7 @@ public class RequestEntityBuilder {
   private HttpMethod method;
   private HttpHeaders headers;
   private Map<?, ?> body;
-  private Map<String, String> requestParams = new HashMap<>();
+  private Map<String, String> requestParams = new HashMap<String, String>();
    
   public RequestEntityBuilder() {}
   
@@ -29,7 +29,7 @@ public class RequestEntityBuilder {
   }
 
   public RequestEntityBuilder headers(HttpHeaders headers) {
-    this.headers = headers;
+    this.headers = HttpHeaders.writableHttpHeaders(headers);
     return this;
   }
 
@@ -42,15 +42,6 @@ public class RequestEntityBuilder {
     requestParams.put(attribute, value);
     return this;
   }
-
-//  public RequestEntityBuilder withJwtAuth(TokenGenerator tokenGenerator) {
-//    if (headers == null) {
-//      headers = new HttpHeaders();
-//    }
-//    String token = tokenGenerator.generate();
-//    headers.add("Authorization", "Bearer " + token);
-//    return this;
-//  }
 
   public RequestEntity<?> build() {
     URI uri = null;
