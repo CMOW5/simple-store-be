@@ -5,14 +5,14 @@ pipeline {
             steps {
                 // 
                 echo "Building dev branch..."
-                sh 'gradle clean'
+                sh './gradlew clean'
             }
         }
         stage('Test') { 
             steps {
                 //
                 echo "Testing..." 
-                sh 'gradle test'
+                sh './gradlew test'
             }
         }
         stage('Deploy') { 
