@@ -2,8 +2,8 @@
 .gradle
 
 # Ignore Gradle build output directory
-/build/*
 !/build/libs/ 
+build/*
 
 bin
 
