@@ -1,24 +1,39 @@
 pipeline {
     agent any 
     stages {
-        stage('Build') { 
+
+        stage('Cleanup') {
             steps {
-                // 
-                echo "Building..."
-                sh './gradlew clean'
-                sh './gradlew build'
+                sh './gradlew --no-daemon clean'
             }
         }
-        stage('Test') { 
+
+        stage('Test') {
             steps {
-                //
-                echo "Testing..." 
-                sh './gradlew test'
+                sh './gradlew --no-daemon check'
+            }
+            post {
+                always {
+                    junit 'build/test-results/test/*.xml'
+                }
             }
         }
+
+        stage('Build') {
+            steps {
+                sh './gradlew --no-daemon build'
+            }
+        }
+
+        stage('Static Code Analisys') {
+            steps {
+                echo 'sonarqube here'
+            }
+        }
+
         stage('Deploy') { 
             steps {
-                // 
+                // TODO
                 echo "Deploying..."
             }
         }
