@@ -1,9 +1,5 @@
 package com.cristian.simplestore.infrastructure.web.controllers.category.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.infrastructure.web.controllers.image.dto.ImageDto;
 
 import lombok.Data;
@@ -19,18 +15,4 @@ public class CategoryDto {
 	private CategoryDto parent;
 
 	private ImageDto image;
-	
-	public static CategoryDto fromDomain(Category category) {
-		if (category == null) return null;
-		CategoryDto dto = new CategoryDto();
-		dto.id = category.getId();
-		dto.name = category.getName();
-		dto.image = ImageDto.fromDomain(category.getImage());
-		dto.parent = fromDomain(category.getParent());
-		return dto;
-	}
-
-	public static List<CategoryDto> fromDomain(List<Category> foundCategories) {
-		return foundCategories.stream().map(CategoryDto::fromDomain).collect(Collectors.toList());
-	}
 }
