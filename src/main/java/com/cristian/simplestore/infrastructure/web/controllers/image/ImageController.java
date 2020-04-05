@@ -20,11 +20,13 @@ import com.cristian.simplestore.infrastructure.web.controllers.response.ApiRespo
 
 @RestController
 public class ImageController {
+	
+	public static final String IMAGE_PATH = "api/images";
 
 	@Autowired
 	ImageStorageService imageStorageService;
 
-	@GetMapping(value = "api/images/{filename:..+}")
+	@GetMapping(value = IMAGE_PATH + "/{filename:..+}")
 	public ResponseEntity<?> serveImage(@PathVariable String filename) throws IOException {
 		Resource file;
 		try {

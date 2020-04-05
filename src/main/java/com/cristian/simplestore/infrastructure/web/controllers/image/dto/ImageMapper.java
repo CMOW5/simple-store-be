@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 import com.cristian.simplestore.domain.image.Image;
 import com.cristian.simplestore.infrastructure.config.properties.ApplicationConfig;
+import com.cristian.simplestore.infrastructure.web.controllers.image.ImageController;
 
 @Component
 public class ImageMapper {
 	
 	private final ApplicationConfig appConfig;
-	private final static String IMAGE_PATH = "api/images";
 	
 	@Autowired
 	public ImageMapper(ApplicationConfig appConfig) {
@@ -36,7 +36,7 @@ public class ImageMapper {
 	}
 	
 	private String convertNameToUrl(String imageName) {
-		return appConfig.getFullPath() + "/" + IMAGE_PATH + "/" + removeDirectoryFromImage(imageName);
+		return appConfig.getFullPath() + "/" + ImageController.IMAGE_PATH + "/" + removeDirectoryFromImage(imageName);
 	}
 	
 	private String removeDirectoryFromImage(String imageName) {
