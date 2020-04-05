@@ -5,12 +5,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.cristian.simplestore.domain.image.Image;
+import com.cristian.simplestore.infrastructure.database.image.listeners.DeleteImageFileListener;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "images")
 @Data
 @NoArgsConstructor
+@EntityListeners({DeleteImageFileListener.class})
 public class ImageEntity {
 
 	@Id
