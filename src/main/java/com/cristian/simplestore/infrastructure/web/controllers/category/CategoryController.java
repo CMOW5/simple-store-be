@@ -28,6 +28,7 @@ import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.pagination.Paginated;
 import com.cristian.simplestore.domain.pagination.Paginator;
 import com.cristian.simplestore.infrastructure.web.controllers.category.dto.CategoryDto;
+import com.cristian.simplestore.infrastructure.web.controllers.category.dto.CategoryMapper;
 import com.cristian.simplestore.infrastructure.web.controllers.response.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.pagination.RequestPaginator;
 
@@ -39,14 +40,17 @@ public class CategoryController {
 	private final ReadCategoryHandler readCategoryHandler;
 	private final UpdateCategoryHandler updateCategoryHandler;
 	private final DeleteCategoryHandler deleteCategoryHandler;
+	private final CategoryMapper categoryMapper;
 
 	@Autowired
 	public CategoryController(CreateCategoryHandler createCategoryHandler, ReadCategoryHandler readCategoryHandler,
-			UpdateCategoryHandler updateCategoryHandler, DeleteCategoryHandler deleteCategoryHandler) {
+			UpdateCategoryHandler updateCategoryHandler, DeleteCategoryHandler deleteCategoryHandler,
+			CategoryMapper categoryMapper) {
 		this.createCategoryHandler = createCategoryHandler;
 		this.readCategoryHandler = readCategoryHandler;
 		this.updateCategoryHandler = updateCategoryHandler;
 		this.deleteCategoryHandler = deleteCategoryHandler;
+		this.categoryMapper = categoryMapper;
 	}
 
 	@GetMapping
@@ -54,26 +58,26 @@ public class CategoryController {
 			@RequestParam(defaultValue = "20") int size, HttpServletRequest request) {		
 		Paginated<Category> paginatedResult = readCategoryHandler.findAll(page, size);
 		Paginator paginator = RequestPaginator.of(paginatedResult.getPaginator(), request, size, page);
-		List<CategoryDto> categoriesDto = CategoryDto.fromDomain(paginatedResult.getContent());
+		List<CategoryDto> categoriesDto = categoryMapper.fromDomain(paginatedResult.getContent());
 		return new ApiResponse().status(HttpStatus.OK).content(categoriesDto).paginator(paginator).build();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id) {
 		Category foundCategory = readCategoryHandler.findById(id).orElseThrow(() -> new EntityNotFoundException());
-		return new ApiResponse().status(HttpStatus.OK).content(CategoryDto.fromDomain(foundCategory)).build();
+		return new ApiResponse().status(HttpStatus.OK).content(categoryMapper.fromDomain(foundCategory)).build();
 	}
 
 	@PostMapping
 	public ResponseEntity<?> create(CreateCategoryCommand command) {
 		Category createdCategory = createCategoryHandler.create(command);
-		return new ApiResponse().status(HttpStatus.CREATED).content(CategoryDto.fromDomain(createdCategory)).build();
+		return new ApiResponse().status(HttpStatus.CREATED).content(categoryMapper.fromDomain(createdCategory)).build();
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(UpdateCategoryCommand command) {
 		Category updatedCategory = updateCategoryHandler.update(command);
-		return new ApiResponse().status(HttpStatus.OK).content(CategoryDto.fromDomain(updatedCategory)).build();
+		return new ApiResponse().status(HttpStatus.OK).content(categoryMapper.fromDomain(updatedCategory)).build();
 	}
 
 	@DeleteMapping("/{id}")
