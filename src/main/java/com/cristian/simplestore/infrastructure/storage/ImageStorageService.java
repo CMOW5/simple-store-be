@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -23,7 +25,9 @@ import com.cristian.simplestore.infrastructure.storage.exception.StorageFileNotF
 
 @Service
 public class ImageStorageService implements StorageService {
-
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImageStorageService.class);
+	
 	private final Path rootLocation;
 
 	@Autowired
@@ -105,7 +109,7 @@ public class ImageStorageService implements StorageService {
 		try {
 			Files.delete(fileToDeletePath);
 		} catch (IOException e) {
-			//
+			LOGGER.info("error deleting image " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -115,7 +119,7 @@ public class ImageStorageService implements StorageService {
 		try {
 			FileUtils.cleanDirectory(rootLocation.toFile());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			LOGGER.info("error deleting all images " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

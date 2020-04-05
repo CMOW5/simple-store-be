@@ -28,7 +28,7 @@ public class UpdateCategoryService {
 	private Category resolveNewParent(Category storedCategory, Long newParentId) {
 		if (newParentId == null) return null;
 		
-		Category newParent = categoryRepository.findById(newParentId).orElseThrow(() -> new EntityNotFoundException());
+		Category newParent = categoryRepository.findById(newParentId).orElseThrow(EntityNotFoundException::new);
 
 		if (storedCategory.hasSubcategory(newParent)) {
 			return resolveCategoryCircularReference(storedCategory, newParent);

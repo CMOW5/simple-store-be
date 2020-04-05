@@ -29,7 +29,7 @@ public final class CategoryFactory {
 		Category parent = null;
 		
 		if (parentId != null) {
-			parent = readCategoryService.findById(parentId).orElseThrow(() -> new EntityNotFoundException());
+			parent = readCategoryService.findById(parentId).orElseThrow(EntityNotFoundException::new);
 		}
 		
 		return new Category(name, parent, image);

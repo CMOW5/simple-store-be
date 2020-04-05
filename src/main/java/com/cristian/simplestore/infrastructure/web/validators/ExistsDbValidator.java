@@ -21,7 +21,8 @@ public class ExistsDbValidator implements ConstraintValidator<ExistsDb, Object> 
 
   @PersistenceContext
   EntityManager entityManager;
-
+  
+  @Override
   public void initialize(ExistsDb constraintAnnotation) {
     this.table = constraintAnnotation.table();
     this.columnName = constraintAnnotation.columnName();

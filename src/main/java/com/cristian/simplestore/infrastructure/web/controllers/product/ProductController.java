@@ -64,7 +64,7 @@ public class ProductController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id) {
-		Product foundProduct = readProductHandler.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		Product foundProduct = readProductHandler.findById(id).orElseThrow(EntityNotFoundException::new);
 		return new ApiResponse().status(HttpStatus.OK).content(productMapper.fromDomain(foundProduct)).build();
 	}
 

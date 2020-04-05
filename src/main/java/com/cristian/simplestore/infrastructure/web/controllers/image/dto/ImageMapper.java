@@ -31,7 +31,7 @@ public class ImageMapper {
 	
 	public List<ImageDto> fromDomain(List<Image> images) {
 		return images.stream()
-					.map(image -> fromDomain(image))
+					.map(this::fromDomain)
 					.collect(Collectors.toList());
 	}
 	

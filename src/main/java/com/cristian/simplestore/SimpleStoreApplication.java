@@ -18,17 +18,6 @@ public class SimpleStoreApplication {
     SpringApplication.run(SimpleStoreApplication.class, args);
   }
 
-  // @Bean
-  // public CommandLineRunner demo(CategorySeeder categorySeeder, ProductSeeder productSeeder,
-  // ImageStorageService storageService) {
-  // return args -> {
-  // // categorySeeder.seed(100);
-  // // productSeeder.seed(200);
-  // // storageService.init();
-  // };
-  //
-  // }
-
   @Bean
   public CommandLineRunner demo(
       ImageStorageService storageService) {

@@ -34,7 +34,7 @@ public final class ImageFactory {
 	}
 
 	public List<Image> fromFiles(List<MultipartFile> files) {
-		return files.stream().map(file -> fromFile(file)).collect(Collectors.toList());
+		return files.stream().map(this::fromFile).collect(Collectors.toList());
 	}
 
 	private String generateImageName(MultipartFile file) {

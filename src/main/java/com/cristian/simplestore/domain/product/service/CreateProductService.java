@@ -21,7 +21,6 @@ public class CreateProductService {
 
   private void validateProduct(Product product) {
     validateExistance(product);
-    validateData(product);
   }
 
   private void validateExistance(Product product) {
@@ -29,10 +28,4 @@ public class CreateProductService {
       throw new EntityExistsException();
     }
   }
-
-  private void validateData(Product product) {
-    // TODO Auto-generated method stub
-  }
-
-
 }

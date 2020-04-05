@@ -38,7 +38,7 @@ public class ProductMapper {
 
 	public List<ProductDto> fromDomain(List<Product> products) {
 		return products.stream()
-				.map(product -> fromDomain(product))
+				.map(this::fromDomain)
 				.collect(Collectors.toList());
 	}
 

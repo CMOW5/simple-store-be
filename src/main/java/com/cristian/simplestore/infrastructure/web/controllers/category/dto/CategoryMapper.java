@@ -29,7 +29,7 @@ public class CategoryMapper {
 
 	public List<CategoryDto> fromDomain(List<Category> categories) {
 		return categories.stream()
-				.map(category -> fromDomain(category))
+				.map(this::fromDomain)
 				.collect(Collectors.toList());
 	}
 
