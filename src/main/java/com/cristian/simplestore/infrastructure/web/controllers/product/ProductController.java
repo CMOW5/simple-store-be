@@ -28,6 +28,7 @@ import com.cristian.simplestore.domain.pagination.Paginated;
 import com.cristian.simplestore.domain.pagination.Paginator;
 import com.cristian.simplestore.domain.product.Product;
 import com.cristian.simplestore.infrastructure.web.controllers.product.dto.ProductDto;
+import com.cristian.simplestore.infrastructure.web.controllers.product.dto.ProductMapper;
 import com.cristian.simplestore.infrastructure.web.controllers.response.ApiResponse;
 import com.cristian.simplestore.infrastructure.web.pagination.RequestPaginator;
 
@@ -39,14 +40,17 @@ public class ProductController {
 	private final ReadProductHandler readProductHandler;
 	private final UpdateProductHandler updateProductHandler;
 	private final DeleteProductHandler deleteProductHandler;
+	private final ProductMapper productMapper;
 
 	@Autowired
 	public ProductController(CreateProductHandler createProductHandler, ReadProductHandler readProductHandler,
-			UpdateProductHandler updateProductHandler, DeleteProductHandler deleteProductHandler) {
+			UpdateProductHandler updateProductHandler, DeleteProductHandler deleteProductHandler,
+			ProductMapper productMapper) {
 		this.createProductHandler = createProductHandler;
 		this.readProductHandler = readProductHandler;
 		this.updateProductHandler = updateProductHandler;
 		this.deleteProductHandler = deleteProductHandler;
+		this.productMapper = productMapper;
 	}
 
 	@GetMapping
@@ -54,26 +58,26 @@ public class ProductController {
 			@RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
 		Paginated<Product> paginatedResult = readProductHandler.findAll(page, size);
 		Paginator paginator = RequestPaginator.of(paginatedResult.getPaginator(), request, size, page);
-		List<ProductDto> productsDtos = ProductDto.fromDomain(paginatedResult.getContent());
+		List<ProductDto> productsDtos = productMapper.fromDomain(paginatedResult.getContent());
 		return new ApiResponse().status(HttpStatus.OK).content(productsDtos).paginator(paginator).build();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id) {
 		Product foundProduct = readProductHandler.findById(id).orElseThrow(() -> new EntityNotFoundException());
-		return new ApiResponse().status(HttpStatus.OK).content(ProductDto.fromDomain(foundProduct)).build();
+		return new ApiResponse().status(HttpStatus.OK).content(productMapper.fromDomain(foundProduct)).build();
 	}
 
 	@PostMapping
 	public ResponseEntity<?> create(CreateProductCommand command) {
 		Product createdProduct = createProductHandler.create(command);
-		return new ApiResponse().status(HttpStatus.CREATED).content(ProductDto.fromDomain(createdProduct)).build();
+		return new ApiResponse().status(HttpStatus.CREATED).content(productMapper.fromDomain(createdProduct)).build();
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<?> update(UpdateProductCommand command) {
 		Product updatedProduct = updateProductHandler.update(command);
-		return new ApiResponse().status(HttpStatus.OK).content(ProductDto.fromDomain(updatedProduct)).build();
+		return new ApiResponse().status(HttpStatus.OK).content(productMapper.fromDomain(updatedProduct)).build();
 	}
 
 	@DeleteMapping("/{id}")
