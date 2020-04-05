@@ -27,7 +27,7 @@ pipeline {
 
         stage('Static Code Analisys') {
             steps {
-                echo 'sonarqube here'
+                sh './gradlew sonarqube'
             }
         }
 
