@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.cristian.simplestore.infrastructure.config.properties.AuthProperties;
 import com.cristian.simplestore.infrastructure.config.properties.StorageConfig;
+import com.cristian.simplestore.infrastructure.dbseeders.CategorySeeder;
 import com.cristian.simplestore.infrastructure.storage.ImageStorageService;
 
 @SpringBootApplication
@@ -20,9 +21,9 @@ public class SimpleStoreApplication {
 
   @Bean
   public CommandLineRunner demo(
-      ImageStorageService storageService) {
+      ImageStorageService storageService, CategorySeeder categorySeeder) {
     return args -> {
-      // categorySeeder.seed(100);
+      categorySeeder.seed(100);
       // productSeeder.seed(200);
       storageService.init();
     };

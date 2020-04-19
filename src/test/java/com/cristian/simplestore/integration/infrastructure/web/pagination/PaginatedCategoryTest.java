@@ -55,5 +55,6 @@ public class PaginatedCategoryTest extends BaseE2ETest {
 		assertThat(paginator.get("previousPage")).isEqualTo(0);
 		assertThat(paginator.get("pageCount")).isEqualTo(size);
 		assertThat(paginator.get("totalPages")).isEqualTo(((int) (maxCategoriesSize / size)));
+		assertThat(paginator.get("totalElements")).isEqualTo(((int) maxCategoriesSize));
 	}
 }

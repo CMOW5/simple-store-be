@@ -83,8 +83,15 @@ class HttpRequestPaginator implements RequestPaginator {
 	public String getPath() {
 		return request.getRequestURL().toString();
 	}
+	
+	@Override
+	public long getTotalElements() {
+		return paginator.getTotalElements();
+	}
 
 	private String buildUrlPath(int page, int size) {
 		return getPath() + "?page=" + page + "&size=" + size;
 	}
+
+	
 }

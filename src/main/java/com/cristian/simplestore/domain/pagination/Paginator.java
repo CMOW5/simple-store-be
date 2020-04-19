@@ -16,4 +16,6 @@ public interface Paginator {
 	boolean hasMorePages();
 
 	int getPageCount();
+	
+	long getTotalElements();
 }

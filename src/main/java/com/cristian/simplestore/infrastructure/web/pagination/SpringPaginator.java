@@ -51,4 +51,9 @@ public class SpringPaginator<T> implements Paginator {
 	public boolean hasPrevious() {
 		return page.getPageable().hasPrevious() && page.nextPageable().isPaged();
 	}
+
+	@Override
+	public long getTotalElements() {
+		return page.getTotalElements();
+	}
 }
