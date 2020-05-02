@@ -17,52 +17,61 @@ import com.cristian.simplestore.infrastructure.web.pagination.SpringPaginated;
 public class CategoryRepositoryJpa implements CategoryRepository {
 
 	private CategoryRepositorySpringJpa jpaRepo;
+	private final CategoryFullTextSearch categoryFullTextSearch;
 
 	@Autowired
-	public CategoryRepositoryJpa(CategoryRepositorySpringJpa jpaRepo) {
+	public CategoryRepositoryJpa(CategoryRepositorySpringJpa jpaRepo, CategoryFullTextSearch categoryFullTextSearch) {
 		this.jpaRepo = jpaRepo;
+		this.categoryFullTextSearch = categoryFullTextSearch;
 	}
 
 	@Override
 	public Optional<Category> find(Category category) {
 		return findById(category.getId());
 	}
-	
+
 	@Override
 	public List<Category> findAll() {
 		List<CategoryEntity> entities = jpaRepo.findAll();
 		return CategoryEntity.toDomain(entities);
 	}
-	
+
 	@Override
 	public Paginated<Category> findAll(int page, int size) {
 		Page<CategoryEntity> paginated = jpaRepo.findAll(PageRequest.of(page, size));
 		List<Category> categories = CategoryEntity.toDomain(paginated.getContent());
 		return SpringPaginated.of(paginated, categories);
 	}
-	
+
 	@Override
 	public Optional<Category> findById(Long id) {
 		Optional<CategoryEntity> entity = jpaRepo.findById(id);
 		return entity.isPresent() ? Optional.of(CategoryEntity.toDomain(entity.get())) : Optional.empty();
 	}
-	
+
 	@Override
 	public boolean exists(Category category) {
 		return find(category).isPresent();
 	}
-	
+
 	@Override
 	public boolean existsByName(String name) {
 		return jpaRepo.findByName(name).isPresent();
 	}
-	
+
 	@Override
 	public Category save(Category category) {
 		CategoryEntity entity = CategoryEntity.fromDomain(category);
 		return CategoryEntity.toDomain(jpaRepo.save(entity));
 	}
 
+	@Override
+	public Paginated<Category> searchByTerm(String searchTerm, int page, int size) {		
+		Page<CategoryEntity> paginatedCategoryEntities = categoryFullTextSearch.searchByName(searchTerm, page, size);
+		List<Category> categories = CategoryEntity.toDomain(paginatedCategoryEntities.getContent());
+		return SpringPaginated.of(paginatedCategoryEntities, categories);
+	}
+	
 	@Override
 	public void delete(Category category) {
 		CategoryEntity entity = CategoryEntity.fromDomain(category);
@@ -73,9 +82,14 @@ public class CategoryRepositoryJpa implements CategoryRepository {
 	public void deleteById(Long id) {
 		jpaRepo.deleteById(id);
 	}
-	
+
 	@Override
 	public void deleteAll() {
 		jpaRepo.deleteAll();
+	}
+
+	@Override
+	public long count() {
+		return jpaRepo.count();
 	}
 }

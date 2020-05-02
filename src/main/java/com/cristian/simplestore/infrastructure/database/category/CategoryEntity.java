@@ -19,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.image.Image;
 import com.cristian.simplestore.infrastructure.database.image.ImageEntity;
@@ -29,6 +31,7 @@ import lombok.NoArgsConstructor;
 
 @Entity(name = "category")
 @Table(name = "categories")
+@Indexed
 @NoArgsConstructor
 @Data
 public class CategoryEntity {
@@ -38,6 +41,7 @@ public class CategoryEntity {
 	private Long id;
 
 	@Column(nullable = false, unique = true)
+	@Field
 	private String name;
 	
 	@ManyToOne

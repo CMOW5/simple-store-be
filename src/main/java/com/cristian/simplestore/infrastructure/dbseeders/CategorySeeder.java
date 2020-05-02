@@ -37,6 +37,8 @@ public class CategorySeeder {
         // createRandomCategoriesWithParentOnDB(category, 4);
       } catch (Exception e) {}
     }
+    Category category = new Category("Rebeca Emard", null, generateRandomImageOnDB());
+    categoryRepository.save(category);
   }
 
   public Category createRandomCategoryOnDB() {
@@ -67,7 +69,7 @@ public class CategorySeeder {
   }
   
   private String generateRandomName() {
-    return faker.name().name();
+    return "dr. " + faker.name().name();
     // return faker.commerce().department();
   }
 

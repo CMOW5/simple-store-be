@@ -24,11 +24,18 @@ public class ReadCategoryHandler {
 		return readCategoryService.findAll();
 	}
 	
+	public Paginated<Category> findAll(int page, int size) {
+		return readCategoryService.findAll(page, size);
+	}
+	
 	public Optional<Category> findById(Long id) {
 		return readCategoryService.findById(id);
 	}
-
-	public Paginated<Category> findAll(int page, int size) {
-		return readCategoryService.findAll(page, size);
+	
+	public Paginated<Category> searchByTerm(String searchTerm, int page, int size) {
+		if (searchTerm == null || searchTerm.trim().isEmpty()) {
+			return readCategoryService.findAll(page, size);
+		}
+		return readCategoryService.searchByTerm(searchTerm, page, size);
 	}
 }

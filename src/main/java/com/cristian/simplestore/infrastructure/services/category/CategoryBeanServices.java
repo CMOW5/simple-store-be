@@ -8,28 +8,27 @@ import com.cristian.simplestore.domain.category.services.DeleteCategoryService;
 import com.cristian.simplestore.domain.category.services.ReadCategoryService;
 import com.cristian.simplestore.domain.category.services.UpdateCategoryService;
 import com.cristian.simplestore.infrastructure.database.category.CategoryRepositoryJpa;
-import com.cristian.simplestore.infrastructure.database.category.CategoryRepositorySpringJpa;
 
 @Configuration
 public class CategoryBeanServices {
 	
 	@Bean
-	public CreateCategoryService createCategoryService(CategoryRepositorySpringJpa jpaRepo) {
-		return new CreateCategoryService(new CategoryRepositoryJpa(jpaRepo));
+	public CreateCategoryService createCategoryService(CategoryRepositoryJpa jpaRepo) {
+		return new CreateCategoryService(jpaRepo);
 	}
 
 	@Bean
-	public ReadCategoryService readCategoryService(CategoryRepositorySpringJpa jpaRepo) {
-		return new ReadCategoryService(new CategoryRepositoryJpa(jpaRepo));
+	public ReadCategoryService readCategoryService(CategoryRepositoryJpa jpaRepo) {
+		return new ReadCategoryService(jpaRepo);
 	}
 
 	@Bean
-	public UpdateCategoryService updateCategoryService(CategoryRepositorySpringJpa jpaRepo) {
-		return new UpdateCategoryService(new CategoryRepositoryJpa(jpaRepo));
+	public UpdateCategoryService updateCategoryService(CategoryRepositoryJpa jpaRepo) {
+		return new UpdateCategoryService(jpaRepo);
 	}
 	
 	@Bean
-	public DeleteCategoryService deleteCategoryService(CategoryRepositorySpringJpa jpaRepo) {
-		return new DeleteCategoryService(new CategoryRepositoryJpa(jpaRepo));
+	public DeleteCategoryService deleteCategoryService(CategoryRepositoryJpa jpaRepo) {
+		return new DeleteCategoryService(jpaRepo);
 	}
 }

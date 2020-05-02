@@ -15,15 +15,19 @@ public interface CategoryRepository {
   
   Optional<Category> findById(Long id);
   
+  Paginated<Category> findAll(int page, int size);
+  
+  Paginated<Category> searchByTerm(String searchTerm, int page, int size);
+  
+  boolean existsByName(String name);
+  
   List<Category> findAll();
 
   void delete(Category category);
-
-  void deleteAll();
-
-  boolean existsByName(String name);
-
+  
   void deleteById(Long id);
 
-  Paginated<Category> findAll(int page, int size);
+  void deleteAll();
+  
+  long count();
 }

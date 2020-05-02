@@ -30,4 +30,8 @@ public class ReadCategoryService {
 	public Paginated<Category> findAll(int page, int size) {
 		return categoryRepository.findAll(page, size);
 	}
+	
+	public Paginated<Category> searchByTerm(String name, int page, int size) {
+		return categoryRepository.searchByTerm(name, page, size);
+	}
 }
