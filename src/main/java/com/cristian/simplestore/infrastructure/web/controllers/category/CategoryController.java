@@ -52,16 +52,17 @@ public class CategoryController {
 		this.deleteCategoryHandler = deleteCategoryHandler;
 		this.categoryMapper = categoryMapper;
 	}
-
+	
 	@GetMapping
-	public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size, HttpServletRequest request) {		
-		Paginated<Category> paginatedResult = readCategoryHandler.findAll(page, size);
+	public ResponseEntity<?> findAll(@RequestParam(name = "search", required = false) String searchTerm,
+			@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+			@RequestParam(name = "size", defaultValue = "20", required = false) int size, HttpServletRequest request) {
+		Paginated<Category> paginatedResult = readCategoryHandler.searchByTerm(searchTerm, page, size);
 		Paginator paginator = RequestPaginator.of(paginatedResult.getPaginator(), request, size, page);
 		List<CategoryDto> categoriesDto = categoryMapper.fromDomain(paginatedResult.getContent());
 		return new ApiResponse().status(HttpStatus.OK).content(categoriesDto).paginator(paginator).build();
 	}
-
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> findById(@PathVariable Long id) {
 		Category foundCategory = readCategoryHandler.findById(id).orElseThrow(() -> new EntityNotFoundException());
