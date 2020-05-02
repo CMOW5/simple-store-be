@@ -6,6 +6,9 @@ import com.cristian.simplestore.domain.pagination.Paginator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 @JsonPropertyOrder({ "currentPage", "currentPageUrl", "hasMorePages", "nextPage", "nextPageUrl", "hasPrevious",
 		"previousPage", "previousPageUrl", "pageSize", "pageCount" })
 class HttpRequestPaginator implements RequestPaginator {
@@ -90,7 +93,21 @@ class HttpRequestPaginator implements RequestPaginator {
 	}
 
 	private String buildUrlPath(int page, int size) {
-		return getPath() + "?page=" + page + "&size=" + size;
+		return getPath() + "?" + buildRequestParams(page, size);
+	}
+
+	private String buildRequestParams(int page, int size) {
+		Map<String, String[]> paramMap = new HashMap<>(request.getParameterMap());
+
+		paramMap.put("page", new String[]{String.valueOf(page)});
+		paramMap.put("size", new String[]{String.valueOf(size)});
+
+		List<String> singleQueryParams =
+				paramMap.entrySet().stream()
+						.map(stringEntry -> String.format("%s=%s", stringEntry.getKey(),  stringEntry.getValue()[0]))
+						.collect(Collectors.toList());
+
+		return String.join("&", singleQueryParams);
 	}
 
 	
