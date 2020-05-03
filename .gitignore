@@ -9,6 +9,7 @@ bin
 
 upload-dir/
 test-upload-dir/
+hibernate-indexes/
 
 src/main/resources/application-production.yml
 
