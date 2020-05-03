@@ -11,6 +11,9 @@ server:
   port: 8000
 
 
+###
+#   the directory where the images are stored
+###
 storage:
   location: upload-dir
   
@@ -28,7 +31,18 @@ spring:
       # ddl-auto: validate
       ddl-auto: create-drop
     show-sql: true
-
+    properties:
+      hibernate:
+        search:
+          default:
+            # Specify the DirectoryProvider to use (the Lucene Directory)
+            directory_provider: filesystem
+            
+            # Using the filesystem DirectoryProvider you also have to specify the default
+            # base directory for all indexes (make sure that the application have write
+            # permissions on such directory)
+            indexBase: ./hibernate-indexes
+          
   servlet:
     multipart:
       max-file-size: 10MB
