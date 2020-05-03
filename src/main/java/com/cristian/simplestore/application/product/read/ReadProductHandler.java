@@ -32,4 +32,11 @@ public class ReadProductHandler {
 		return readProductService.findAll(page, size);			
 	}
 
+	public Paginated<Product> searchByTerm(String searchTerm, int page, int size) {
+		if (searchTerm == null || searchTerm.trim().isEmpty()) {
+			return readProductService.findAll(page, size);
+		}
+		return readProductService.searchByTerm(searchTerm, page, size);
+	}
+
 }

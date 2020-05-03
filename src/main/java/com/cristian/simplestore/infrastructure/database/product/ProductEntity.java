@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import com.cristian.simplestore.domain.category.Category;
 import com.cristian.simplestore.domain.image.Image;
@@ -30,6 +32,7 @@ import lombok.NoArgsConstructor;
 
 @Entity(name = "product")
 @Table(name = "products")
+@Indexed
 @Data
 @NoArgsConstructor
 public class ProductEntity {
@@ -39,6 +42,7 @@ public class ProductEntity {
 	private Long id;
 
 	@Column(unique = true, nullable = false)
+	@Field
 	private String name;
 
 	private String description;

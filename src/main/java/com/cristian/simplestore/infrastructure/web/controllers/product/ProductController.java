@@ -54,9 +54,10 @@ public class ProductController {
 	}
 
 	@GetMapping
-	public ResponseEntity<?> findAll(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size, HttpServletRequest request) {
-		Paginated<Product> paginatedResult = readProductHandler.findAll(page, size);
+	public ResponseEntity<?> findAll(@RequestParam(name = "search", required = false) String searchTerm,
+			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size,
+			HttpServletRequest request) {
+		Paginated<Product> paginatedResult = readProductHandler.searchByTerm(searchTerm, page, size);
 		Paginator paginator = RequestPaginator.of(paginatedResult.getPaginator(), request, size, page);
 		List<ProductDto> productsDtos = productMapper.fromDomain(paginatedResult.getContent());
 		return new ApiResponse().status(HttpStatus.OK).content(productsDtos).paginator(paginator).build();

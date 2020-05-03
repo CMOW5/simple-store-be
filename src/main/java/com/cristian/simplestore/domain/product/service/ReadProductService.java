@@ -30,4 +30,8 @@ public class ReadProductService {
 	public Paginated<Product> findAll(int page, int size) {
 		return productRepository.findAll(page, size);
 	}
+
+	public Paginated<Product> searchByTerm(String searchTerm, int page, int size) {
+		return productRepository.searchByTerm(searchTerm, page, size);
+	}
 }

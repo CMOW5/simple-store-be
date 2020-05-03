@@ -16,9 +16,11 @@ import com.cristian.simplestore.infrastructure.web.pagination.SpringPaginated;
 public class ProductRepositoryJpa implements ProductRepository {
 
 	private final ProductRepositoryJpaInterface jpaRepo;
+	private final ProductFullTextSearch productFullTextSearch;
 
 	@Autowired
-	public ProductRepositoryJpa(ProductRepositoryJpaInterface jpaRepo) {
+	public ProductRepositoryJpa(ProductRepositoryJpaInterface jpaRepo, ProductFullTextSearch productFullTextSearch) {
+		this.productFullTextSearch = productFullTextSearch;
 		this.jpaRepo = jpaRepo;
 	}
 	
@@ -45,6 +47,13 @@ public class ProductRepositoryJpa implements ProductRepository {
 		Page<ProductEntity> paginated = jpaRepo.findAll(PageRequest.of(page, size));
 		List<Product> products = ProductEntity.toDomain(paginated.getContent());
 		return SpringPaginated.of(paginated, products);
+	}
+	
+	@Override
+	public Paginated<Product> searchByTerm(String searchTerm, int page, int size) {
+		Page<ProductEntity> paginatedProductEntities = productFullTextSearch.searchByName(searchTerm, page, size);
+		List<Product> products = ProductEntity.toDomain(paginatedProductEntities.getContent());
+		return SpringPaginated.of(paginatedProductEntities, products);
 	}
 	
 	@Override

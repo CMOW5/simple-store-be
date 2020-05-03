@@ -24,4 +24,6 @@ public interface ProductRepository {
 	void deleteById(Long id);
 
 	Paginated<Product> findAll(int page, int size);
+
+	Paginated<Product> searchByTerm(String searchTerm, int page, int size);
 }
